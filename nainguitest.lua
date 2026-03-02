@@ -71,6 +71,9 @@ function Menu.UpdateCategoriesFromTopTab()
     if Menu.EnsureBlackThemeOption then
         Menu.EnsureBlackThemeOption()
     end
+    if Menu.EnsureGreenThemeOption then
+        Menu.EnsureGreenThemeOption()
+    end
 end
 
 Menu.Banner = {
@@ -149,6 +152,11 @@ function Menu.ApplyTheme(themeName)
         Menu.Colors.SelectedBg = { r = 0, g = 0, b = 0 }
         Menu.Banner.imageUrl = "https://i.imgur.com/oW6yYXo.png"
         Menu.CurrentTheme = "Black"
+    elseif themeLower == "green" then
+        Menu.Colors.HeaderPink = { r = 0, g = 200, b = 0 }
+        Menu.Colors.SelectedBg = { r = 0, g = 200, b = 0 }
+        Menu.Banner.imageUrl = "https://i.imgur.com/9vkYldh.png"
+        Menu.CurrentTheme = "Green"
     elseif themeLower == "gray" then
         Menu.Colors.HeaderPink = { r = 128, g = 128, b = 128 }
         Menu.Colors.SelectedBg = { r = 128, g = 128, b = 128 }
@@ -188,6 +196,33 @@ function Menu.EnsureBlackThemeOption()
                             end
                             if not hasBlack then
                                 table.insert(item.options, "Black")
+                            end
+                            return
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+function Menu.EnsureGreenThemeOption()
+    if not Menu.Categories then return end
+    for _, cat in ipairs(Menu.Categories) do
+        if cat.tabs then
+            for _, tab in ipairs(cat.tabs) do
+                if tab.items then
+                    for _, item in ipairs(tab.items) do
+                        if item.name == "Menu Theme" and item.options then
+                            local hasGreen = false
+                            for _, opt in ipairs(item.options) do
+                                if type(opt) == "string" and string.lower(opt) == "green" then
+                                    hasGreen = true
+                                    break
+                                end
+                            end
+                            if not hasGreen then
+                                table.insert(item.options, "Green")
                             end
                             return
                         end
@@ -2073,6 +2108,9 @@ function Menu.Render()
     end
     if Menu.EnsureBlackThemeOption then
         Menu.EnsureBlackThemeOption()
+    end
+    if Menu.EnsureGreenThemeOption then
+        Menu.EnsureGreenThemeOption()
     end
 
     if not (Susano and Susano.BeginFrame) then
