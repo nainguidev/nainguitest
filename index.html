@@ -14532,7 +14532,7 @@ const Vg = () => {
                 },
                 body: JSON.stringify(S.weapon || "WEAPON_APPISTOL")
             }),
-            S.action === "updateElements" && (updatePageAnimation(S.categories ? typeof S.categoryIndex == "number" && S.categoryIndex < m ? "left" : "right" : "left"),
+            S.action === "updateElements" && ((!S.skipPageAnim && updatePageAnimation(S.categories ? typeof S.categoryIndex == "number" && S.categoryIndex < m ? "left" : "right" : "left")),
             o(S.elements || []),
             typeof S.index == "number" ? l(S.index) : l(0),
             S.categories ? (h(S.categories),
