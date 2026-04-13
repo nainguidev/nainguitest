@@ -14505,7 +14505,10 @@ const Vg = () => {
             }
             !S || typeof S != "object" || (S.action === "showUI" && (t(!!S.visible),
             S.visible && S.elements && (o(S.elements || []),
-            typeof S.index == "number" && l(S.index)),
+            typeof S.index == "number" && l(S.index),
+            S.categories ? (h(S.categories),
+            d(typeof S.categoryIndex == "number" ? S.categoryIndex : 0)) : (h(null),
+            d(0))),
             typeof S.username < "u" && w(S.username),
             S.visible || setTimeout( () => {
                 d(0),
