@@ -8,6 +8,15 @@
   <style>
     @import"https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap";@import"https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap";@import"https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap";:root {
     --menu-color: 0, 75, 30;
+    /* Couleurs interrupteurs type menu Susano / Naingui (message (3) — pulse toggle ~30,200,30) */
+    --toggle-off-bg: #070707;
+    --toggle-off-border: #2a2a2a;
+    --toggle-on-bg-1: #1a6b32;
+    --toggle-on-bg-2: #0e3d1c;
+    --toggle-on-glow: 30, 200, 30;
+    --toggle-knob: #f4f4f4;
+    --slider-track: #060606;
+    --slider-fill: #d4d4d4;
     /* Position du menu : coin haut-gauche (léger décalage pour ne pas coller au bord) */
     --menu-x: 1.2vw;
     --menu-y: 1.2vw;
@@ -328,217 +337,130 @@
 }
 
 /* ============================================================
-   ROUNDED PILL — ENGRAVED CHECKBOX (PRIMARY)
+   INTERRUPTEURS — même famille que le menu Susano/Naingui (message) :
+   OFF = capsule noire + pastille claire à gauche ;
+   ON = capsule vert forêt + pastille à droite + léger glow (30,200,30).
    ============================================================ */
-.PWrapper .PTabs .PTab .TOptions .Checkbox {
+.PWrapper .PTabs .PTab .TOptions .Checkbox,
+.PWrapper .PTabs .PTab .Checkbox {
     position: relative;
     display: flex;
-    right: 0vw;
+    box-sizing: border-box;
     width: 1.5625vw;
     height: .7813vw;
     justify-content: flex-start;
     align-items: center;
-
-    background: #1a1a1a;
-
-    /* Engraved / sunken pill track */
-    box-shadow:
-        inset 0 .10vw .25vw rgba(0,0,0,0.8),
-        inset 0 -.10vw .20vw rgba(255,255,255,0.05),
-        inset .10vw 0 .25vw rgba(0,0,0,0.85),
-        inset -.10vw 0 .25vw rgba(255,255,255,0.05);
-
+    background: var(--toggle-off-bg);
+    border: .052vw solid var(--toggle-off-border);
     border-radius: 999vw;
-    transition: .25s ease;
+    box-shadow: inset 0 .14vw .24vw rgba(0,0,0,.95);
+    transition: background .2s ease, border-color .2s ease, box-shadow .2s ease;
 }
 
-.PWrapper .PTabs .PTab .TOptions .Checkbox.Checked {
-    background: rgba(var(--menu-color), 0.9);
-
-    /* Engraved but glowing */
-    box-shadow:
-        inset 0 .10vw .25vw rgba(0,0,0,0.9),
-        inset 0 -.10vw .20vw rgba(255,255,255,0.05),
-        inset .10vw 0 .25vw rgba(0,0,0,0.9),
-        inset -.10vw 0 .25vw rgba(255,255,255,0.04),
-        0 0 .32vw rgba(var(--menu-color), 0.45);
-}
-
-.PWrapper .PTabs .PTab .TOptions .Checkbox.Checked .Inside {
-    left: .95vw;
-}
-
-.PWrapper .PTabs .PTab .TOptions .Checkbox .Inside {
-    position: absolute;
-    display: flex;
-    left: .15vw;
-    width: .4167vw;
-    height: .4167vw;
-
-    background: #e8e8e8;
-
-    /* Bulging knob look */
-    box-shadow:
-        0 .05vw .10vw rgba(0,0,0,0.6),
-        0 -.03vw .08vw rgba(255,255,255,0.35),
-        inset 0 .03vw .06vw rgba(255,255,255,0.60),
-        inset 0 -.03vw .06vw rgba(0,0,0,0.45);
-
-    border-radius: 999vw;
-    transition: .25s ease;
-}
-
-
-/* ============================================================
-   ROUNDED PILL — ENGRAVED CHECKBOX (SECOND SET)
-   ============================================================ */
 .PWrapper .PTabs .PTab .Checkbox {
     position: absolute;
-    display: flex;
     right: .65vw;
-    width: 1.5625vw;
-    height: .7813vw;
-    justify-content: flex-start;
-    align-items: center;
-
-    background: #1a1a1a;
-
-    /* Engraved / carved depth */
-    box-shadow:
-        inset 0 .10vw .25vw rgba(0,0,0,0.8),
-        inset 0 -.10vw .20vw rgba(255,255,255,0.05),
-        inset .10vw 0 .25vw rgba(0,0,0,0.85),
-        inset -.10vw 0 .25vw rgba(255,255,255,0.05);
-
-    border-radius: 999vw;
-    transition: .25s ease;
 }
 
+.PWrapper .PTabs .PTab .TOptions .Checkbox {
+    right: 0vw;
+}
+
+.PWrapper .PTabs .PTab .TOptions .Checkbox.Checked,
 .PWrapper .PTabs .PTab .Checkbox.Checked {
-    background: rgba(var(--menu-color), 0.9);
-
+    background: linear-gradient(180deg, var(--toggle-on-bg-1) 0%, var(--toggle-on-bg-2) 100%);
+    border-color: #1a4d28;
     box-shadow:
-        inset 0 .10vw .25vw rgba(0,0,0,0.9),
-        inset 0 -.10vw .20vw rgba(255,255,255,0.05),
-        inset .10vw 0 .25vw rgba(0,0,0,0.9),
-        inset -.10vw 0 .25vw rgba(255,255,255,0.04),
-        0 0 .32vw rgba(var(--menu-color), 0.45);
+        inset 0 .1vw .2vw rgba(0,0,0,.65),
+        inset 0 -.06vw .12vw rgba(80,220,100,.12),
+        0 0 .28vw rgba(var(--toggle-on-glow), .4);
 }
 
-.PWrapper .PTabs .PTab .Checkbox.Checked .Inside {
-    left: .95vw;
-}
-
+.PWrapper .PTabs .PTab .TOptions .Checkbox .Inside,
 .PWrapper .PTabs .PTab .Checkbox .Inside {
     position: absolute;
     display: flex;
-    left: .15vw;
-    width: .4167vw;
-    height: .4167vw;
-
-    background: #e8e8e8;
-
-    /* Raised / bulging knob */
-    box-shadow:
-        0 .05vw .10vw rgba(0,0,0,0.6),
-        0 -.03vw .08vw rgba(255,255,255,0.35),
-        inset 0 .03vw .06vw rgba(255,255,255,0.60),
-        inset 0 -.03vw .06vw rgba(0,0,0,0.45);
-
+    left: .1vw;
+    width: .4583vw;
+    height: .4583vw;
+    margin: 0;
+    background: linear-gradient(165deg, #fff 0%, var(--toggle-knob) 40%, #a8a8a8 100%);
     border-radius: 999vw;
-    transition: .25s ease;
+    box-shadow:
+        0 .07vw .14vw rgba(0,0,0,.5),
+        inset 0 .06vw .1vw rgba(255,255,255,.85),
+        inset 0 -.08vw .12vw rgba(0,0,0,.28);
+    transition: left .2s ease, right .2s ease;
+}
+
+.PWrapper .PTabs .PTab .TOptions .Checkbox.Checked .Inside,
+.PWrapper .PTabs .PTab .Checkbox.Checked .Inside {
+    left: auto;
+    right: .1vw;
 }
 
 
 /* ============================================================
-   SLIDER (NOT EMBOSSED YET — TELL ME IF YOU WANT MATCHING LOOK)
+   SLIDERS — même look « pilule » que le 3ᵉ screenshot : piste sombre,
+   partie remplie gris clair, pastille blanche (curseur).
    ============================================================ */
-.PWrapper .PTabs .PTab .TOptions .Slider {
+.PWrapper .PTabs .PTab .TOptions .Slider,
+.PWrapper .PTabs .PTab .Slider {
     position: relative;
     display: flex;
-    right: .15vw;
     width: 2.3438vw;
-    height: .2083vw;
+    height: .7292vw;
     justify-content: flex-start;
     align-items: center;
-    background-color: #1e1e1e;
-    border-radius: .2604vw;
+    background: var(--slider-track);
+    border: .052vw solid #222;
+    border-radius: 999vw;
+    box-shadow: inset 0 .12vw .22vw rgba(0,0,0,.92);
+    overflow: visible;
 }
 
-.PWrapper .PTabs .PTab .TOptions .Slider .Progress {
-    position: absolute;
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    background: #ffffff;
-    border-radius: .2604vw;
+.PWrapper .PTabs .PTab .TOptions .Slider {
+    right: .15vw;
 }
 
-.PWrapper .PTabs .PTab .TOptions .Slider .Progress .Thumb {
-    position: absolute;
-    display: flex;
-    right: 0vw;
-    width: .4167vw;
-    height: .4167vw;
-    background-color: #fff;
-    border-radius: .5208vw;
-}
-
-
-/* === EMBEDDED / SUNKEN TRACK === */
 .PWrapper .PTabs .PTab .Slider {
     position: absolute;
-    display: flex;
     right: .65vw;
-    width: 2.3438vw;
-    height: .2083vw;
-    justify-content: flex-start;
-    align-items: center;
-
-    background-color: #161616;
-    border-radius: .2604vw;
-
-    /* REAL inset effect */
-    box-shadow:
-        inset 0 .12vw .22vw rgba(0,0,0,0.85),
-        inset 0 -.12vw .22vw rgba(255,255,255,0.08),
-        0 0 .15vw rgba(0,0,0,0.8);
 }
 
-/* === EMBEDDED PROGRESS BAR === */
+.PWrapper .PTabs .PTab .TOptions .Slider .Progress,
 .PWrapper .PTabs .PTab .Slider .Progress {
     position: absolute;
+    left: 0;
+    top: 0;
     display: flex;
     height: 100%;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-
-    background: #e1e1e1;
-    border-radius: .2604vw;
-
+    min-width: 0;
+    background: linear-gradient(180deg, #ececec 0%, var(--slider-fill) 55%, #9a9a9a 100%);
+    border-radius: 999vw;
     box-shadow:
-        inset 0 .1vw .2vw rgba(0,0,0,0.55),
-        inset 0 -.08vw .18vw rgba(255,255,255,0.25);
+        inset 0 .06vw .1vw rgba(255,255,255,.45),
+        inset 0 -.08vw .12vw rgba(0,0,0,.2);
 }
 
-/* === THUMB WITH DEEP EMBEDDED BUTTON LOOK === */
+.PWrapper .PTabs .PTab .TOptions .Slider .Progress .Thumb,
 .PWrapper .PTabs .PTab .Slider .Progress .Thumb {
     position: absolute;
+    right: 0;
+    top: 50%;
     display: flex;
-    right: 0vw;
-    width: .4167vw;
-    height: .4167vw;
-
-    background-color: #fafafa;
-    border-radius: .5208vw;
-
-    /* Deep inset + outer glow */
+    width: .5vw;
+    height: .5vw;
+    margin: 0;
+    background: linear-gradient(165deg, #fff 0%, var(--toggle-knob) 45%, #9e9e9e 100%);
+    border-radius: 999vw;
+    transform: translate(42%, -50%);
     box-shadow:
-        inset 0 .1vw .18vw rgba(0,0,0,0.6),
-        inset 0 -.1vw .2vw rgba(255,255,255,0.4),
-        0 0 .25vw rgba(255,255,255,0.35),
-        0 0 .35vw rgba(0,0,0,0.4);
+        0 .06vw .14vw rgba(0,0,0,.45),
+        inset 0 .05vw .08vw rgba(255,255,255,.8),
+        inset 0 -.07vw .1vw rgba(0,0,0,.25);
 }
 
 
