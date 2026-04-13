@@ -1188,49 +1188,327 @@ code {
     height: 0
 }
 
+/* --- Overlay choix touche : au-dessus de tout le DUI --- */
+#replix-keybind-layer {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2147483647 !important;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    pointer-events: auto !important;
+    font-family: Inter, system-ui, sans-serif;
+    isolation: isolate;
+}
+#replix-keybind-layer.replix-visible {
+    display: flex !important;
+    animation: replix-kb-bg-in 0.4s ease-out forwards;
+}
+@keyframes replix-kb-bg-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+#replix-keybind-layer .replix-kb-card {
+    max-width: min(560px, 92vw);
+    padding: clamp(20px, 2.2vw, 32px) clamp(22px, 2.8vw, 40px);
+    background: linear-gradient(155deg, rgba(10, 28, 18, 0.99), rgba(0, 52, 30, 0.97));
+    border: 2px solid rgba(0, 200, 100, 0.55);
+    border-radius: 14px;
+    box-shadow:
+        0 0 0 1px rgba(0, 255, 140, 0.12),
+        0 0 48px rgba(0, 120, 60, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    color: #fff;
+    text-align: center;
+    animation: replix-kb-card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+        replix-kb-pulse 2.2s ease-in-out infinite 0.55s;
+}
+@keyframes replix-kb-card-in {
+    from { opacity: 0; transform: scale(0.9) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes replix-kb-pulse {
+    0%, 100% { box-shadow: 0 0 0 1px rgba(0, 255, 140, 0.12), 0 0 48px rgba(0, 120, 60, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08); }
+    50% { box-shadow: 0 0 0 2px rgba(0, 255, 140, 0.35), 0 0 64px rgba(0, 200, 100, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+}
+#replix-keybind-layer .replix-kb-icon {
+    font-size: clamp(36px, 3vw, 48px);
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 12px rgba(0, 255, 120, 0.4));
+}
+#replix-keybind-layer h2 {
+    margin: 0 0 14px;
+    font-size: clamp(18px, 1.2vw, 24px);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: #e8fff0;
+}
+#replix-keybind-layer p {
+    margin: 10px 0;
+    font-size: clamp(13px, 0.82vw, 16px);
+    line-height: 1.55;
+    opacity: 0.94;
+}
+
+/* --- Animations menu ouvrir / fermer --- */
+@keyframes replix-menu-fade-in {
+    from { opacity: 0; filter: blur(8px); }
+    to { opacity: 1; filter: blur(0); }
+}
+@keyframes replix-menu-fade-out {
+    from { opacity: 1; filter: blur(0); }
+    to { opacity: 0; filter: blur(4px); }
+}
+@keyframes replix-banner-drop {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes replix-elements-pop {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: scale(1); }
+}
+@keyframes replix-meta-slide {
+    from { opacity: 0; transform: translateX(16px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+body.replix-menu-opening .PWrapper {
+    animation: replix-menu-fade-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+body.replix-menu-opening .PWrapper .PBanner {
+    animation: replix-banner-drop 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+body.replix-menu-opening .PWrapper .PElements {
+    animation: replix-elements-pop 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.06s both;
+}
+body.replix-menu-opening .PWrapper .Metadata {
+    animation: replix-meta-slide 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+body.replix-menu-closing .PWrapper {
+    animation: replix-menu-fade-out 0.35s ease-in forwards;
+    pointer-events: none !important;
+}
+body.replix-menu-closing .PWrapper .PElements,
+body.replix-menu-closing .PWrapper .Metadata {
+    animation: replix-menu-fade-out 0.28s ease-in forwards;
+}
+
+/* --- Animation entrée liste / sous-menu --- */
+@keyframes replix-tabs-enter {
+    0% { opacity: 0.4; transform: translateX(-14px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+@keyframes replix-cat-tab {
+    0% { opacity: 0.5; transform: translateY(-4px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+body.replix-category-anim .PWrapper .PTabs {
+    animation: replix-tabs-enter 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+body.replix-category-anim .PWrapper .PCategories {
+    animation: replix-cat-tab 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes replix-scroll-thumb {
+    0% { filter: brightness(1.35); }
+    100% { filter: brightness(1); }
+}
+body.replix-index-tick .PWrapper .PSProgress {
+    animation: replix-scroll-thumb 0.35s ease-out;
+}
+
+/* --- Colonne menu + barre verte (scroll) : interactions --- */
+.PWrapper .PElements {
+    pointer-events: auto !important;
+}
+.PWrapper .PElements .PScroll {
+    pointer-events: auto !important;
+    z-index: 20 !important;
+}
+.PWrapper .PElements .PScroll i {
+    pointer-events: auto !important;
+    cursor: pointer;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+.PWrapper .PElements .PScroll i:hover {
+    color: rgba(180, 255, 200, 0.95) !important;
+    transform: scale(1.12);
+}
+.PWrapper .PElements .PScroll .PSProgressWrapper {
+    pointer-events: auto !important;
+    cursor: pointer;
+}
+.PWrapper .PElements .PScroll .PSProgress {
+    pointer-events: auto !important;
+    cursor: grab;
+}
+.PWrapper .Metadata {
+    pointer-events: auto !important;
+}
+
   </style>
 </head>
 
 <body>
   <div id="root"></div>
 
+  <div id="replix-keybind-layer" hidden aria-hidden="true">
+    <div class="replix-kb-card">
+      <div class="replix-kb-icon" aria-hidden="true">⌨️</div>
+      <h2 id="replix-kb-title">Touche du menu</h2>
+      <p id="replix-kb-instr"></p>
+      <p id="replix-kb-hint"></p>
+    </div>
+  </div>
+
   <script>
     // =========================
-//  MENU POSITION CONTROLLER
-window.addEventListener("message", (event) => {
-    const data = event.data;
-    if (!data) return;
+    //  DUI : overlay touche, animations, scroll (hook window + React)
+    // =========================
+(function () {
+    const kbLayer = document.getElementById("replix-keybind-layer");
+    const kbTitle = document.getElementById("replix-kb-title");
+    const kbInstr = document.getElementById("replix-kb-instr");
+    const kbHint = document.getElementById("replix-kb-hint");
+    let menuAnimTimer = null;
+    let lastCategoryAnim = 0;
+    let indexTickTimer = null;
 
-    // PRECISION SLIDERS
-    if (data.action === "updatePositionPrecise" && data.position) {
-
-        // Convert slider values 0–100 → CSS percentages
-        const x = (data.position.x !== undefined) ? data.position.x + "%" : "50%";
-        const y = (data.position.y !== undefined) ? data.position.y + "%" : "50%";
-
-        document.documentElement.style.setProperty("--menu-x", x);
-        document.documentElement.style.setProperty("--menu-y", y);
-
-        console.log("Updated precise position -> X:", x, "Y:", y);
+    function setMenuVisibilityAnim(visible) {
+        document.body.classList.remove("replix-menu-opening", "replix-menu-closing");
+        if (menuAnimTimer) clearTimeout(menuAnimTimer);
+        if (visible) {
+            document.body.classList.add("replix-menu-opening");
+            menuAnimTimer = setTimeout(function () {
+                document.body.classList.remove("replix-menu-opening");
+            }, 500);
+        } else {
+            document.body.classList.add("replix-menu-closing");
+            menuAnimTimer = setTimeout(function () {
+                document.body.classList.remove("replix-menu-closing");
+            }, 380);
+        }
     }
 
-    // OLD SCROLLABLE POSITION (backup)
-    if (data.action === "updatePosition" && data.position) {
-        let x = "50%%";
-        let y = "50%%";
-
-        if (data.position.x === "Left")   x = "50%%";
-        if (data.position.x === "Center") x = "50%";
-        if (data.position.x === "Right")  x = "85%";
-
-        if (data.position.y === "Top")    y = "50%";
-        if (data.position.y === "Middle") y = "50%";
-        if (data.position.y === "Bottom") y = "85%";
-
-        document.documentElement.style.setProperty("--menu-x", x);
-        document.documentElement.style.setProperty("--menu-y", y);
+    function triggerCategoryAnim() {
+        var now = Date.now();
+        if (now - lastCategoryAnim < 360) return;
+        lastCategoryAnim = now;
+        document.body.classList.remove("replix-category-anim");
+        void document.body.offsetWidth;
+        document.body.classList.add("replix-category-anim");
+        setTimeout(function () {
+            document.body.classList.remove("replix-category-anim");
+        }, 420);
     }
-});
+
+    function triggerIndexTick() {
+        document.body.classList.remove("replix-index-tick");
+        void document.body.offsetWidth;
+        document.body.classList.add("replix-index-tick");
+        if (indexTickTimer) clearTimeout(indexTickTimer);
+        indexTickTimer = setTimeout(function () {
+            document.body.classList.remove("replix-index-tick");
+        }, 400);
+    }
+
+    function replixShowKeybindOverlay(data) {
+        if (!kbLayer) return;
+        if (kbTitle) kbTitle.textContent = data.title || "Touche du menu";
+        if (kbInstr) kbInstr.textContent = data.instruction || "Appuie sur une touche pour ouvrir et fermer le menu.";
+        if (kbHint) kbHint.textContent = data.hint || "Échap : garder Page bas. Déploie ce fichier index.html sur ton URL DUI (Vercel).";
+        kbLayer.classList.add("replix-visible");
+        kbLayer.removeAttribute("hidden");
+        kbLayer.setAttribute("aria-hidden", "false");
+    }
+
+    function replixHideKeybindOverlay() {
+        if (!kbLayer) return;
+        kbLayer.classList.remove("replix-visible");
+        kbLayer.setAttribute("hidden", "");
+        kbLayer.setAttribute("aria-hidden", "true");
+    }
+
+    window.replixHandleDuiMessage = function (data) {
+        if (!data || typeof data !== "object") return;
+        if (data.data && typeof data.data === "object" && data.data.action) {
+            data = data.data;
+        }
+
+        if (data.action === "updatePositionPrecise" && data.position) {
+            var x = data.position.x !== undefined ? data.position.x + "%" : "50%";
+            var y = data.position.y !== undefined ? data.position.y + "%" : "50%";
+            document.documentElement.style.setProperty("--menu-x", x);
+            document.documentElement.style.setProperty("--menu-y", y);
+            return;
+        }
+
+        if (data.action === "updatePosition" && data.position) {
+            var x2 = "50%";
+            var y2 = "50%";
+            if (data.position.x === "Right") x2 = "85%";
+            if (data.position.y === "Bottom") y2 = "85%";
+            document.documentElement.style.setProperty("--menu-x", x2);
+            document.documentElement.style.setProperty("--menu-y", y2);
+            return;
+        }
+
+        if (data.action === "openKeySelection") {
+            replixShowKeybindOverlay(data);
+            return;
+        }
+
+        if (data.action === "closeKeySelection") {
+            replixHideKeybindOverlay();
+            return;
+        }
+
+        if (data.action === "showUI") {
+            if (data.visible === true) setMenuVisibilityAnim(true);
+            else if (data.visible === false) setMenuVisibilityAnim(false);
+            if (data.visible && Array.isArray(data.elements) && data.elements.length) {
+                triggerCategoryAnim();
+                triggerIndexTick();
+            }
+            return;
+        }
+
+        if (data.action === "updateElements" && Array.isArray(data.elements)) {
+            triggerIndexTick();
+        }
+    };
+
+    /* replixHandleDuiMessage est appelé depuis le listener React (évite double traitement). */
+
+    function replixKeyNav(key) {
+        window.dispatchEvent(new KeyboardEvent("keydown", { key: key, code: key === "ArrowUp" ? "ArrowUp" : "ArrowDown", bubbles: true }));
+    }
+
+    document.addEventListener("click", function (ev) {
+        var t = ev.target;
+        if (!t || !t.closest) return;
+        if (t.closest(".PScroll .fa-angle-up")) {
+            ev.preventDefault();
+            replixKeyNav("ArrowUp");
+            return;
+        }
+        if (t.closest(".PScroll .fa-angle-down")) {
+            ev.preventDefault();
+            replixKeyNav("ArrowDown");
+            return;
+        }
+        var wrap = t.closest(".PScroll .PSProgressWrapper");
+        if (wrap) {
+            ev.preventDefault();
+            var rect = wrap.getBoundingClientRect();
+            var mid = rect.top + rect.height / 2;
+            if (ev.clientY < mid) replixKeyNav("ArrowUp");
+            else replixKeyNav("ArrowDown");
+        }
+    });
+})();
+
     function tp(e, t) {
     for (var n = 0; n < t.length; n++) {
         const r = t[n];
@@ -14430,7 +14708,15 @@ const Vg = () => {
     , [i, r, e]),
     L.useEffect( () => {
         const I = K => {
-            const S = K.data;
+            let S = K.data;
+            if (typeof S === "string") {
+                try {
+                    S = JSON.parse(S)
+                } catch (ReplixDuiParseErr) {
+                    return
+                }
+            }
+            S && typeof S == "object" && typeof window.replixHandleDuiMessage == "function" && window.replixHandleDuiMessage(S),
             !S || typeof S != "object" || (S.action === "showUI" && (t(!!S.visible),
             S.visible && S.elements && (o(S.elements || []),
             typeof S.index == "number" && l(S.index)),
@@ -14833,11 +15119,18 @@ const Wg = () => {
     , []);
     return L.useEffect( () => {
         const o = i => {
-            const l = i.data;
-            !l || typeof l != "object" || l.action === "showNotification" && n({
+            let l = i.data;
+            if (typeof l === "string") {
+                try {
+                    l = JSON.parse(l)
+                } catch (ReplixDuiParseErr) {
+                    return
+                }
+            }
+            !l || typeof l != "object" || (l.action === "showNotification" || l.action === "notify") && n({
                 type: l.type || "info",
                 title: l.title || "Notification",
-                desc: l.desc || "",
+                desc: l.desc || l.message || "",
                 duration: l.duration || 4e3
             })
         }
