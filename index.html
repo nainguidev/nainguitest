@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UHQ</title>
+  <title>FODO Menu</title>
 
   <style>
     @import"https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap";@import"https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap";@import"https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap";:root {
@@ -73,11 +73,10 @@
     height: 100%;
     background: #050505e6;        /* cleaner dark background */
     
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
-    gap: 0;
-    overflow: hidden;
+    gap: .15vw;
 
     border-radius: .20vw;
 
@@ -89,18 +88,24 @@
 
 /* === ARROW ICONS (UP/DOWN) === */
 .PWrapper .PElements .PScroll i {
-    display: none
+    font-size: .62vw;
+    color: rgba(255,255,255,0.75);
+    opacity: 0.85;
+
+    /* makes sure arrows don’t clip */
+    margin-top: .15vw;
+    margin-bottom: .15vw;
+
+    text-shadow: 0 0 .25vw rgba(0,0,0,0.8);
 }
 
 /* === SCROLLABLE ZONE (track) === */
 .PWrapper .PElements .PScroll .PSProgressWrapper {
-    position: absolute;
-    top: .12vw;
-    bottom: .12vw;
+    position: relative;
     display: flex;
 
     width: .32vw;                 /* thicker track */
-    height: auto;
+    height: 90%;
 
     justify-content: center;
     align-items: flex-start;
@@ -108,12 +113,11 @@
 
 /* === SCROLLBAR THUMB (moving bar) === */
 .PWrapper .PElements .PScroll .PSProgress {
-    position: absolute;
+    position: relative;
     display: flex;
-    left: 0;
 
     width: .32vw;                 /* matches thicker track */
-    margin-top: 0;
+    margin-top: .20vw;
 
     background: rgb(var(--menu-color));
     border-radius: .20vw;
@@ -198,12 +202,9 @@
     position: absolute;
     display: flex;
     left: 0vw;
-    right: 0vw;
-    width: 100%;
-    box-sizing: border-box;
     font-size: .625vw;
     padding: 0 .8vw;
-    justify-content: center
+    justify-content: flex-start
 }
 
 .PWrapper .PCategories .PCategory:last-child {
@@ -222,46 +223,7 @@
     flex-direction: column;
     background-color: #0009;
     border-radius: .3125vw;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none
-}
-
-.PWrapper .PTabs::-webkit-scrollbar {
-    display: none
-}
-
-.PWrapper .PTabs.PageTransition.page-right {
-    animation: menuPageRight .22s ease
-}
-
-.PWrapper .PTabs.PageTransition.page-left {
-    animation: menuPageLeft .22s ease
-}
-
-@keyframes menuPageRight {
-    0% {
-        opacity: 0;
-        transform: translateX(.45vw)
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(0)
-    }
-}
-
-@keyframes menuPageLeft {
-    0% {
-        opacity: 0;
-        transform: translateX(-.45vw)
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(0)
-    }
+    overflow-y: hidden
 }
 
 .PWrapper .PTabs .PTab {
@@ -14367,7 +14329,7 @@ const Vg = () => {
                 label: "Nearby Players"
             }, {
                 type: "checkbox",
-                label: "uhqtest - [1337]",
+                label: "stuntdev - [1]",
                 checked: !1,
                 name: "J. Paul",
                 dead: !0,
@@ -14403,7 +14365,7 @@ const Vg = () => {
                 }]
             }, {
                 type: "checkbox",
-                label: "1337logique - [1337]",
+                label: "ion - [2]",
                 checked: !1,
                 vehicle: !0
             }]
@@ -14442,36 +14404,10 @@ const Vg = () => {
     })
       , [v,P] = L.useState("0vw")
       , [f,c] = L.useState("1.5625vw")
-      , [p,w] = L.useState("UHQ")
+      , [p,w] = L.useState("FODO")
       , [_,E] = L.useState("0%")
       , [k,O] = L.useState("0%")
-      , [C,N] = L.useState(0)
-      , [R,M] = L.useState("PageTransition page-right")
-      , V = L.useRef([])
-      , tabContainerRef = L.useRef(null);
-    const updatePageAnimation = I => {
-        M(`PageTransition ${I === "left" ? "page-left" : "page-right"}`),
-        N(K => K + 1)
-    }
-      , updateScrollBar = () => {
-        const I = tabContainerRef.current;
-        if (!I || !r.length)
-            return;
-        const K = r.filter(te => te.type !== "divider").length
-          , S = Math.max(0, r.slice(0, i + 1).filter(te => te.type !== "divider").length - 1);
-        if (K <= 1) {
-            E("100%"),
-            O("0%");
-            return
-        }
-        const F = V.current[i] && V.current[i].offsetHeight ? V.current[i].offsetHeight : I.clientHeight / K
-          , te = Math.max(1, Math.floor(I.clientHeight / Math.max(F, 1)))
-          , Fn = Math.max(K <= te ? 100 / K : te / K * 100, 12)
-          , nr = Math.min(100 - Fn, Math.max(0, S / Math.max(K - 1, 1) * (100 - Fn)));
-        E(`${Fn}%`),
-        O(`${nr}%`)
-    }
-    ;
+      , V = L.useRef([]);
     return di() && L.useEffect( () => {
         t(!0)
     }
@@ -14490,9 +14426,8 @@ const Vg = () => {
                 behavior: "smooth"
             })
         }
-        window.requestAnimationFrame(updateScrollBar)
     }
-    , [i, r, e, C]),
+    , [i, r, e]),
     L.useEffect( () => {
         const I = K => {
             const S = K.data;
@@ -14525,8 +14460,7 @@ const Vg = () => {
                 },
                 body: JSON.stringify(S.weapon || "WEAPON_APPISTOL")
             }),
-            S.action === "updateElements" && (updatePageAnimation(S.categories ? typeof S.categoryIndex == "number" && S.categoryIndex < m ? "left" : "right" : "left"),
-            o(S.elements || []),
+            S.action === "updateElements" && (o(S.elements || []),
             typeof S.index == "number" ? l(S.index) : l(0),
             S.categories ? (h(S.categories),
             d(S.categoryIndex || 0)) : (h(null),
@@ -14536,21 +14470,24 @@ const Vg = () => {
         return window.addEventListener("message", I),
         () => window.removeEventListener("message", I)
     }
-    , [m]),
+    , []),
     L.useEffect( () => {
-        const I = tabContainerRef.current;
-        if (!I)
+        if (r.length === 0)
             return;
-        const K = () => window.requestAnimationFrame(updateScrollBar);
-        return K(),
-        I.addEventListener("scroll", K),
-        window.addEventListener("resize", K),
-        () => {
-            I.removeEventListener("scroll", K),
-            window.removeEventListener("resize", K)
+        const I = Math.floor(14.0625 / 1.5625)
+          , K = r.filter(F => F.type !== "divider").length
+          , S = r.filter(F => F.type !== "divider").indexOf(r[i]);
+        if (K <= I)
+            E("97%"),
+            O("0%");
+        else {
+            const F = I / K * 100
+              , te = S / K * (100 - F);
+            E(`${F}%`),
+            O(`${te}%`)
         }
     }
-    , [r, C]),
+    , [r, i]),
     L.useEffect( () => {
         const I = K => {
             if (!!e)
@@ -14569,7 +14506,6 @@ const Vg = () => {
                             categories: a,
                             categoryIndex: m
                         }]),
-                        updatePageAnimation("right"),
                         h(S.categories),
                         d(0),
                         o(S.categories[0].tabs),
@@ -14581,7 +14517,6 @@ const Vg = () => {
                         if (s.length > 0) {
                             const S = s[s.length - 1];
                             u(F => F.slice(0, -1)),
-                            updatePageAnimation("left"),
                             o(S.tabs),
                             h(S.categories),
                             d(S.categoryIndex),
@@ -14589,12 +14524,11 @@ const Vg = () => {
                         }
                         break
                     }
-                case "a":
-                case "A":
+                case "q":
+                case "ArrowLeft":
                     {
                         if (a) {
                             const S = (m - 1 + a.length) % a.length;
-                            updatePageAnimation("left"),
                             d(S),
                             o(a[S].tabs),
                             l(0)
@@ -14602,11 +14536,10 @@ const Vg = () => {
                         break
                     }
                 case "e":
-                case "E":
+                case "ArrowRight":
                     {
                         if (a) {
                             const S = (m + 1) % a.length;
-                            updatePageAnimation("right"),
                             d(S),
                             o(a[S].tabs),
                             l(0)
@@ -14691,9 +14624,7 @@ const Vg = () => {
                                     children: "Main Menu"
                                 })
                             }), U("div", {
-                                ref: tabContainerRef,
-                                key: C,
-                                className: `PTabs ${R}`,
+                                className: "PTabs",
                                 children: [x("div", {
                                     style: {
                                         position: "absolute",
@@ -14814,7 +14745,7 @@ const Vg = () => {
                                     }),
                                     x("span", {
                                         className: "PBuild",
-                                        children: "UHQ menu"
+                                        children: "Rivator menu"
                                     }),
                                     U("span", {
                                         className: "PIndicator",
