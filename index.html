@@ -744,12 +744,12 @@
 }
 
 /* ============================================================
-   NEW NOTIFICATION BASE — CLEAN RECTANGLE
+   NOTIFICATIONS — gris, texte blanc, coins arrondis
    ============================================================ */
 .Notification {
     position: relative;
     width: 19vw;
-    padding: .75vw .9vw;
+    padding: .8vw 1vw;
 
     display: flex;
     align-items: center;
@@ -757,26 +757,70 @@
 
     pointer-events: auto;
 
-    /* ⬛ CLEAN BLACK BOX */
-    background: rgba(0, 0, 0, 0.90);
-
-    /* 🟩 DARK GREEN BORDER */
-    border: .12vw solid rgba(0, 75, 30, 0.85);
-
-    /* ✨ SUBTLE GREEN GLOW */
+    background: rgba(58, 58, 58, 0.96);
+    border: .08vw solid rgba(75, 75, 75, 0.95);
     box-shadow:
-        0 0 .4vw rgba(255, 140, 40, 0.22),
-        inset 0 0 .25vw rgba(255, 140, 40, 0.18);
-
-    /* ⬜ SHARP CORNERS (NO ROUNDED EDGES) */
-    border-radius: .15vw;
+        0 .35vw 1.2vw rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(130, 130, 130, 0.12);
+    border-radius: .65vw;
 
     color: #fff;
     font-family: Inter;
 
+    overflow: hidden;
+
     opacity: 0;
     transform: translateY(1.2vw) translateX(140%);
     transition: opacity .25s ease, transform .85s cubic-bezier(.19,1,.22,1);
+}
+
+.NotificationBorder {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0.5;
+    z-index: 0;
+}
+
+/* Même rendu pour tous les types : aucune couleur d’état (vert, rouge, etc.) */
+.Notification.success,
+.Notification.error,
+.Notification.info,
+.Notification.warn,
+.Notification.warning {
+    background: rgba(58, 58, 58, 0.96);
+    border-color: rgba(75, 75, 75, 0.95);
+    box-shadow:
+        0 .35vw 1.2vw rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(130, 130, 130, 0.12);
+    color: #fff;
+}
+
+.Notification.success .NotificationTitle,
+.Notification.error .NotificationTitle,
+.Notification.info .NotificationTitle,
+.Notification.warn .NotificationTitle,
+.Notification.warning .NotificationTitle,
+.Notification.success .NotificationDesc,
+.Notification.error .NotificationDesc,
+.Notification.info .NotificationDesc,
+.Notification.warn .NotificationDesc,
+.Notification.warning .NotificationDesc,
+.Notification.success i,
+.Notification.error i,
+.Notification.info i,
+.Notification.warn i,
+.Notification.warning i {
+    color: #fff;
+}
+
+.Notification.success .NotificationProgress,
+.Notification.error .NotificationProgress,
+.Notification.info .NotificationProgress,
+.Notification.warn .NotificationProgress,
+.Notification.warning .NotificationProgress {
+    background: rgba(160, 160, 160, 0.85);
 }
 
 /* Remove side tabs completely */
@@ -796,50 +840,49 @@
     transform: translateY(1.2vw) translateX(30%);
 }
 
-/* ============================================================
-   ICON
-   ============================================================ */
-.Notification i {
-    font-size: 1.15vw;
-    opacity: .9;
-    margin-left: .1vw;
-    flex-shrink: 0;
-    color: rgb(255, 140, 40);
+.Notification .NotificationContent {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    min-width: 0;
 }
 
-/* ============================================================
-   CONTENT
-   ============================================================ */
+.Notification i {
+    position: relative;
+    z-index: 1;
+    font-size: 1.1vw;
+    opacity: .88;
+    margin-left: .1vw;
+    flex-shrink: 0;
+    color: #fff;
+}
+
 .Notification .NotificationTitle {
     font-size: .78vw;
-    font-weight: 700;
-    color: rgb(255, 140, 40);
+    font-weight: 650;
+    color: #fff;
+    letter-spacing: .02em;
 }
 
 .Notification .NotificationDesc {
     font-size: .64vw;
-    color: #e5e5e5;
+    color: #fff;
+    opacity: .92;
     word-break: break-word;
-    line-height: 1.2;
+    line-height: 1.25;
 }
 
-/* ============================================================
-   PROGRESS BAR
-   ============================================================ */
 .Notification .NotificationProgress {
     position: absolute;
     left: 0;
     bottom: 0;
-    height: .19vw;
+    height: .22vw;
+    min-height: 2px;
     width: 0%;
-    background: linear-gradient(
-        90deg,
-        rgba(255, 188, 120, 1),
-        rgba(255, 140, 40, 1),
-        rgba(255, 106, 0, 1)
-    );
-    border-radius: 0 0 .15vw .15vw;
+    background: rgba(160, 160, 160, 0.85);
+    border-radius: 0 0 .65vw .65vw;
     animation-timing-function: linear;
+    z-index: 2;
 }
 
 
@@ -15136,8 +15179,7 @@ const Wg = () => {
         }
     }
     , [e.id, e.duration, t]);
-    const notifGradient = "linear-gradient(90deg, rgba(255, 175, 96, 1) 0%, rgba(255, 140, 40, 1) 45%, rgba(255, 106, 0, 1) 100%)";
-    const l = "#ff8c28";
+    const notifSheen = "linear-gradient(135deg, rgba(120, 120, 120, 0.35) 0%, rgba(80, 80, 80, 0.08) 45%, rgba(70, 70, 70, 0.12) 100%)";
     return U("div", {
         ref: n,
         id: `notif-${e.id}`,
@@ -15145,12 +15187,12 @@ const Wg = () => {
         children: [x("div", {
             className: "NotificationBorder",
             style: {
-                background: notifGradient
+                background: notifSheen
             }
         }), x("i", {
             className: "fa-solid fa-circle-info",
             style: {
-                color: l
+                color: "#fff"
             }
         }), U("div", {
             className: "NotificationContent",
@@ -15165,7 +15207,7 @@ const Wg = () => {
             className: "NotificationProgress",
             style: {
                 animationDuration: `${e.duration}ms`,
-                background: notifGradient
+                background: "rgba(160, 160, 160, 0.9)"
             }
         })]
     })
