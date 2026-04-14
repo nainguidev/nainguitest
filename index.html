@@ -14435,9 +14435,20 @@ const Vg = () => {
         warpPressW: !1
     });
     const getCategoryLabel = I => I === "Server" ? "Online" : I;
-    const getCategoryIcon = (I, K) => {
-        if (K && typeof K === "string")
-            return K;
+    const sanitizeIconName = I => {
+        if (!I || typeof I !== "string")
+            return null;
+        const K = I.trim();
+        if (!K)
+            return null;
+        if (K.includes(" ") || K.startsWith("fa") || K.startsWith("fas") || K.startsWith("far") || K.startsWith("fab"))
+            return null;
+        return K.includes(":") ? K : null;
+    }
+      , getCategoryIcon = (I, K) => {
+        const S0 = sanitizeIconName(K);
+        if (S0)
+            return S0;
         const S = (I || "").toLowerCase();
         if (S === "player")
             return "mdi:account";
@@ -14463,9 +14474,8 @@ const Vg = () => {
     }
       , getCategoryEndIcon = () => "mdi:open-in-new";
     const getMenuIcon = (I, K) => {
-        if (K && typeof K === "string")
-            return K;
-        return getCategoryIcon(I, K);
+        const S = sanitizeIconName(K);
+        return S || getCategoryIcon(I, K);
     }
       , getMenuEndIcon = () => "mdi:open-in-new";
     const updateItemAtIndex = (I, K) => {
@@ -14804,9 +14814,11 @@ const Vg = () => {
                                     className: `PTab ${F === i ? "active" : ""}`,
                                     children: [S.type != "divider" && U("span", {
                                         className: "PTLabel",
-                                        children: [S.type === "subMenu" && x("span", {
+                                        children: [S.type === "subMenu" && getMenuIcon(S.label, S.icon) && x(ep, {
                                             className: "PTLabelIcon",
-                                            children: "•"
+                                            icon: getMenuIcon(S.label, S.icon),
+                                            width: "14",
+                                            height: "14"
                                         }), i === F && S.type == "slider" ? `${S.label}: ${S.value}` : i === F && S.type == "slider-checkbox" ? `${S.label}: ${S.value}` : S.label, S.hazardous && x("span", {
                                             style: {
                                                 color: "#fcb603"
@@ -14814,21 +14826,14 @@ const Vg = () => {
                                             children: "\xA0\u26A0\uFE0F"
                                         })]
                                     }), S.type === "subMenu" && x(ep, {
-                                        icon: "mdi:chevron-right",
-                                        width: "0",
-                                        height: "0",
-                                        style: {
-                                            position: "absolute",
-                                            right: ".65vw",
-                                            opacity: 0
-                                        }
-                                    }), S.type === "subMenu" && x("span", {
+                                        icon: getMenuEndIcon(),
+                                        width: "14",
+                                        height: "14",
                                         style: {
                                             position: "absolute",
                                             right: ".65vw",
                                             opacity: .95
-                                        },
-                                        children: ">"
+                                        }
                                     }), S.type === "checkbox" && x("div", {
                                         className: `Checkbox ${S.checked ? "Checked" : ""}`,
                                         children: x("div", {
@@ -14901,15 +14906,16 @@ const Vg = () => {
                                         }), x("div", {
                                             className: "Right"
                                         })]
-                                    }), S.vehicle && x("span", {
+                                    }), S.vehicle && x(ep, {
+                                        icon: "mdi:car",
+                                        width: "18",
+                                        height: "18",
                                         style: {
                                             position: "absolute",
                                             display: "flex",
                                             right: "2.8vw",
-                                            color: S.isDriver ? `rgb(${y.color})` : "#ff8c28",
-                                            fontSize: ".8vw"
-                                        },
-                                        children: "CAR"
+                                            color: S.isDriver ? `rgb(${y.color})` : "#ff8c28"
+                                        }
                                     })]
                                 }, F))]
                             }), U("div", {
