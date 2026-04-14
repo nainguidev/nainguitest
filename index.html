@@ -11,13 +11,13 @@
     /* Palette moderne switch/slider */
     --toggle-off-bg: #0c1017;
     --toggle-off-border: #293240;
-    --toggle-on-bg-1: #ffffff;
-    --toggle-on-bg-2: #2b2b2b;
+    --toggle-on-bg-1: #ffd29b;
+    --toggle-on-bg-2: #ff8c28;
     --toggle-on-glow: 0, 0, 0;
     --toggle-knob: #f7f9ff;
     --slider-track: #0c121c;
     --slider-fill: #ffb36b;
-    --slider-fill-2: #1a1a1a;
+    --slider-fill-2: #ff8c28;
     /* Position du menu : coin haut-gauche (léger décalage pour ne pas coller au bord) */
     --menu-x: 1.2vw;
     --menu-y: 1.2vw;
@@ -798,9 +798,9 @@
     width: 0%;
     background: linear-gradient(
         90deg,
-        rgba(255, 163, 80, 1),
-        rgba(255, 113, 24, 1),
-        rgba(12, 12, 12, 1)
+        rgba(255, 188, 120, 1),
+        rgba(255, 140, 40, 1),
+        rgba(255, 106, 0, 1)
     );
     border-radius: 0 0 .15vw .15vw;
     animation-timing-function: linear;
@@ -14390,8 +14390,8 @@ const Vg = () => {
       , [a,h] = L.useState(null)
       , [m,d] = L.useState(0)
       , [y,g] = L.useState({
-        link: "https://i.postimg.cc/d069swYY/Christmas-Snowman-Color-Code-006741.png",
-        color: "255, 0, 0 "
+        link: "https://i.imgur.com/KfT4xXJ.png",
+        color: "255, 140, 40"
 
     })
       , [v,P] = L.useState("0vw")
@@ -14830,7 +14830,7 @@ const Vg = () => {
                                             position: "absolute",
                                             display: "flex",
                                             right: "2.8vw",
-                                            color: S.isDriver ? `rgb(${y.color})` : "#df2929ff"
+                                            color: S.isDriver ? `rgb(${y.color})` : "#ff8c28"
                                         }
                                     })]
                                 }, F))]
@@ -15011,7 +15011,8 @@ const Wg = () => {
         }
     }
     , [e.id, e.duration, t]);
-    const l = e.type === "success" ? "#ff8c28" : e.type === "error" ? "#000000" : "#000000";
+    const notifGradient = "linear-gradient(90deg, rgba(255, 175, 96, 1) 0%, rgba(255, 140, 40, 1) 45%, rgba(255, 106, 0, 1) 100%)";
+    const l = "#ff8c28";
     return U("div", {
         ref: n,
         id: `notif-${e.id}`,
@@ -15019,7 +15020,7 @@ const Wg = () => {
         children: [x("div", {
             className: "NotificationBorder",
             style: {
-                backgroundColor: e.type === "success" ? "#ff8c28" : e.type === "error" ? "#000000" : "#000000"
+                background: notifGradient
             }
         }), x("i", {
             className: "fa-solid fa-circle-info",
@@ -15039,7 +15040,7 @@ const Wg = () => {
             className: "NotificationProgress",
             style: {
                 animationDuration: `${e.duration}ms`,
-                backgroundColor: e.type === "success" ? "#ff8c28" : e.type === "error" ? "#000000" : "#000000"
+                background: notifGradient
             }
         })]
     })
