@@ -14453,39 +14453,11 @@ const Vg = () => {
             return null;
         return K.includes(":") ? K : null;
     }
-      , getCategoryIcon = (I, K) => {
-        const S0 = sanitizeIconName(K);
-        if (S0)
-            return S0;
-        const S = (I || "").toLowerCase();
-        if (S === "player")
-            return "mdi:account";
-        if (S === "weapon" || S === "weapons")
-            return "mdi:pistol";
-        if (S === "combat")
-            return "mdi:sword-cross";
-        if (S === "vehicle" || S === "vehicles")
-            return "mdi:car";
-        if (S === "visual" || S === "visuals")
-            return "mdi:eye";
-        if (S === "server" || S === "online")
-            return "mdi:account-group";
-        if (S === "misc" || S === "miscellaneous")
-            return "mdi:puzzle";
-        if (S === "library")
-            return "mdi:code-tags";
-        if (S === "settings")
-            return "mdi:cog";
-        if (S === "search")
-            return "mdi:magnify";
-        return "mdi:view-grid";
-    }
       , getCategoryEndIcon = () => "mdi:open-in-new";
     const getMenuIcon = (I, K, noLeft) => {
         if (noLeft)
             return null;
-        const S = sanitizeIconName(K);
-        return S || getCategoryIcon(I, K);
+        return sanitizeIconName(K)
     }
       , getMenuEndIcon = () => "mdi:open-in-new";
     const updateItemAtIndex = (I, K) => {
@@ -15029,18 +15001,34 @@ const Wg = () => {
         t(i => i.filter(l => l.id !== o))
     }
     , []);
-    return L.useEffect( () => {
+    return     L.useEffect( () => {
+        const notifyPlain = m => typeof m != "string" ? "" : m.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim()
+          , notifyType = t => {
+            const S = (t || "info").toLowerCase();
+            return S === "error" || S === "success" || S === "info" || S === "warn" || S === "warning" ? (S === "warning" ? "warn" : S) : "info"
+        }
+        ;
         const o = i => {
             let l = i.data;
             if (typeof l === "string") {
                 try { l = JSON.parse(l); } catch (s) { return; }
             }
-            !l || typeof l != "object" || l.action === "showNotification" && n({
-                type: l.type || "info",
-                title: l.title || "Notification",
-                desc: l.desc || "",
-                duration: l.duration || 4e3
-            })
+            if (!l || typeof l != "object")
+                return;
+            if (l.action === "showNotification")
+                n({
+                    type: l.type || "info",
+                    title: l.title || "Notification",
+                    desc: l.desc || "",
+                    duration: l.duration || 4e3
+                });
+            else if (l.action === "notify")
+                n({
+                    type: notifyType(l.type),
+                    title: l.title || "Menu",
+                    desc: notifyPlain(l.message || l.desc || ""),
+                    duration: typeof l.duration == "number" ? l.duration : 3800
+                })
         }
           , i = s => {
             const u = s.detail;
