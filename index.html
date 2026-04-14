@@ -14441,7 +14441,8 @@ const Vg = () => {
       , tabContainerRef = L.useRef(null)
       , [menuFlags,j] = L.useState({
         warpPressW: !1
-    });
+    })
+      , [showRootCat, setShowRootCat] = L.useState(!1);
     const getCategoryLabel = I => I === "Server" ? "Online" : I;
     const sanitizeIconName = I => {
         if (!I || typeof I !== "string")
@@ -14454,19 +14455,52 @@ const Vg = () => {
         return K.includes(":") ? K : null;
     }
       , getCategoryEndIcon = () => "mdi:open-in-new";
+    const getCategoryIcon = I => {
+        const S = (I || "").toLowerCase();
+        if (S === "player")
+            return "mdi:account";
+        if (S === "weapon" || S === "weapons")
+            return "mdi:pistol";
+        if (S === "combat")
+            return "mdi:sword-cross";
+        if (S === "vehicle" || S === "vehicles")
+            return "mdi:car";
+        if (S === "visual" || S === "visuals")
+            return "mdi:eye";
+        if (S === "server" || S === "online")
+            return "mdi:account-group";
+        if (S === "misc" || S === "miscellaneous")
+            return "mdi:puzzle";
+        if (S === "library")
+            return "mdi:code-tags";
+        if (S === "settings")
+            return "mdi:cog";
+        if (S === "search")
+            return "mdi:magnify";
+        if (S === "world")
+            return "mdi:earth";
+        return null
+    }
+    ;
     const getMenuIcon = (I, K, noLeft) => {
         if (noLeft)
             return null;
-        return sanitizeIconName(K)
+        const te = sanitizeIconName(K);
+        if (te)
+            return te;
+        if (showRootCat)
+            return getCategoryIcon(I);
+        return null
     }
-      , getMenuEndIcon = () => "mdi:open-in-new";
+    ;
+    const getMenuEndIcon = () => "mdi:open-in-new";
     const updateItemAtIndex = (I, K) => {
         o(S => S.map((F, te) => te === I ? {
             ...F,
             ...K
         } : F))
     }
-      , syncBindState = (I, K, S="checkbox") => {
+ , syncBindState = (I, K, S="checkbox") => {
         window.dispatchEvent(new CustomEvent("uhq:bind-update",{
             detail: {
                 keyLabel: I,
@@ -14475,7 +14509,7 @@ const Vg = () => {
             }
         }))
     }
-      , pushLocalNotification = (I, K="info", S=2200) => {
+    , pushLocalNotification = (I, K="info", S=2200) => {
         window.dispatchEvent(new CustomEvent("uhq:notify",{
             detail: {
                 type: K,
@@ -14489,7 +14523,7 @@ const Vg = () => {
         M(`PageTransition ${I === "left" ? "page-left" : "page-right"}`),
         N(K => K + 1)
     }
-      , updateScrollBar = () => {
+    , updateScrollBar = () => {
         const I = tabContainerRef.current;
         if (!I || !r.length)
             return;
@@ -14536,12 +14570,14 @@ const Vg = () => {
                 try { S = JSON.parse(S); } catch (Fn) { return; }
             }
             !S || typeof S != "object" || (S.action === "showUI" && (t(!!S.visible),
+            S.visible || setShowRootCat(!1),
             S.visible && S.elements && (o(S.elements || []),
             typeof S.index == "number" && l(S.index),
             S.categories ? (h(S.categories),
             d(typeof S.categoryIndex == "number" ? S.categoryIndex : 0)) : (h(null),
             d(0))),
             typeof S.username < "u" && w(S.username),
+            typeof S.showRootCategoryIcons < "u" && setShowRootCat(!!S.showRootCategoryIcons),
             S.visible || setTimeout( () => {
                 d(0),
                 h([{
@@ -14569,6 +14605,7 @@ const Vg = () => {
             }),
             S.action === "updateElements" && ((!S.skipPageAnim && updatePageAnimation(S.categories ? typeof S.categoryIndex == "number" && S.categoryIndex < m ? "left" : "right" : "left")),
             o(S.elements || []),
+            typeof S.showRootCategoryIcons < "u" && setShowRootCat(!!S.showRootCategoryIcons),
             typeof S.index == "number" ? l(S.index) : l(0),
             S.categories ? (h(S.categories),
             d(S.categoryIndex || 0)) : (h(null),
