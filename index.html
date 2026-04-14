@@ -14324,7 +14324,7 @@ const Vg = () => {
         }]
     }, {
         type: "subMenu",
-        label: "Server",
+        label: "Online",
         categories: [{
             label: "List",
             tabs: [{
@@ -14434,7 +14434,7 @@ const Vg = () => {
       , [menuFlags,j] = L.useState({
         warpPressW: !1
     });
-    const getCategoryLabel = I => I;
+    const getCategoryLabel = I => I === "Server" ? "Online" : I;
     const getCategoryIcon = (I, K) => {
         if (K && typeof K === "string")
             return K;
