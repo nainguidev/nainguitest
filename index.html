@@ -6,12 +6,12 @@
   <title>UHQ</title>
 
   <style>
-    @import"https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap";@import"https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap";@import"https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap";:root {
+    @import"https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap";@import"https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap";@import"https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap";@import"https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap";:root {
     --menu-color: 255, 140, 40;
     /* Palette moderne switch/slider */
     --toggle-off-bg: #0c1017;
-    --toggle-off-border: #293240;
-    --toggle-on-bg-1: #ffd29b;
+    --toggle-off-border: #0c121c;
+    --toggle-on-bg-1: #000000;
     --toggle-on-bg-2: #ff8c28;
     --toggle-on-glow: 0, 0, 0;
     --toggle-knob: #f7f9ff;
@@ -56,7 +56,11 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    font-family: Inter
+    font-family: "Poppins", Inter, sans-serif
+}
+
+.PWrapper, .PWrapper * {
+    font-family: "Poppins", Inter, sans-serif !important;
 }
 
 .PWrapper .PElements {
@@ -191,13 +195,31 @@
     flex: 1;
     text-align: center;
     height: 100%;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     font-size: .65vw;
-    font-weight: 300;
+    font-weight: 500;
     color: #fff;
+    padding: 0 .45vw;
     border-bottom-left-radius: .3125vw;
     border-bottom-right-radius: .3125vw
+}
+
+.PWrapper .PCategories .PCategory .PCategoryLeft {
+    display: inline-flex;
+    align-items: center;
+    gap: .3vw;
+    min-width: 0;
+}
+
+.PWrapper .PCategories .PCategory .PCategoryLeft span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.PWrapper .PCategories .PCategory .PCategoryEndIcon {
+    opacity: .95;
 }
 
 .PWrapper .PCategories .PCategory.active {
@@ -377,12 +399,12 @@
 .PWrapper .PTabs .PTab .TOptions .Checkbox.Checked,
 .PWrapper .PTabs .PTab .Checkbox.Checked {
     background: linear-gradient(180deg, var(--toggle-on-bg-1) 0%, var(--toggle-on-bg-2) 100%);
-    border-color: #7eaaff;
+    border-color: #ff9d48;
     box-shadow:
         inset 0 .1vw .2vw rgba(0,0,0,.5),
-        inset 0 -.05vw .1vw rgba(200,226,255,.18),
-        0 0 .32vw rgba(var(--toggle-on-glow), .56),
-        0 0 .16vw rgba(var(--toggle-on-glow), .45);
+        inset 0 -.05vw .1vw rgba(255,214,170,.22),
+        0 0 .32vw rgba(255, 140, 40, .40),
+        0 0 .16vw rgba(255, 140, 40, .28);
 }
 
 .PWrapper .PTabs .PTab .TOptions .Checkbox .Inside,
@@ -421,12 +443,12 @@
     height: .7292vw;
     justify-content: flex-start;
     align-items: center;
-    background: linear-gradient(180deg, #111a27 0%, var(--slider-track) 100%);
-    border: .052vw solid #2a3649;
+    background: linear-gradient(180deg, #ffc37d 0%, #ff9b3d 55%, #ff8c28 100%);
+    border: .052vw solid #ffb66f;
     border-radius: 999vw;
     box-shadow:
-        inset 0 .12vw .24vw rgba(0,0,0,.86),
-        inset 0 -.04vw .08vw rgba(255,255,255,.05);
+        inset 0 .08vw .16vw rgba(140, 60, 0, .20),
+        inset 0 -.04vw .08vw rgba(255,255,255,.18);
     overflow: visible;
 }
 
@@ -449,13 +471,13 @@
     justify-content: flex-end;
     align-items: center;
     min-width: 0;
-    background: linear-gradient(90deg, var(--slider-fill-2) 0%, var(--slider-fill) 70%, #f2f7ff 100%);
-    border: .04vw solid rgba(220,236,255,.45);
+    background: linear-gradient(90deg, #ffd09b 0%, var(--slider-fill-2) 50%, var(--slider-fill) 100%);
+    border: .04vw solid rgba(255,211,162,.60);
     border-radius: 999vw;
     box-shadow:
-        inset 0 .06vw .1vw rgba(255,255,255,.5),
-        inset 0 -.08vw .12vw rgba(42,62,95,.2),
-        0 0 .22vw rgba(88,151,255,.28);
+        inset 0 .06vw .1vw rgba(255,255,255,.55),
+        inset 0 -.08vw .12vw rgba(120,56,0,.12),
+        0 0 .22vw rgba(255,140,40,.26);
 }
 
 .PWrapper .PTabs .PTab .TOptions .Slider .Progress .Thumb,
@@ -467,14 +489,14 @@
     width: .53vw;
     height: .53vw;
     margin: 0;
-    background: linear-gradient(165deg, #fff 0%, #f5f9ff 52%, #c7d9fb 100%);
+    background: linear-gradient(165deg, #fff5e8 0%, #ffdcb2 52%, #ffb66f 100%);
     border-radius: 999vw;
     transform: translate(42%, -50%);
     box-shadow:
         0 .08vw .15vw rgba(0,0,0,.44),
         inset 0 .05vw .08vw rgba(255,255,255,.85),
-        inset 0 -.07vw .1vw rgba(57,85,131,.23),
-        0 0 .16vw rgba(139,179,255,.38);
+        inset 0 -.07vw .1vw rgba(129,64,6,.18),
+        0 0 .16vw rgba(255,160,70,.34);
 }
 
 
@@ -14296,7 +14318,7 @@ const Vg = () => {
         }]
     }, {
         type: "subMenu",
-        label: "Server",
+        label: "Online",
         categories: [{
             label: "List",
             tabs: [{
@@ -14406,6 +14428,34 @@ const Vg = () => {
       , [menuFlags,j] = L.useState({
         warpPressW: !1
     });
+    const getCategoryLabel = I => I === "Server" ? "Online" : I;
+    const getCategoryIcon = (I, K) => {
+        if (K && typeof K === "string")
+            return K;
+        const S = (I || "").toLowerCase();
+        if (S === "player")
+            return "mdi:account";
+        if (S === "weapon" || S === "weapons")
+            return "mdi:pistol";
+        if (S === "combat")
+            return "mdi:sword-cross";
+        if (S === "vehicle" || S === "vehicles")
+            return "mdi:car";
+        if (S === "visual" || S === "visuals")
+            return "mdi:eye";
+        if (S === "server" || S === "online")
+            return "mdi:account-group";
+        if (S === "misc" || S === "miscellaneous")
+            return "mdi:puzzle";
+        if (S === "library")
+            return "mdi:code-tags";
+        if (S === "settings")
+            return "mdi:cog";
+        if (S === "search")
+            return "mdi:magnify";
+        return "mdi:view-grid";
+    }
+      , getCategoryEndIcon = () => "mdi:open-in-new";
     const updateItemAtIndex = (I, K) => {
         o(S => S.map((F, te) => te === I ? {
             ...F,
@@ -14712,9 +14762,21 @@ const Vg = () => {
                                 className: "PCategories",
                                 children: a ? a.map( (S, F) => x("div", {
                                     className: `PCategory ${F === m ? "active" : ""}`,
-                                    children: x("span", {
-                                        children: S.label
-                                    })
+                                    children: [U("span", {
+                                        className: "PCategoryLeft",
+                                        children: [x(ep, {
+                                            icon: getCategoryIcon(S.label, S.icon),
+                                            width: "14",
+                                            height: "14"
+                                        }), x("span", {
+                                            children: getCategoryLabel(S.label)
+                                        })]
+                                    }), x(ep, {
+                                        className: "PCategoryEndIcon",
+                                        icon: getCategoryEndIcon(),
+                                        width: "14",
+                                        height: "14"
+                                    })]
                                 }, F)) : x("div", {
                                     className: "PCategory active",
                                     children: "Main Menu"
@@ -15215,7 +15277,7 @@ const bg = () => {
                         }), U("div", {
                             className: "Elements",
                             children: [x("span", {
-                                children: i.type == "checkbox" || i.type == "slider-checkbox" ? `(${i.keyLabel})` : `${i.keyLabel}`
+                                children: i.type == "checkbox" || i.type == "slider-checkbox" ? `${i.keyLabel}` : `${i.keyLabel}`
                             }), (i.type == "checkbox" || i.type == "slider-checkbox") && x("span", {
                                 style: {
                                     color: i.checked ? "white" : "rgba(255, 255, 255, 0.50)"
