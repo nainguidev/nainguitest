@@ -161,6 +161,9 @@
     align-items: center;
     border-top-left-radius: .4167vw;
     border-top-right-radius: .4167vw;
+    background-image: url("https://i.imgur.com/KfT4xXJ.png");
+    background-size: cover;
+    background-position: center;
     overflow: hidden;
 }
 
@@ -212,6 +215,11 @@
     align-items: center;
     gap: .3vw;
     min-width: 0;
+}
+
+.PWrapper .PCategories .PCategory .PCategoryLeft .PCategoryIcon {
+    display: inline-flex;
+    opacity: .95;
 }
 
 .PWrapper .PCategories .PCategory .PCategoryLeft span {
@@ -699,7 +707,7 @@
     justify-content: center;
     align-items: center;
     background-color: #000;
-    border-radius: 0vw !important;
+    border-radius: .34vw !important;
 }
 
 /* LOGO */
@@ -14780,9 +14788,22 @@ const Vg = () => {
                                 className: "PCategories",
                                         children: a ? a.map( (S, F) => x("div", {
                                             className: `PCategory ${F === m ? "active" : ""}`,
-                                            children: x("span", {
-                                                children: getCategoryLabel(S.label)
-                                            })
+                                            children: [U("div", {
+                                                className: "PCategoryLeft",
+                                                children: [x(ep, {
+                                                    className: "PCategoryIcon",
+                                                    icon: getCategoryIcon(S.label, S.icon),
+                                                    width: "14",
+                                                    height: "14"
+                                                }), x("span", {
+                                                    children: getCategoryLabel(S.label)
+                                                })]
+                                            }), x(ep, {
+                                                className: "PCategoryEndIcon",
+                                                icon: getCategoryEndIcon(),
+                                                width: "13",
+                                                height: "13"
+                                            })]
                                         }, F)) : x("div", {
                                     className: "PCategory active",
                                     children: "Main Menu"
