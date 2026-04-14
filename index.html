@@ -734,11 +734,11 @@
    ============================================================ */
 .NotificationsWrapper {
     position: fixed;
-    bottom: .6vw;
-    right: .6vw;
+    bottom: .5vw;
+    right: .5vw;
     display: flex;
     flex-direction: column;
-    gap: .45vw;
+    gap: .32vw;
     z-index: 9999;
     pointer-events: none;
 }
@@ -748,21 +748,22 @@
    ============================================================ */
 .Notification {
     position: relative;
-    width: 19vw;
-    padding: .8vw 1vw;
+    width: 14vw;
+    max-width: min(14vw, 280px);
+    padding: .48vw .62vw;
 
     display: flex;
     align-items: center;
-    gap: .55vw;
+    gap: .4vw;
 
     pointer-events: auto;
 
-    background: rgba(58, 58, 58, 0.96);
-    border: .08vw solid rgba(75, 75, 75, 0.95);
+    background: rgba(14, 14, 14, 0.97);
+    border: .06vw solid rgba(42, 42, 42, 0.98);
     box-shadow:
-        0 .35vw 1.2vw rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 rgba(130, 130, 130, 0.12);
-    border-radius: .65vw;
+        0 .22vw .75vw rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(55, 55, 55, 0.18);
+    border-radius: .5vw;
 
     color: #fff;
     font-family: Inter;
@@ -779,7 +780,7 @@
     inset: 0;
     border-radius: inherit;
     pointer-events: none;
-    opacity: 0.5;
+    opacity: 0.35;
     z-index: 0;
 }
 
@@ -789,11 +790,11 @@
 .Notification.info,
 .Notification.warn,
 .Notification.warning {
-    background: rgba(58, 58, 58, 0.96);
-    border-color: rgba(75, 75, 75, 0.95);
+    background: rgba(14, 14, 14, 0.97);
+    border-color: rgba(42, 42, 42, 0.98);
     box-shadow:
-        0 .35vw 1.2vw rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 rgba(130, 130, 130, 0.12);
+        0 .22vw .75vw rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(55, 55, 55, 0.18);
     color: #fff;
 }
 
@@ -820,7 +821,7 @@
 .Notification.info .NotificationProgress,
 .Notification.warn .NotificationProgress,
 .Notification.warning .NotificationProgress {
-    background: rgba(160, 160, 160, 0.85);
+    background: rgba(90, 90, 90, 0.9);
 }
 
 /* Remove side tabs completely */
@@ -850,22 +851,22 @@
 .Notification i {
     position: relative;
     z-index: 1;
-    font-size: 1.1vw;
+    font-size: .88vw;
     opacity: .88;
-    margin-left: .1vw;
+    margin-left: .06vw;
     flex-shrink: 0;
     color: #fff;
 }
 
 .Notification .NotificationTitle {
-    font-size: .78vw;
+    font-size: .62vw;
     font-weight: 650;
     color: #fff;
     letter-spacing: .02em;
 }
 
 .Notification .NotificationDesc {
-    font-size: .64vw;
+    font-size: .52vw;
     color: #fff;
     opacity: .92;
     word-break: break-word;
@@ -876,11 +877,11 @@
     position: absolute;
     left: 0;
     bottom: 0;
-    height: .22vw;
+    height: .16vw;
     min-height: 2px;
     width: 0%;
-    background: rgba(160, 160, 160, 0.85);
-    border-radius: 0 0 .65vw .65vw;
+    background: rgba(90, 90, 90, 0.9);
+    border-radius: 0 0 .5vw .5vw;
     animation-timing-function: linear;
     z-index: 2;
 }
@@ -15179,7 +15180,7 @@ const Wg = () => {
         }
     }
     , [e.id, e.duration, t]);
-    const notifSheen = "linear-gradient(135deg, rgba(120, 120, 120, 0.35) 0%, rgba(80, 80, 80, 0.08) 45%, rgba(70, 70, 70, 0.12) 100%)";
+    const notifSheen = "linear-gradient(135deg, rgba(55, 55, 55, 0.4) 0%, rgba(28, 28, 28, 0.15) 50%, rgba(22, 22, 22, 0.2) 100%)";
     return U("div", {
         ref: n,
         id: `notif-${e.id}`,
@@ -15207,7 +15208,7 @@ const Wg = () => {
             className: "NotificationProgress",
             style: {
                 animationDuration: `${e.duration}ms`,
-                background: "rgba(160, 160, 160, 0.9)"
+                background: "rgba(90, 90, 90, 0.92)"
             }
         })]
     })
