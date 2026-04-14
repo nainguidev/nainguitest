@@ -14324,7 +14324,7 @@ const Vg = () => {
         }]
     }, {
         type: "subMenu",
-        label: "Online",
+        label: "Server",
         categories: [{
             label: "List",
             tabs: [{
@@ -14434,21 +14434,10 @@ const Vg = () => {
       , [menuFlags,j] = L.useState({
         warpPressW: !1
     });
-    const getCategoryLabel = I => I === "Server" ? "Online" : I;
-    const sanitizeIconName = I => {
-        if (!I || typeof I !== "string")
-            return null;
-        const K = I.trim();
-        if (!K)
-            return null;
-        if (K.includes(" ") || K.startsWith("fa") || K.startsWith("fas") || K.startsWith("far") || K.startsWith("fab"))
-            return null;
-        return K.includes(":") ? K : null;
-    }
-      , getCategoryIcon = (I, K) => {
-        const S0 = sanitizeIconName(K);
-        if (S0)
-            return S0;
+    const getCategoryLabel = I => I;
+    const getCategoryIcon = (I, K) => {
+        if (K && typeof K === "string")
+            return K;
         const S = (I || "").toLowerCase();
         if (S === "player")
             return "mdi:account";
@@ -14474,8 +14463,9 @@ const Vg = () => {
     }
       , getCategoryEndIcon = () => "mdi:open-in-new";
     const getMenuIcon = (I, K) => {
-        const S = sanitizeIconName(K);
-        return S || getCategoryIcon(I, K);
+        if (K && typeof K === "string")
+            return K;
+        return getCategoryIcon(I, K);
     }
       , getMenuEndIcon = () => "mdi:open-in-new";
     const updateItemAtIndex = (I, K) => {
