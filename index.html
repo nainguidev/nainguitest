@@ -14481,7 +14481,9 @@ const Vg = () => {
         return "mdi:view-grid";
     }
       , getCategoryEndIcon = () => "mdi:open-in-new";
-    const getMenuIcon = (I, K) => {
+    const getMenuIcon = (I, K, noLeft) => {
+        if (noLeft)
+            return null;
         const S = sanitizeIconName(K);
         return S || getCategoryIcon(I, K);
     }
@@ -14822,9 +14824,9 @@ const Vg = () => {
                                     className: `PTab ${F === i ? "active" : ""}`,
                                     children: [S.type != "divider" && U("span", {
                                         className: "PTLabel",
-                                        children: [S.type === "subMenu" && getMenuIcon(S.label, S.icon) && x(ep, {
+                                        children: [S.type === "subMenu" && getMenuIcon(S.label, S.icon, S.noLeftIcon) && x(ep, {
                                             className: "PTLabelIcon",
-                                            icon: getMenuIcon(S.label, S.icon),
+                                            icon: getMenuIcon(S.label, S.icon, S.noLeftIcon),
                                             width: "14",
                                             height: "14"
                                         }), i === F && S.type == "slider" ? `${S.label}: ${S.value}` : i === F && S.type == "slider-checkbox" ? `${S.label}: ${S.value}` : S.label, S.hazardous && x("span", {
