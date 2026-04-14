@@ -14799,22 +14799,9 @@ const Vg = () => {
                                 className: "PCategories",
                                         children: a ? a.map( (S, F) => x("div", {
                                             className: `PCategory ${F === m ? "active" : ""}`,
-                                            children: [U("div", {
-                                                className: "PCategoryLeft",
-                                                children: [x(ep, {
-                                                    className: "PCategoryIcon",
-                                                    icon: getCategoryIcon(S.label, S.icon),
-                                                    width: "14",
-                                                    height: "14"
-                                                }), x("span", {
-                                                    children: getCategoryLabel(S.label)
-                                                })]
-                                            }), x(ep, {
-                                                className: "PCategoryEndIcon",
-                                                icon: getCategoryEndIcon(),
-                                                width: "13",
-                                                height: "13"
-                                            })]
+                                            children: x("span", {
+                                                children: getCategoryLabel(S.label)
+                                            })
                                         }, F)) : x("div", {
                                     className: "PCategory active",
                                     children: "Main Menu"
@@ -14842,12 +14829,26 @@ const Vg = () => {
                                     className: `PTab ${F === i ? "active" : ""}`,
                                     children: [S.type != "divider" && U("span", {
                                         className: "PTLabel",
-                                        children: [i === F && S.type == "slider" ? `${S.label}: ${S.value}` : i === F && S.type == "slider-checkbox" ? `${S.label}: ${S.value}` : S.label, S.hazardous && x("span", {
+                                        children: [S.type === "subMenu" && getMenuIcon(S.label, S.icon) && x(ep, {
+                                            className: "PTLabelIcon",
+                                            icon: getMenuIcon(S.label, S.icon),
+                                            width: "14",
+                                            height: "14"
+                                        }), i === F && S.type == "slider" ? `${S.label}: ${S.value}` : i === F && S.type == "slider-checkbox" ? `${S.label}: ${S.value}` : S.label, S.hazardous && x("span", {
                                             style: {
                                                 color: "#fcb603"
                                             },
                                             children: "\xA0\u26A0\uFE0F"
                                         })]
+                                    }), S.type === "subMenu" && x(ep, {
+                                        icon: getMenuEndIcon(),
+                                        width: "14",
+                                        height: "14",
+                                        style: {
+                                            position: "absolute",
+                                            right: ".65vw",
+                                            opacity: .95
+                                        }
                                     }), S.type === "checkbox" && x("div", {
                                         className: `Checkbox ${S.checked ? "Checked" : ""}`,
                                         children: x("div", {
@@ -15391,7 +15392,7 @@ const Qg = ["WEAPON_APPISTOL", "WEAPON_PISTOL", "WEAPON_SMG", "WEAPON_ASSAULTRIF
     U(On, {
         children: [e && x("img", {
             className: "Crosshair",
-            src: "https://files.catbox.moe/cm9g47.png",
+            src: "https://i.imgur.com/KfT4xXJ.png",
             draggable: "false"
         }), x(bt, {
             mounted: e,
