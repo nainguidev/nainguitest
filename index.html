@@ -14772,7 +14772,7 @@ const Vg = () => {
                     children: [x("div", {
                         className: "PBanner",
                         children: x("img", {
-                            src: y.link || "https://files.catbox.moe/cm9g47.png",
+                            src: "https://i.imgur.com/KfT4xXJ.png",
                             draggable: "false"
                         })
                     }), U("div", {
@@ -14842,26 +14842,12 @@ const Vg = () => {
                                     className: `PTab ${F === i ? "active" : ""}`,
                                     children: [S.type != "divider" && U("span", {
                                         className: "PTLabel",
-                                        children: [S.type === "subMenu" && getMenuIcon(S.label, S.icon) && x(ep, {
-                                            className: "PTLabelIcon",
-                                            icon: getMenuIcon(S.label, S.icon),
-                                            width: "14",
-                                            height: "14"
-                                        }), i === F && S.type == "slider" ? `${S.label}: ${S.value}` : i === F && S.type == "slider-checkbox" ? `${S.label}: ${S.value}` : S.label, S.hazardous && x("span", {
+                                        children: [i === F && S.type == "slider" ? `${S.label}: ${S.value}` : i === F && S.type == "slider-checkbox" ? `${S.label}: ${S.value}` : S.label, S.hazardous && x("span", {
                                             style: {
                                                 color: "#fcb603"
                                             },
                                             children: "\xA0\u26A0\uFE0F"
                                         })]
-                                    }), S.type === "subMenu" && x(ep, {
-                                        icon: getMenuEndIcon(),
-                                        width: "14",
-                                        height: "14",
-                                        style: {
-                                            position: "absolute",
-                                            right: ".65vw",
-                                            opacity: .95
-                                        }
                                     }), S.type === "checkbox" && x("div", {
                                         className: `Checkbox ${S.checked ? "Checked" : ""}`,
                                         children: x("div", {
