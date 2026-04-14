@@ -8,15 +8,16 @@
   <style>
     @import"https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap";@import"https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap";@import"https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap";:root {
     --menu-color: 0, 75, 30;
-    /* Couleurs interrupteurs type menu Susano / Naingui (message (3) — pulse toggle ~30,200,30) */
-    --toggle-off-bg: #070707;
-    --toggle-off-border: #2a2a2a;
-    --toggle-on-bg-1: #1a6b32;
-    --toggle-on-bg-2: #0e3d1c;
-    --toggle-on-glow: 30, 200, 30;
-    --toggle-knob: #f4f4f4;
-    --slider-track: #060606;
-    --slider-fill: #d4d4d4;
+    /* Palette moderne switch/slider */
+    --toggle-off-bg: #0c1017;
+    --toggle-off-border: #293240;
+    --toggle-on-bg-1: #1b6cff;
+    --toggle-on-bg-2: #0d47c7;
+    --toggle-on-glow: 77, 145, 255;
+    --toggle-knob: #f7f9ff;
+    --slider-track: #0c121c;
+    --slider-fill: #d9e6ff;
+    --slider-fill-2: #8cb4ff;
     /* Position du menu : coin haut-gauche (léger décalage pour ne pas coller au bord) */
     --menu-x: 1.2vw;
     --menu-y: 1.2vw;
@@ -75,7 +76,7 @@
     
     width: .72vw;                 /* THICKER SCROLLBAR */
     height: 100%;
-    background: #050505e6;        /* cleaner dark background */
+    background: linear-gradient(180deg, #0b1019f2 0%, #06090ff2 100%);
     
     justify-content: center;
     align-items: center;
@@ -83,12 +84,14 @@
     gap: 0;
     overflow: hidden;
 
-    border-radius: .20vw;
+    border: .052vw solid #1e2a3a;
+    border-radius: .24vw;
 
     /* embedded, carved look */
     box-shadow:
-        inset 0 0 .22vw rgba(0,0,0,0.8),
-        0 0 .35vw rgba(0,0,0,0.5);
+        inset 0 0 .22vw rgba(0,0,0,0.82),
+        inset 0 .05vw .12vw rgba(255,255,255,0.06),
+        0 .04vw .28vw rgba(0,0,0,0.55);
 }
 
 /* === ARROW ICONS (UP/DOWN) === */
@@ -119,13 +122,16 @@
     width: .32vw;                 /* matches thicker track */
     margin-top: 0;
 
-    background: rgb(var(--menu-color));
-    border-radius: .20vw;
+    background: linear-gradient(180deg, rgb(var(--menu-color)) 0%, rgba(70, 170, 255, 0.9) 100%);
+    border: .05vw solid rgba(195,225,255,0.45);
+    border-radius: .22vw;
 
     /* Clean neon green glow */
     box-shadow:
-        0 0 .25vw rgba(var(--menu-color),0.9),
-        0 0 .15vw rgba(var(--menu-color),0.8);
+        inset 0 .04vw .08vw rgba(255,255,255,0.32),
+        inset 0 -.05vw .09vw rgba(0,0,0,0.26),
+        0 0 .3vw rgba(77,145,255,0.78),
+        0 0 .14vw rgba(var(--menu-color),0.65);
 
     transition: top .25s ease, height .25s ease;
 }
@@ -350,11 +356,13 @@
     height: .7813vw;
     justify-content: flex-start;
     align-items: center;
-    background: var(--toggle-off-bg);
+    background: linear-gradient(180deg, #0f1621 0%, var(--toggle-off-bg) 100%);
     border: .052vw solid var(--toggle-off-border);
     border-radius: 999vw;
-    box-shadow: inset 0 .14vw .24vw rgba(0,0,0,.95);
-    transition: background .2s ease, border-color .2s ease, box-shadow .2s ease;
+    box-shadow:
+        inset 0 .13vw .24vw rgba(0,0,0,.9),
+        inset 0 -.05vw .1vw rgba(255,255,255,.05);
+    transition: background .22s ease, border-color .22s ease, box-shadow .22s ease, transform .18s ease;
 }
 
 .PWrapper .PTabs .PTab .Checkbox {
@@ -369,11 +377,12 @@
 .PWrapper .PTabs .PTab .TOptions .Checkbox.Checked,
 .PWrapper .PTabs .PTab .Checkbox.Checked {
     background: linear-gradient(180deg, var(--toggle-on-bg-1) 0%, var(--toggle-on-bg-2) 100%);
-    border-color: #1a4d28;
+    border-color: #7eaaff;
     box-shadow:
-        inset 0 .1vw .2vw rgba(0,0,0,.65),
-        inset 0 -.06vw .12vw rgba(80,220,100,.12),
-        0 0 .28vw rgba(var(--toggle-on-glow), .4);
+        inset 0 .1vw .2vw rgba(0,0,0,.5),
+        inset 0 -.05vw .1vw rgba(200,226,255,.18),
+        0 0 .32vw rgba(var(--toggle-on-glow), .56),
+        0 0 .16vw rgba(var(--toggle-on-glow), .45);
 }
 
 .PWrapper .PTabs .PTab .TOptions .Checkbox .Inside,
@@ -381,15 +390,15 @@
     position: absolute;
     display: flex;
     left: .1vw;
-    width: .4583vw;
-    height: .4583vw;
+    width: .48vw;
+    height: .48vw;
     margin: 0;
-    background: linear-gradient(165deg, #fff 0%, var(--toggle-knob) 40%, #a8a8a8 100%);
+    background: linear-gradient(165deg, #ffffff 0%, var(--toggle-knob) 55%, #bccbe6 100%);
     border-radius: 999vw;
     box-shadow:
-        0 .07vw .14vw rgba(0,0,0,.5),
-        inset 0 .06vw .1vw rgba(255,255,255,.85),
-        inset 0 -.08vw .12vw rgba(0,0,0,.28);
+        0 .08vw .15vw rgba(0,0,0,.48),
+        inset 0 .06vw .1vw rgba(255,255,255,.9),
+        inset 0 -.08vw .12vw rgba(44,65,102,.2);
     transition: left .2s ease, right .2s ease;
 }
 
@@ -412,10 +421,12 @@
     height: .7292vw;
     justify-content: flex-start;
     align-items: center;
-    background: var(--slider-track);
-    border: .052vw solid #222;
+    background: linear-gradient(180deg, #111a27 0%, var(--slider-track) 100%);
+    border: .052vw solid #2a3649;
     border-radius: 999vw;
-    box-shadow: inset 0 .12vw .22vw rgba(0,0,0,.92);
+    box-shadow:
+        inset 0 .12vw .24vw rgba(0,0,0,.86),
+        inset 0 -.04vw .08vw rgba(255,255,255,.05);
     overflow: visible;
 }
 
@@ -438,11 +449,13 @@
     justify-content: flex-end;
     align-items: center;
     min-width: 0;
-    background: linear-gradient(180deg, #ececec 0%, var(--slider-fill) 55%, #9a9a9a 100%);
+    background: linear-gradient(90deg, var(--slider-fill-2) 0%, var(--slider-fill) 70%, #f2f7ff 100%);
+    border: .04vw solid rgba(220,236,255,.45);
     border-radius: 999vw;
     box-shadow:
-        inset 0 .06vw .1vw rgba(255,255,255,.45),
-        inset 0 -.08vw .12vw rgba(0,0,0,.2);
+        inset 0 .06vw .1vw rgba(255,255,255,.5),
+        inset 0 -.08vw .12vw rgba(42,62,95,.2),
+        0 0 .22vw rgba(88,151,255,.28);
 }
 
 .PWrapper .PTabs .PTab .TOptions .Slider .Progress .Thumb,
@@ -451,16 +464,17 @@
     right: 0;
     top: 50%;
     display: flex;
-    width: .5vw;
-    height: .5vw;
+    width: .53vw;
+    height: .53vw;
     margin: 0;
-    background: linear-gradient(165deg, #fff 0%, var(--toggle-knob) 45%, #9e9e9e 100%);
+    background: linear-gradient(165deg, #fff 0%, #f5f9ff 52%, #c7d9fb 100%);
     border-radius: 999vw;
     transform: translate(42%, -50%);
     box-shadow:
-        0 .06vw .14vw rgba(0,0,0,.45),
-        inset 0 .05vw .08vw rgba(255,255,255,.8),
-        inset 0 -.07vw .1vw rgba(0,0,0,.25);
+        0 .08vw .15vw rgba(0,0,0,.44),
+        inset 0 .05vw .08vw rgba(255,255,255,.85),
+        inset 0 -.07vw .1vw rgba(57,85,131,.23),
+        0 0 .16vw rgba(139,179,255,.38);
 }
 
 
