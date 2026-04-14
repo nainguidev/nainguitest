@@ -14264,6 +14264,11 @@ const Vg = () => {
             }, {
                 type: "divider",
                 label: "Clothing"
+            }, {
+                type: "scrollable",
+                label: "Tenues",
+                value: 1,
+                values: ["bnz outfit", "Staff Outfit", "Hitler Outfit", "jy", "w outfit"]
             }]
         }]
     }, {
@@ -14352,6 +14357,14 @@ const Vg = () => {
             tabs: [{
                 type: "button",
                 label: "Teleport to Player"
+            }, {
+                type: "checkbox",
+                label: "Launch Player",
+                checked: !1
+            }, {
+                type: "checkbox",
+                label: "Warp when u press W",
+                checked: !1
             }]
         }]
     }, {
@@ -14388,7 +14401,35 @@ const Vg = () => {
       , [C,N] = L.useState(0)
       , [R,M] = L.useState("PageTransition page-right")
       , V = L.useRef([])
-      , tabContainerRef = L.useRef(null);
+      , tabContainerRef = L.useRef(null)
+      , [menuFlags,j] = L.useState({
+        warpPressW: !1
+    });
+    const updateItemAtIndex = (I, K) => {
+        o(S => S.map((F, te) => te === I ? {
+            ...F,
+            ...K
+        } : F))
+    }
+      , syncBindState = (I, K, S="checkbox") => {
+        window.dispatchEvent(new CustomEvent("uhq:bind-update",{
+            detail: {
+                keyLabel: I,
+                checked: K,
+                type: S
+            }
+        }))
+    }
+      , pushLocalNotification = (I, K="info", S=2200) => {
+        window.dispatchEvent(new CustomEvent("uhq:notify",{
+            detail: {
+                type: K,
+                title: "UHQ",
+                desc: I,
+                duration: S
+            }
+        }))
+    };
     const updatePageAnimation = I => {
         M(`PageTransition ${I === "left" ? "page-left" : "page-right"}`),
         N(K => K + 1)
@@ -14510,6 +14551,35 @@ const Vg = () => {
                 case "Enter":
                     {
                         const S = r[i];
+                        if (!S)
+                            break;
+                        if (S.type === "checkbox") {
+                            const F = !S.checked;
+                            updateItemAtIndex(i, {
+                                checked: F
+                            }),
+                            S.label === "Warp when u press W" && (j(te => ({
+                                ...te,
+                                warpPressW: F
+                            })),
+                            syncBindState("W", F),
+                            pushLocalNotification(`Warp (W) ${F ? "activé" : "désactivé"}`, F ? "success" : "info"));
+                            break
+                        }
+                        if (S.type === "scrollable" && Array.isArray(S.values) && S.values.length > 0) {
+                            const F = (S.value || 1) % S.values.length + 1;
+                            updateItemAtIndex(i, {
+                                value: F
+                            }),
+                            S.label === "Tenues" && pushLocalNotification(`Tenue sélectionnée: ${S.values[F - 1]}`, "success");
+                            break
+                        }
+                        if (S.type === "button") {
+                            S.label === "Launch Player" && pushLocalNotification("Launch Player exécuté", "success"),
+                            S.label === "Teleport to Player" && pushLocalNotification("Téléportation vers le joueur exécutée", "success"),
+                            S.label === "Skin Menu" && pushLocalNotification("Skin Menu ouvert", "info");
+                            break
+                        }
                         S != null && S.categories && (u(F => [...F, {
                             tabs: r,
                             categories: a,
@@ -14566,6 +14636,18 @@ const Vg = () => {
         () => window.removeEventListener("keydown", I)
     }
     , [r, i, a, m, s, e]),
+    L.useEffect( () => {
+        const I = K => {
+            if (!e)
+                return;
+            const S = K.key;
+            (S === "w" || S === "W") && menuFlags.warpPressW && pushLocalNotification("Warp véhicule (W) déclenché", "success", 1600)
+        }
+        ;
+        return window.addEventListener("keydown", I),
+        () => window.removeEventListener("keydown", I)
+    }
+    , [menuFlags.warpPressW, e]),
     U(On, {
         children: [x(bt, {
             mounted: e && r[i].desc != null,
@@ -14739,7 +14821,7 @@ const Vg = () => {
                                         }), x("div", {
                                             className: "Right"
                                         })]
-                                    }), typeof S.vehicle < "u" && x(ep, {
+                                    }), S.vehicle && x(ep, {
                                         icon: "mdi:car",
                                         width: "18",
                                         height: "18",
@@ -14859,9 +14941,22 @@ const Wg = () => {
                 duration: l.duration || 4e3
             })
         }
+          , i = s => {
+            const u = s.detail;
+            u && n({
+                type: u.type || "info",
+                title: u.title || "Notification",
+                desc: u.desc || "",
+                duration: u.duration || 2200
+            })
+        }
         ;
         return window.addEventListener("message", o),
-        () => window.removeEventListener("message", o)
+        window.addEventListener("uhq:notify", i),
+        () => {
+            window.removeEventListener("message", o),
+            window.removeEventListener("uhq:notify", i)
+        }
     }
     , [n]),
     x("div", {
@@ -15034,6 +15129,11 @@ const bg = () => {
         label: "Freecam",
         checked: !1
     }, {
+        keyLabel: "W",
+        type: "checkbox",
+        label: "Warp Veh",
+        checked: !1
+    }, {
         keyLabel: "Z",
         type: "button",
         label: "Refill Health"
@@ -15055,9 +15155,33 @@ const bg = () => {
             l.action === "displayBinds" && (t(l.visible),
             typeof l.binds < "u" && r(l.binds))
         }
+          , i = l => {
+            const s = l.detail;
+            s && r(u => {
+                const a = u.findIndex(h => h.keyLabel === s.keyLabel);
+                if (a === -1)
+                    return [...u, {
+                        keyLabel: s.keyLabel,
+                        type: s.type || "checkbox",
+                        label: s.label || "Bind",
+                        checked: !!s.checked
+                    }];
+                const h = [...u];
+                return h[a] = {
+                    ...h[a],
+                    checked: !!s.checked,
+                    type: s.type || h[a].type
+                },
+                h
+            })
+        }
         ;
         return window.addEventListener("message", o),
-        () => window.removeEventListener("message", o)
+        window.addEventListener("uhq:bind-update", i),
+        () => {
+            window.removeEventListener("message", o),
+            window.removeEventListener("uhq:bind-update", i)
+        }
     }
     , [n.length]),
     x(On, {
