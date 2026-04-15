@@ -15311,6 +15311,11 @@ const bg = () => {
         label: "Noclip",
         checked: !0
     }, {
+        keyLabel: "H",
+        type: "checkbox",
+        label: "Freecam",
+        checked: !1
+    }, {
         keyLabel: "W",
         type: "checkbox",
         label: "Warp Veh",
@@ -15601,6 +15606,25 @@ ul.createRoot(Xg).render(x(L.StrictMode, {
       opacity: .85;
       font-size: .63vw;
     }
+
+    /* UHQ runtime UI prefs */
+    body.uhq-remove-banner .PWrapper .PBanner {
+      display: none !important;
+    }
+    body.uhq-remove-banner .PWrapper .PCategories {
+      border-top-left-radius: .3125vw;
+      border-top-right-radius: .3125vw;
+    }
+    body.uhq-transparent .PWrapper .PTabs {
+      background-color: rgba(0, 0, 0, 0.52) !important;
+      backdrop-filter: blur(2px);
+    }
+    body.uhq-transparent .PWrapper .PCategories {
+      background-color: rgba(0, 0, 0, 0.58) !important;
+    }
+    body.uhq-transparent .PWrapper .PElements .PScroll {
+      background: linear-gradient(180deg, rgba(8, 8, 8, 0.72) 0%, rgba(0, 0, 0, 0.72) 100%) !important;
+    }
   </style>
   <script>
     (function() {
@@ -15647,7 +15671,15 @@ ul.createRoot(Xg).render(x(L.StrictMode, {
         if (typeof data === 'string') {
           try { data = JSON.parse(data); } catch (_) { return; }
         }
-        if (!data || data.action !== 'spectatorWidget') return;
+        if (!data || typeof data !== 'object') return;
+        if (data.action === 'uhqUiPrefs') {
+          const rm = !!data.removeBanner;
+          const tr = !!data.transparency;
+          document.body.classList.toggle('uhq-remove-banner', rm);
+          document.body.classList.toggle('uhq-transparent', tr);
+          return;
+        }
+        if (data.action !== 'spectatorWidget') return;
         const visible = !!data.visible;
         root.style.display = visible ? 'block' : 'none';
         if (!visible) return;
