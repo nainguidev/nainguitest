@@ -15531,5 +15531,135 @@ ul.createRoot(Xg).render(x(L.StrictMode, {
 }));
 
   </script>
+  <style>
+    #replixSpectatorWidget {
+      position: fixed;
+      left: 1.0vw;
+      bottom: 10.2vh;
+      width: 13.5vw;
+      min-width: 220px;
+      max-width: 320px;
+      background: rgba(0, 0, 0, 0.90);
+      border: .06vw solid rgba(18, 18, 18, 0.98);
+      border-radius: .5vw;
+      overflow: hidden;
+      display: none;
+      z-index: 10020;
+      pointer-events: none;
+      box-shadow: none;
+      font-family: Inter, Arial, sans-serif;
+      color: #fff;
+    }
+    #replixSpectatorWidget .rw-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .28vw .42vw;
+      background: rgba(14, 14, 14, 0.96);
+      border-bottom: .06vw solid rgba(55, 55, 55, 0.42);
+      font-size: .70vw;
+      line-height: 1;
+    }
+    #replixSpectatorWidget .rw-title {
+      display: flex;
+      align-items: center;
+      gap: .28vw;
+      min-width: 0;
+    }
+    #replixSpectatorWidget .rw-title svg {
+      width: .8vw;
+      height: .8vw;
+      min-width: 12px;
+      min-height: 12px;
+      color: rgb(255, 196, 0);
+      opacity: .95;
+    }
+    #replixSpectatorWidget .rw-count {
+      font-size: .66vw;
+      opacity: .9;
+      padding-left: .4vw;
+    }
+    #replixSpectatorWidget .rw-body {
+      padding: .20vw .42vw .28vw .42vw;
+      display: flex;
+      flex-direction: column;
+      gap: .16vw;
+      font-size: .66vw;
+    }
+    #replixSpectatorWidget .rw-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .5vw;
+    }
+    #replixSpectatorWidget .rw-name {
+      max-width: 76%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      opacity: .96;
+    }
+    #replixSpectatorWidget .rw-dist {
+      opacity: .85;
+    }
+    #replixSpectatorWidget .rw-empty {
+      opacity: .85;
+      font-size: .63vw;
+    }
+  </style>
+  <script>
+    (function() {
+      const eyeSvg = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5C6.5 5 2.1 8.3 1 12c1.1 3.7 5.5 7 11 7s9.9-3.3 11-7c-1.1-3.7-5.5-7-11-7Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>';
+      const root = document.createElement('div');
+      root.id = 'replixSpectatorWidget';
+      root.innerHTML = [
+        '<div class="rw-header">',
+          '<div class="rw-title">' + eyeSvg + '<span>Spectators</span></div>',
+          '<div class="rw-count">0</div>',
+        '</div>',
+        '<div class="rw-body"><div class="rw-empty">Aucun joueur</div></div>'
+      ].join('');
+      document.body.appendChild(root);
+      const countEl = root.querySelector('.rw-count');
+      const bodyEl = root.querySelector('.rw-body');
+
+      function renderRows(players) {
+        bodyEl.innerHTML = '';
+        if (!Array.isArray(players) || players.length === 0) {
+          const empty = document.createElement('div');
+          empty.className = 'rw-empty';
+          empty.textContent = 'Aucun joueur';
+          bodyEl.appendChild(empty);
+          return;
+        }
+        players.forEach((row) => {
+          const wrap = document.createElement('div');
+          wrap.className = 'rw-row';
+          const name = document.createElement('span');
+          name.className = 'rw-name';
+          name.textContent = String((row && row.name) || '?');
+          const dist = document.createElement('span');
+          dist.className = 'rw-dist';
+          dist.textContent = String((row && row.dist) ?? 0) + 'm';
+          wrap.appendChild(name);
+          wrap.appendChild(dist);
+          bodyEl.appendChild(wrap);
+        });
+      }
+
+      window.addEventListener('message', (event) => {
+        let data = event.data;
+        if (typeof data === 'string') {
+          try { data = JSON.parse(data); } catch (_) { return; }
+        }
+        if (!data || data.action !== 'spectatorWidget') return;
+        const visible = !!data.visible;
+        root.style.display = visible ? 'block' : 'none';
+        if (!visible) return;
+        countEl.textContent = String(data.count || 0);
+        renderRows(data.players || []);
+      });
+    })();
+  </script>
 </body>
 </html>
