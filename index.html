@@ -1086,7 +1086,7 @@
 }
 
 .FCWrapper {
-    position: fixed;
+    position: absolute;
     display: flex;
     left: 50%;
     bottom: 4vw;
@@ -1096,10 +1096,8 @@
     align-items: center;
     flex-direction: column;
     font-family: Inter;
-    gap: .32vw; /* slightly bigger spacing */
-    overflow: visible; /* removes the bottom fade / clipping */
-    z-index: 25000;
-    pointer-events: none;
+    gap: .32vw;
+    overflow: visible;
 }
 
 /* ================================================
@@ -1126,17 +1124,7 @@
 
     opacity: 1 !important;
     transform: translateZ(0);       /* smooth anti-aliasing */
-    filter: none !important;
 }
-
-.Crosshair {
-    position: fixed !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    z-index: 25001 !important;
-}
-
 
 /* ================================================
    HTML SPAN WRAPPER FOR INLINE STYLING
