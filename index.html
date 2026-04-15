@@ -760,9 +760,7 @@
 
     background: rgba(0, 0, 0, 0.90);
     border: .06vw solid rgba(18, 18, 18, 0.98);
-    box-shadow:
-        0 .22vw .75vw rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(55, 55, 55, 0.18);
+    box-shadow: none;
     border-radius: .5vw;
 
     color: #fff;
@@ -792,9 +790,7 @@
 .Notification.warning {
     background: rgba(0, 0, 0, 0.90);
     border-color: rgba(18, 18, 18, 0.98);
-    box-shadow:
-        0 .22vw .75vw rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(55, 55, 55, 0.18);
+    box-shadow: none;
     color: #fff;
 }
 
@@ -14877,7 +14873,7 @@ const Vg = () => {
                                     className: `PTab ${F === i ? "active" : ""}`,
                                     children: [S.type != "divider" && U("span", {
                                         className: "PTLabel",
-                                        children: [S.type === "subMenu" && getMenuIcon(S.label, S.icon, S.noLeftIcon) && x(ep, {
+                                    children: [(S.type === "subMenu" || S.label === "Search Ped") && getMenuIcon(S.label, S.icon, S.noLeftIcon) && x(ep, {
                                             className: "PTLabelIcon",
                                             icon: getMenuIcon(S.label, S.icon, S.noLeftIcon),
                                             width: "14",
