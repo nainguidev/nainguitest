@@ -12,12 +12,12 @@
     --toggle-off-bg: #000000;
     --toggle-off-border: #000000;
     --toggle-on-bg-1: #000000;
-    --toggle-on-bg-2: #ff8c28;
+    --toggle-on-bg-2: rgb(var(--menu-color));
     --toggle-on-glow: 0, 0, 0;
     --toggle-knob: #f7f9ff;
     --slider-track: #000000;
-    --slider-fill: #ffb36b;
-    --slider-fill-2: #ff8c28;
+    --slider-fill: rgba(var(--menu-color), 0.72);
+    --slider-fill-2: rgb(var(--menu-color));
     /* Position du menu : milieu-gauche */
     --menu-x: 1.2vw;
     --menu-y: 46%;
@@ -411,13 +411,13 @@
 
 .PWrapper .PTabs .PTab .TOptions .Checkbox.Checked,
 .PWrapper .PTabs .PTab .Checkbox.Checked {
-    background: linear-gradient(180deg, #ffb56f 0%, #ff8c28 55%, #e86f10 100%);
-    border-color: #ffb36b;
+    background: linear-gradient(180deg, rgba(var(--menu-color), .9) 0%, rgba(var(--menu-color), 1) 55%, rgba(var(--menu-color), .72) 100%);
+    border-color: rgba(var(--menu-color), .85);
     box-shadow:
         inset 0 .08vw .16vw rgba(255,255,255,.25),
         inset 0 -.06vw .12vw rgba(128,56,0,.25),
-        0 0 .32vw rgba(255, 140, 40, .40),
-        0 0 .16vw rgba(255, 140, 40, .28);
+        0 0 .32vw rgba(var(--menu-color), .40),
+        0 0 .16vw rgba(var(--menu-color), .28);
 }
 
 .PWrapper .PTabs .PTab .TOptions .Checkbox .Inside,
@@ -484,13 +484,13 @@
     justify-content: flex-end;
     align-items: center;
     min-width: 0;
-    background: linear-gradient(90deg, #ffd09b 0%, #ff9a3c 55%, #ff7a14 100%);
-    border: .04vw solid rgba(255,188,120,.85);
+    background: linear-gradient(90deg, rgba(var(--menu-color), .62) 0%, rgba(var(--menu-color), .86) 55%, rgba(var(--menu-color), 1) 100%);
+    border: .04vw solid rgba(var(--menu-color), .70);
     border-radius: 999vw;
     box-shadow:
         inset 0 .06vw .1vw rgba(255,255,255,.45),
         inset 0 -.08vw .12vw rgba(120,56,0,.18),
-        0 0 .22vw rgba(255,140,40,.28);
+        0 0 .22vw rgba(var(--menu-color), .28);
 }
 
 .PWrapper .PTabs .PTab .TOptions .Slider .Progress .Thumb,
@@ -502,14 +502,14 @@
     width: .53vw;
     height: .53vw;
     margin: 0;
-    background: linear-gradient(165deg, #fff5e8 0%, #ffdcb2 52%, #ffb66f 100%);
+    background: linear-gradient(165deg, rgba(255,255,255,.98) 0%, rgba(var(--menu-color), .35) 52%, rgba(var(--menu-color), .62) 100%);
     border-radius: 999vw;
     transform: translate(42%, -50%);
     box-shadow:
         0 .08vw .15vw rgba(0,0,0,.44),
         inset 0 .05vw .08vw rgba(255,255,255,.85),
         inset 0 -.07vw .1vw rgba(129,64,6,.18),
-        0 0 .16vw rgba(255,160,70,.34);
+        0 0 .16vw rgba(var(--menu-color), .34);
 }
 
 
@@ -1161,11 +1161,11 @@
    GREEN DASHES
    ================================================ */
 .FCdash {
-    color: rgb(255, 140, 40);
+    color: rgb(var(--menu-color));
     font-weight: 750;
     text-shadow:
-        0 0 .25vw rgba(255, 140, 40, 0.48),
-        0 0 .45vw rgba(255, 140, 40, 0.28);
+        0 0 .25vw rgba(var(--menu-color), 0.48),
+        0 0 .45vw rgba(var(--menu-color), 0.28);
 }
 
 
@@ -1173,11 +1173,11 @@
    GREEN CYCLE VALUE (WEAPON_PISTOL)
    ================================================ */
 .CycleHighlight {
-    color: rgb(255, 140, 40);
+    color: rgb(var(--menu-color));
     font-weight: 800;
     text-shadow:
-        0 0 .25vw rgba(255, 140, 40, 0.48),
-        0 0 .45vw rgba(255, 140, 40, 0.28);
+        0 0 .25vw rgba(var(--menu-color), 0.48),
+        0 0 .45vw rgba(var(--menu-color), 0.28);
 }
 
 
@@ -14981,7 +14981,7 @@ const Vg = () => {
                                             position: "absolute",
                                             display: "flex",
                                             right: "2.8vw",
-                                            color: S.isDriver ? `rgb(${y.color})` : "#ff8c28"
+                                            color: S.isDriver ? `rgb(${y.color})` : "rgb(var(--menu-color))"
                                         }
                                     })]
                                 }, F))]
