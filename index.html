@@ -1182,6 +1182,13 @@
     transition: transform .12s ease-out;
 }
 
+/* Disable legacy web freecam overlay/crosshair to keep Lua freecam UI rendering only. */
+.Crosshair,
+.FCWrapper,
+.FCWrapper + div {
+    display: none !important;
+}
+
 html {
     color-scheme: normal!important
 }
