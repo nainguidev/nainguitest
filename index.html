@@ -387,17 +387,15 @@
     position: relative;
     display: flex;
     box-sizing: border-box;
-    width: 1.5625vw;
-    height: .7813vw;
+    width: 1.30vw;
+    height: .60vw;
     justify-content: flex-start;
     align-items: center;
-    background: linear-gradient(180deg, #0f1621 0%, var(--toggle-off-bg) 100%);
-    border: .052vw solid var(--toggle-off-border);
+    background: #2a2a2a;
+    border: .05vw solid #333;
     border-radius: 999vw;
-    box-shadow:
-        inset 0 .13vw .24vw rgba(0,0,0,.9),
-        inset 0 -.05vw .1vw rgba(255,255,255,.05);
-    transition: background .22s ease, border-color .22s ease, box-shadow .22s ease, transform .18s ease;
+    box-shadow: inset 0 .03vw .07vw rgba(0,0,0,.45);
+    transition: background .18s ease, border-color .18s ease;
 }
 
 .PWrapper .PTabs .PTab .Checkbox {
@@ -411,36 +409,29 @@
 
 .PWrapper .PTabs .PTab .TOptions .Checkbox.Checked,
 .PWrapper .PTabs .PTab .Checkbox.Checked {
-    background: linear-gradient(180deg, rgba(var(--menu-color), .9) 0%, rgba(var(--menu-color), 1) 55%, rgba(var(--menu-color), .72) 100%);
-    border-color: rgba(var(--menu-color), .85);
-    box-shadow:
-        inset 0 .08vw .16vw rgba(255,255,255,.25),
-        inset 0 -.06vw .12vw rgba(128,56,0,.25),
-        0 0 .32vw rgba(var(--menu-color), .40),
-        0 0 .16vw rgba(var(--menu-color), .28);
+    background: rgba(var(--menu-color), .92);
+    border-color: rgba(var(--menu-color), .98);
+    box-shadow: inset 0 .03vw .07vw rgba(0,0,0,.28);
 }
 
 .PWrapper .PTabs .PTab .TOptions .Checkbox .Inside,
 .PWrapper .PTabs .PTab .Checkbox .Inside {
     position: absolute;
     display: flex;
-    left: .1vw;
-    width: .48vw;
-    height: .48vw;
+    left: .06vw;
+    width: .42vw;
+    height: .42vw;
     margin: 0;
-    background: linear-gradient(165deg, #ffffff 0%, var(--toggle-knob) 55%, #bccbe6 100%);
+    background: #f2f2f2;
     border-radius: 999vw;
-    box-shadow:
-        0 .08vw .15vw rgba(0,0,0,.48),
-        inset 0 .06vw .1vw rgba(255,255,255,.9),
-        inset 0 -.08vw .12vw rgba(44,65,102,.2);
+    box-shadow: 0 .04vw .08vw rgba(0,0,0,.42);
     transition: left .2s ease, right .2s ease;
 }
 
 .PWrapper .PTabs .PTab .TOptions .Checkbox.Checked .Inside,
 .PWrapper .PTabs .PTab .Checkbox.Checked .Inside {
     left: auto;
-    right: .1vw;
+    right: .06vw;
 }
 
 
@@ -452,16 +443,14 @@
 .PWrapper .PTabs .PTab .Slider {
     position: relative;
     display: flex;
-    width: 2.3438vw;
-    height: .7292vw;
+    width: 1.85vw;
+    height: .16vw;
     justify-content: flex-start;
     align-items: center;
-    background: linear-gradient(180deg, #101010 0%, #050505 100%);
-    border: .052vw solid #1d1d1d;
+    background: rgba(90, 90, 90, 0.65);
+    border: 0;
     border-radius: 999vw;
-    box-shadow:
-        inset 0 .08vw .16vw rgba(0, 0, 0, .36),
-        inset 0 -.04vw .08vw rgba(255,255,255,.18);
+    box-shadow: none;
     overflow: visible;
 }
 
@@ -478,19 +467,17 @@
 .PWrapper .PTabs .PTab .Slider .Progress {
     position: absolute;
     left: 0;
-    top: 0;
+    top: 50%;
     display: flex;
-    height: 100%;
+    height: .16vw;
     justify-content: flex-end;
     align-items: center;
     min-width: 0;
-    background: linear-gradient(90deg, rgba(var(--menu-color), .62) 0%, rgba(var(--menu-color), .86) 55%, rgba(var(--menu-color), 1) 100%);
-    border: .04vw solid rgba(var(--menu-color), .70);
+    background: rgba(var(--menu-color), .92);
+    border: 0;
     border-radius: 999vw;
-    box-shadow:
-        inset 0 .06vw .1vw rgba(255,255,255,.45),
-        inset 0 -.08vw .12vw rgba(120,56,0,.18),
-        0 0 .22vw rgba(var(--menu-color), .28);
+    box-shadow: none;
+    transform: translateY(-50%);
 }
 
 .PWrapper .PTabs .PTab .TOptions .Slider .Progress .Thumb,
@@ -499,17 +486,13 @@
     right: 0;
     top: 50%;
     display: flex;
-    width: .53vw;
-    height: .53vw;
+    width: .26vw;
+    height: .26vw;
     margin: 0;
-    background: linear-gradient(165deg, rgba(255,255,255,.98) 0%, rgba(var(--menu-color), .35) 52%, rgba(var(--menu-color), .62) 100%);
+    background: #d8ecff;
     border-radius: 999vw;
-    transform: translate(42%, -50%);
-    box-shadow:
-        0 .08vw .15vw rgba(0,0,0,.44),
-        inset 0 .05vw .08vw rgba(255,255,255,.85),
-        inset 0 -.07vw .1vw rgba(129,64,6,.18),
-        0 0 .16vw rgba(var(--menu-color), .34);
+    transform: translate(45%, -50%);
+    box-shadow: 0 .03vw .06vw rgba(0,0,0,.35);
 }
 
 
@@ -15420,19 +15403,25 @@ const Qg = ["WEAPON_APPISTOL", "WEAPON_PISTOL", "WEAPON_SMG", "WEAPON_ASSAULTRIF
   , Yg = () => {
        const [e,t] = L.useState(!1)
       , [n] = L.useState([{
-        label: "Default"
+        label: "Shoot Current Weapon"
     }, {
-        label: "Teleport"
+        label: "Delete Entity"
     }, {
-        label: "Shoot Weapon"
+        label: "Vehicle Spawner"
     }, {
-        label: "Spawn Car"
+        label: "Vehicule Hijack"
     }, {
-        label: "Kick from Vehicle"
+        label: "Object Spawner"
     }, {
-        label: "Hijack Vehicle"
+        label: "Ped Spawner"
     }, {
-        label: "Delete Vehicle"
+        label: "Spikestrip Spawner"
+    }, {
+        label: "Explode"
+    }, {
+        label: "Map Destroyer"
+    }, {
+        label: "Shoot Vehicle"
     }])
       , [r,o] = L.useState(0)
       , [i,l] = L.useState(0)
@@ -15487,23 +15476,40 @@ const Qg = ["WEAPON_APPISTOL", "WEAPON_PISTOL", "WEAPON_SMG", "WEAPON_ASSAULTRIF
             transition: "fade",
             duration: 300,
             timingFunction: "ease",
-            children: d => x("div", {
-                className: "FCWrapper",
-                style: d,
-                children: n.map( (y, g) => {
-                    const v = r === g
-                      , P = Math.abs(g - r)
-                      , f = Math.max(1 - P * .1, .4);
-                    return x("div", {
-                        ref: c => a.current[g] = c,
-                        className: `Option ${v ? "Selected" : ""}`,
-                        style: {
-                            opacity: f
-                        },
-                        dangerouslySetInnerHTML: { __html: h(y, g) }
-                    }, g)
-                }
-                )
+            children: d => U("div", {
+                style: {
+                    ...d,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: ".45vw"
+                },
+                children: [x("div", {
+                    className: "FCWrapper",
+                    children: n.map( (y, g) => {
+                        const v = r === g
+                          , P = Math.abs(g - r)
+                          , f = Math.max(1 - P * .1, .4);
+                        return x("div", {
+                            ref: c => a.current[g] = c,
+                            className: `Option ${v ? "Selected" : ""}`,
+                            style: {
+                                opacity: f
+                            },
+                            dangerouslySetInnerHTML: { __html: h(y, g) }
+                        }, g)
+                    }
+                    )
+                }), x("div", {
+                    style: {
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: ".72vw",
+                        color: "rgba(255,255,255,.92)",
+                        textShadow: "0 0 .5vw rgba(0,0,0,.55)",
+                        pointerEvents: "none"
+                    },
+                    children: "[Y] Teleport"
+                })]
             })
         })]
     })
