@@ -73,13 +73,16 @@
 }
 
 /* === SCROLLBAR CONTAINER === */
+/* Hauteur limitée à la zone de liste (.PTabs), sans la barre d’onglets (.PCategories) ni le pied (.PFooter). */
 .PWrapper .PElements .PScroll {
     position: absolute;
     display: flex;
     right: -1vw;                  /* moved slightly right */
     
     width: .72vw;                 /* THICKER SCROLLBAR */
-    height: 100%;
+    top: calc(1.5625vw + .2604vw);   /* sous PCategories + son margin-bottom */
+    bottom: calc(1.5625vw + .2083vw); /* au-dessus de PFooter + son margin-top */
+    height: auto;
     background: linear-gradient(180deg, #0b0b0b 0%, #000000 100%);
     
     justify-content: center;
