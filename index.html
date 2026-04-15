@@ -125,8 +125,8 @@
     width: .32vw;                 /* matches thicker track */
     margin-top: 0;
 
-    background: linear-gradient(180deg, rgba(255, 168, 72, 0.98) 0%, rgba(255, 113, 24, 0.98) 45%, rgba(18, 18, 18, 0.98) 100%);
-    border: .05vw solid rgba(255, 171, 94, 0.55);
+    background: linear-gradient(180deg, rgba(var(--menu-color), 0.96) 0%, rgba(var(--menu-color), 0.88) 45%, rgba(18, 18, 18, 0.98) 100%);
+    border: .05vw solid rgba(var(--menu-color), 0.55);
     border-radius: .22vw;
 
     /* Modern orange/dark glow */
@@ -15571,7 +15571,7 @@ ul.createRoot(Xg).render(x(L.StrictMode, {
       height: .8vw;
       min-width: 12px;
       min-height: 12px;
-      color: rgb(255, 196, 0);
+      color: rgb(var(--menu-color));
       opacity: .95;
     }
     #replixSpectatorWidget .rw-count {
