@@ -15235,6 +15235,27 @@ const Bg = () => {
                         value: o.value
                     });
                     break;
+                case "openTextInput":
+                    t({
+                        visible: !0,
+                        title: o.question || o.title || "Keyboard Input",
+                        value: o.placeholder || ""
+                    });
+                    break;
+                case "updateTextInput":
+                    t(i => ({
+                        ...i,
+                        visible: !0,
+                        value: typeof o.value == "string" ? o.value : i.value
+                    }));
+                    break;
+                case "closeTextInput":
+                case "cancelTextInput":
+                    t(i => ({
+                        ...i,
+                        visible: !1
+                    }));
+                    break;
                 case "getClipboard":
                     navigator.clipboard.readText().then(i => {
                         t(l => ({
