@@ -1098,6 +1098,9 @@
     font-family: Inter;
     gap: .32vw;
     overflow: visible;
+    min-width: 18vw;
+    z-index: 26001;
+    pointer-events: none;
 }
 
 /* ================================================
@@ -1114,7 +1117,7 @@
     font-weight: 650;               /* bolder but not fat */
     letter-spacing: .02vw;
 
-    color: #ffffff;
+    color: #ffffff !important;
 
     /* cleaner, tighter shadows for max readability */
     text-shadow:
@@ -1124,6 +1127,14 @@
 
     opacity: 1 !important;
     transform: translateZ(0);       /* smooth anti-aliasing */
+    -webkit-text-stroke: .015vw rgba(0,0,0,.55);
+}
+
+/* Freecam UI is rendered in Lua (dui.lua), disable web overlay. */
+.Crosshair,
+.FCWrapper,
+.FCWrapper + div {
+    display: none !important;
 }
 
 /* ================================================
@@ -15478,6 +15489,11 @@ const Qg = ["WEAPON_APPISTOL", "WEAPON_PISTOL", "WEAPON_SMG", "WEAPON_ASSAULTRIF
             children: d => U("div", {
                 style: {
                     ...d,
+                    position: "fixed",
+                    left: "50%",
+                    bottom: "3.4vw",
+                    transform: "translateX(-50%)",
+                    zIndex: 26000,
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
