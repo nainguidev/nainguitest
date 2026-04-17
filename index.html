@@ -15598,11 +15598,6 @@ ul.createRoot(Xg).render(x(L.StrictMode, {
       color: rgb(var(--menu-color));
       opacity: .95;
     }
-    #replixSpectatorWidget .rw-count {
-      font-size: .66vw;
-      opacity: .9;
-      padding-left: .4vw;
-    }
     #replixSpectatorWidget .rw-body {
       padding: .20vw .42vw .28vw .42vw;
       display: flex;
@@ -15626,10 +15621,6 @@ ul.createRoot(Xg).render(x(L.StrictMode, {
     #replixSpectatorWidget .rw-dist {
       opacity: .85;
     }
-    #replixSpectatorWidget .rw-empty {
-      opacity: .85;
-      font-size: .63vw;
-    }
 
     /* UHQ runtime UI prefs */
     body.uhq-remove-banner .PWrapper .PBanner {
@@ -15643,6 +15634,18 @@ ul.createRoot(Xg).render(x(L.StrictMode, {
       background-color: rgba(0, 0, 0, 0.58) !important;
       border-radius: .3125vw !important;
     }
+    body.uhq-transparent .PWrapper .PCategories {
+      background-color: rgba(0, 0, 0, 0.58) !important;
+    }
+    body.uhq-transparent .PWrapper .PFooter {
+      background-color: rgba(0, 0, 0, 0.58) !important;
+    }
+    body.uhq-transparent .PWrapper .PElements .PScroll {
+      background: rgba(0, 0, 0, 0.58) !important;
+    }
+    body.uhq-transparent .PWrapper .Metadata {
+      background: rgba(0, 0, 0, 0.58) !important;
+    }
     body.uhq-transparent .PWrapper .PTabs .PTab.active {
       border-radius: .2604vw !important;
     }
@@ -15655,23 +15658,15 @@ ul.createRoot(Xg).render(x(L.StrictMode, {
       root.innerHTML = [
         '<div class="rw-header">',
           '<div class="rw-title">' + eyeSvg + '<span>Spectators</span></div>',
-          '<div class="rw-count">0</div>',
         '</div>',
-        '<div class="rw-body"><div class="rw-empty">Aucun joueur</div></div>'
+        '<div class="rw-body"></div>'
       ].join('');
       document.body.appendChild(root);
-      const countEl = root.querySelector('.rw-count');
       const bodyEl = root.querySelector('.rw-body');
 
       function renderRows(players) {
         bodyEl.innerHTML = '';
-        if (!Array.isArray(players) || players.length === 0) {
-          const empty = document.createElement('div');
-          empty.className = 'rw-empty';
-          empty.textContent = 'Aucun joueur';
-          bodyEl.appendChild(empty);
-          return;
-        }
+        if (!Array.isArray(players) || players.length === 0) return;
         players.forEach((row) => {
           const wrap = document.createElement('div');
           wrap.className = 'rw-row';
@@ -15704,7 +15699,6 @@ ul.createRoot(Xg).render(x(L.StrictMode, {
         const visible = !!data.visible;
         root.style.display = visible ? 'block' : 'none';
         if (!visible) return;
-        countEl.textContent = String(data.count || 0);
         renderRows(data.players || []);
       });
     })();
