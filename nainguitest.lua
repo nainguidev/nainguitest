@@ -395,7 +395,7 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
         local tabRectY = math.floor(startY + scale + 0.5)
         local tabRectWidth = math.max(0, math.floor(currentTabWidth - (2 * scale) + 0.5))
         local tabRectHeight = math.max(0, math.floor(tabHeight - (2 * scale) + 0.5))
-        local tabRadius = math.min(tabRectWidth / 2, tabRectHeight / 2)
+        local tabRadius = math.min(3 * scale, tabRectWidth / 2, tabRectHeight / 2)
 
         if isSelected then
             if Menu.TabSelectorX == 0 then
@@ -414,10 +414,10 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
             tabRectWidth = math.floor(Menu.TabSelectorWidth + 0.5)
             if Susano and Susano.DrawRectFilled then
                 Susano.DrawRectFilled(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
-                    0.10, 0.10, 0.11, 0.98, tabRadius)
+                    Menu.Colors.SelectedBg.r / 255.0, Menu.Colors.SelectedBg.g / 255.0, Menu.Colors.SelectedBg.b / 255.0, 1.0, tabRadius)
             else
                 Menu.DrawRoundedRect(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
-                    26, 26, 28, 250, tabRadius)
+                    Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255, tabRadius)
             end
         elseif Susano and Susano.DrawRectFilled then
             Susano.DrawRectFilled(tabRectX, tabRectY, tabRectWidth, tabRectHeight, 0.015, 0.015, 0.018, 0.96, tabRadius)
