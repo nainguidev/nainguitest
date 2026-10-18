@@ -1392,10 +1392,10 @@ function Menu.DrawThemeGlow(x, y, width, height, r, g, b, scale, radius)
     scale = scale or 1.0
     radius = radius or 0
 
-    for layer = 3, 1, -1 do
-        local spread = layer * 2 * scale
+    for layer = 6, 1, -1 do
+        local spread = layer * 4 * scale
         local glowRadius = math.min(radius + spread, (width + spread * 2) / 2, (height + spread * 2) / 2)
-        local alpha = (4 - layer) * 7
+        local alpha = (7 - layer) * 9
         Menu.DrawRoundedRect(x - spread, y - spread, width + spread * 2, height + spread * 2,
             r, g, b, alpha, glowRadius)
     end
