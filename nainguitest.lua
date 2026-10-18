@@ -1362,6 +1362,7 @@ end
 
 function Menu.DrawRoundedRect(x, y, width, height, r, g, b, a, radius)
     radius = radius or 0
+    radius = math.min(radius, width / 2, height / 2)
     if radius <= 0 then
         Menu.DrawRect(x, y, width, height, r, g, b, a)
         return
@@ -1376,11 +1377,11 @@ function Menu.DrawRoundedRect(x, y, width, height, r, g, b, a, radius)
         
         local top_y = y + radius - 1 - i
         Menu.DrawRect(x + radius - slice_width, top_y, slice_width, 1, r, g, b, a)
-        Menu.DrawRect(x + width - radius, top_y, slice_width, 1, r, g, b, a)
+        Menu.DrawRect(x + width - slice_width, top_y, slice_width, 1, r, g, b, a)
         
         local bottom_y = y + height - radius + i
         Menu.DrawRect(x + radius - slice_width, bottom_y, slice_width, 1, r, g, b, a)
-        Menu.DrawRect(x + width - radius, bottom_y, slice_width, 1, r, g, b, a)
+        Menu.DrawRect(x + width - slice_width, bottom_y, slice_width, 1, r, g, b, a)
     end
 end
 
@@ -1858,6 +1859,30 @@ function Menu.DrawBackground()
     local width = scaledPos.width - 1
     
     local segments, fullHeight = Menu.GetLayoutSegments()
+    local footerSegment = segments[#segments]
+    local outerHeight = footerSegment and (footerSegment.y + footerSegment.h - y) or fullHeight
+    local outerAlpha = 1.0
+
+    for _, category in ipairs(Menu.Categories or {}) do
+        if category.name == "Settings" then
+            for _, tab in ipairs(category.tabs or {}) do
+                if tab.name == "General" then
+                    for _, item in ipairs(tab.items or {}) do
+                        if item.name == "Black Background" and item.value == false then
+                            outerAlpha = 0.2
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    local outerRadius = math.min(scaledPos.headerRadius, width / 2, outerHeight / 2)
+    if Susano and Susano.DrawRectFilled then
+        Susano.DrawRectFilled(x, y, width, outerHeight, 0.0, 0.0, 0.0, outerAlpha, outerRadius)
+    else
+        Menu.DrawRoundedRect(x, y, width, outerHeight, 0, 0, 0, math.floor(255 * outerAlpha), outerRadius)
+    end
 
     local r = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) or 148
     local g = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) or 0
