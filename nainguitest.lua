@@ -437,7 +437,8 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
             tabRectX = math.floor(Menu.TabSelectorX + 0.5)
             tabRectWidth = math.floor(Menu.TabSelectorWidth + 0.5)
             Menu.DrawThemeGlow(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
-                Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, scale, tabRadius)
+                Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b,
+                scale, tabRadius, 0.12, 0.3)
             if Susano and Susano.DrawRectFilled then
                 Susano.DrawRectFilled(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
                     Menu.Colors.SelectedBg.r / 255.0, Menu.Colors.SelectedBg.g / 255.0, Menu.Colors.SelectedBg.b / 255.0, 1.0, tabRadius)
@@ -563,7 +564,7 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
         local selectorX = x
         Menu.DrawThemeGlow(selectorX, drawY, width - 1, itemHeight,
             Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, scale,
-            math.min(6 * scale, itemHeight / 2))
+            math.min(6 * scale, itemHeight / 2), 0.12, 0.3)
         
         if Menu.GradientType == 2 then
             local gradientSteps = 120
