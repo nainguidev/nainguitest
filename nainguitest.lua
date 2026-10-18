@@ -1086,7 +1086,7 @@ function Menu.DrawCategories()
         Menu.CategoryScrollOffset = math.max(0, Menu.CurrentCategory - 2)
     end
 
-    local itemY = startY
+    local itemY = startY - scale
     
     -- Dégradé pour la barre Main Menu (même style que les tabs)
     local baseR = (Menu.Colors.HeaderPink and Menu.Colors.HeaderPink.r) and (Menu.Colors.HeaderPink.r / 255.0) or 0.58
