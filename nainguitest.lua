@@ -1097,11 +1097,19 @@ function Menu.DrawCategories()
         local stepR = math.min(1.0, baseR * brightness)
         local stepG = math.min(1.0, baseG * brightness)
         local stepB = math.min(1.0, baseB * brightness)
+
+        local cornerRadius = math.min(8 * scale, width / 2, mainMenuHeight / 2)
+        local rowCenterY = stepY + actualStepHeight / 2
+        local edgeDistance = math.min(rowCenterY - gradStartY, gradStartY + mainMenuHeight - rowCenterY)
+        local cornerDepth = math.max(0, cornerRadius - edgeDistance)
+        local inset = cornerDepth > 0 and (cornerRadius - math.sqrt(cornerRadius * cornerRadius - cornerDepth * cornerDepth)) or 0
+        local drawX = x + inset
+        local drawWidth = width - (inset * 2)
         
         if Susano and Susano.DrawRectFilled then
-            Susano.DrawRectFilled(x, stepY, width, actualStepHeight, stepR, stepG, stepB, alpha, 0)
+            Susano.DrawRectFilled(drawX, stepY, drawWidth, actualStepHeight, stepR, stepG, stepB, alpha, 0)
         else
-             Menu.DrawRect(x, stepY, width, actualStepHeight, math.floor(stepR*255), math.floor(stepG*255), math.floor(stepB*255), math.floor(alpha*255))
+             Menu.DrawRect(drawX, stepY, drawWidth, actualStepHeight, math.floor(stepR*255), math.floor(stepG*255), math.floor(stepB*255), math.floor(alpha*255))
         end
     end
     
@@ -1995,10 +2003,19 @@ function Menu.DrawBackground()
                     end
                 end
 
+                local panelHeight = itemsEndY - menuBarY
+                local rowCenterY = currentY + drawH / 2
+                local cornerRadius = math.min(8 * scale, width / 2, panelHeight / 2)
+                local edgeDistance = math.min(rowCenterY - menuBarY, itemsEndY - rowCenterY)
+                local cornerDepth = math.max(0, cornerRadius - edgeDistance)
+                local inset = cornerDepth > 0 and (cornerRadius - math.sqrt(cornerRadius * cornerRadius - cornerDepth * cornerDepth)) or 0
+                local drawX = x + inset
+                local drawWidth = width - (inset * 2)
+
                 if Susano and Susano.DrawRectFilled then
-                    Susano.DrawRectFilled(x, currentY, width, drawH, 0.0, 0.0, 0.0, backgroundAlpha, 0)
+                    Susano.DrawRectFilled(drawX, currentY, drawWidth, drawH, 0.0, 0.0, 0.0, backgroundAlpha, 0)
                 else
-                    Menu.DrawRect(x, currentY, width, drawH, 0, 0, 0, math.floor(backgroundAlpha * 255))
+                    Menu.DrawRect(drawX, currentY, drawWidth, drawH, 0, 0, 0, math.floor(backgroundAlpha * 255))
                 end
             end
         end
