@@ -395,7 +395,7 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
         local tabRectY = math.floor(startY + scale + 0.5)
         local tabRectWidth = math.max(0, math.floor(currentTabWidth - (2 * scale) + 0.5))
         local tabRectHeight = math.max(0, math.floor(tabHeight - (2 * scale) + 0.5))
-        local tabRadius = math.min(3 * scale, tabRectWidth / 2, tabRectHeight / 2)
+        local tabRadius = math.min(1 * scale, tabRectWidth / 2, tabRectHeight / 2)
 
         if isSelected then
             if Menu.TabSelectorX == 0 then
@@ -420,9 +420,13 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
                     Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255, tabRadius)
             end
         elseif Susano and Susano.DrawRectFilled then
-            Susano.DrawRectFilled(tabRectX, tabRectY, tabRectWidth, tabRectHeight, 0.015, 0.015, 0.018, 0.96, tabRadius)
+            Susano.DrawRectFilled(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
+                (Menu.Colors.SelectedBg.r / 255.0) * 0.22,
+                (Menu.Colors.SelectedBg.g / 255.0) * 0.22,
+                (Menu.Colors.SelectedBg.b / 255.0) * 0.22, 1.0, tabRadius)
         else
-            Menu.DrawRoundedRect(tabRectX, tabRectY, tabRectWidth, tabRectHeight, 4, 4, 5, 245, tabRadius)
+            Menu.DrawRoundedRect(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
+                Menu.Colors.SelectedBg.r * 0.22, Menu.Colors.SelectedBg.g * 0.22, Menu.Colors.SelectedBg.b * 0.22, 255, tabRadius)
         end
 
         local textSize = 17
