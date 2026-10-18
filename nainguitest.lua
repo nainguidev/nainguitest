@@ -1567,13 +1567,13 @@ function Menu.DrawHeader()
 
     if Menu.Banner.enabled then
         if Menu.bannerTexture and Menu.bannerTexture > 0 and Susano and Susano.DrawImage then
-            Susano.DrawImage(Menu.bannerTexture, x, y, width, bannerHeight, 1, 1, 1, 1, radius)
+            Susano.DrawImage(Menu.bannerTexture, x, y, width, bannerHeight, 1, 1, 1, 1, 0)
 
             if radius > 0 then
                 for i = 0, radius - 1 do
-                    local slice_width = math.ceil(math.sqrt(radius * radius - i * i))
-                    local y_pos = y + bannerHeight - radius + i
-                    local mask_width = radius - slice_width
+                    local distanceFromTop = radius - (i + 0.5)
+                    local mask_width = math.ceil(radius - math.sqrt(math.max(0, radius * radius - distanceFromTop * distanceFromTop)))
+                    local y_pos = y + i
 
                     if mask_width > 0 then
                         if Susano and Susano.DrawRectFilled then
@@ -1585,11 +1585,6 @@ function Menu.DrawHeader()
                         end
                     end
                 end
-
-                for i = 0, radius - 1 do
-                    local slice_width = math.ceil(math.sqrt(radius * radius - i * i))
-                    local y_pos = y + bannerHeight - radius + i
-                    local mask_width = radius - slice_width
 
                     if mask_width > 0 then
                         if Susano and Susano.DrawRectFilled then
@@ -1603,7 +1598,7 @@ function Menu.DrawHeader()
                 end
             end
         else
-            Menu.DrawRoundedRect(x, y, width, height, Menu.Colors.HeaderPink.r, Menu.Colors.HeaderPink.g, Menu.Colors.HeaderPink.b, 255, radius)
+            Menu.DrawTopRoundedRect(x, y, width, height, Menu.Colors.HeaderPink.r, Menu.Colors.HeaderPink.g, Menu.Colors.HeaderPink.b, 255, radius)
 
             local logoX = x + width / 2 - 12
             local logoY = y + height / 2 - 20
