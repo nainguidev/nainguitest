@@ -299,7 +299,7 @@ function Menu.DrawScrollbar(x, startY, visibleHeight, selectedIndex, totalItems,
     end
 
     local scale = Menu.Scale or 1.0
-    local thumbHeight = math.min(20 * scale, scrollbarHeight)
+    local thumbHeight = math.min(30 * scale, scrollbarHeight)
     local selectionProgress = (adjustedIndex - 1) / math.max(1, totalItems - 1)
     selectionProgress = math.min(1.0, math.max(0.0, selectionProgress))
     local thumbY = scrollbarY + selectionProgress * (scrollbarHeight - thumbHeight)
