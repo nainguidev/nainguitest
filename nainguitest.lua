@@ -179,7 +179,7 @@ Menu.Position = {
     mainMenuSpacing = 5,
     footerRadius = 7,
     itemRadius = 6,
-    scrollbarWidth = 16,
+    scrollbarWidth = 12,
     scrollbarPadding = 3,
     headerRadius = 8
 }
@@ -316,7 +316,7 @@ function Menu.DrawScrollbar(x, startY, visibleHeight, selectedIndex, totalItems,
     Menu.scrollbarHeight = Menu.scrollbarHeight + (thumbHeight - Menu.scrollbarHeight) * smoothSpeed
 
     local thumbPadding = 2
-    local trackWidth = math.min(14 * scale, scrollbarWidth)
+    local trackWidth = math.min(10 * scale, scrollbarWidth)
     local trackX = scrollbarX + (scrollbarWidth - trackWidth) / 2
     local bgR = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) and (Menu.Colors.SelectedBg.r / 255.0) or 1.0
     local bgG = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) and (Menu.Colors.SelectedBg.g / 255.0) or 0.0
@@ -328,8 +328,12 @@ function Menu.DrawScrollbar(x, startY, visibleHeight, selectedIndex, totalItems,
         Menu.DrawRoundedRect(trackX, scrollbarY, trackWidth, scrollbarHeight, 6, 6, 6, 242, trackWidth / 2)
     end
     
-    -- Thumb avec effet de glow et meilleur contraste
-    if Susano and Susano.DrawRectFilled then
+    if Menu.GradientType == 1 then
+        Menu.DrawVerticalGradientRoundedRect(scrollbarX + thumbPadding, Menu.scrollbarY + thumbPadding,
+            scrollbarWidth - (thumbPadding * 2), Menu.scrollbarHeight - (thumbPadding * 2),
+            bgR * 255, bgG * 255, bgB * 255, 255,
+            (scrollbarWidth - (thumbPadding * 2)) / 2)
+    elseif Susano and Susano.DrawRectFilled then
         -- Glow externe subtil
         Susano.DrawRectFilled(scrollbarX + thumbPadding - 1, Menu.scrollbarY + thumbPadding - 1,
             scrollbarWidth - (thumbPadding * 2) + 2, Menu.scrollbarHeight - (thumbPadding * 2) + 2,
@@ -596,7 +600,7 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
                     end
                 end
             end
-        else
+        elseif Menu.GradientType ~= 1 then
             local gradientSteps = 50
             local stepHeight = itemHeight / gradientSteps
             local selectorWidth = width - 1
@@ -633,9 +637,15 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
             end
         end
 
-        Menu.DrawRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
-            Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
-            math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
+        if Menu.GradientType == 1 then
+            Menu.DrawVerticalGradientRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
+                Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
+                math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
+        else
+            Menu.DrawRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
+                Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
+                math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
+        end
     end
 
     local textX = x + (16 * scale)
@@ -1268,7 +1278,7 @@ function Menu.DrawCategories()
                             end
                         end
                     end
-                else
+                elseif Menu.GradientType ~= 1 then
                     local gradientSteps = 50
                     local stepHeight = itemHeight / gradientSteps
                     local selectorWidth = width - 1
@@ -1305,9 +1315,15 @@ function Menu.DrawCategories()
                     end
                 end
 
-                Menu.DrawRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
-                    Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
-                    math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
+                if Menu.GradientType == 1 then
+                    Menu.DrawVerticalGradientRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
+                        Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
+                        math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
+                else
+                    Menu.DrawRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
+                        Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
+                        math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
+                end
             end
 
             local textX = x + 16
@@ -1361,6 +1377,30 @@ function Menu.DrawRoundedRect(x, y, width, height, r, g, b, a, radius)
         local bottom_y = y + height - radius + i
         Menu.DrawRect(x + radius - slice_width, bottom_y, slice_width, 1, r, g, b, a)
         Menu.DrawRect(x + width - radius, bottom_y, slice_width, 1, r, g, b, a)
+    end
+end
+
+function Menu.DrawVerticalGradientRoundedRect(x, y, width, height, r, g, b, a, radius)
+    if width <= 0 or height <= 0 then return end
+
+    radius = math.min(radius or 0, width / 2, height / 2)
+    local steps = math.max(1, math.ceil(height))
+    local rowHeight = height / steps
+
+    for row = 0, steps - 1 do
+        local rowY = y + row * rowHeight
+        local centerY = rowY + rowHeight / 2
+        local progress = steps > 1 and row / (steps - 1) or 0
+        local brightness = 1 - progress
+        local edgeDistance = math.min(centerY - y, y + height - centerY)
+        local cornerDepth = math.max(0, radius - edgeDistance)
+        local inset = cornerDepth > 0 and (radius - math.sqrt(math.max(0, radius * radius - cornerDepth * cornerDepth))) or 0
+        local rowWidth = width - (inset * 2)
+
+        if rowWidth > 0 then
+            Menu.DrawRect(x + inset, rowY, rowWidth, rowHeight + 0.5,
+                r * brightness, g * brightness, b * brightness, a)
+        end
     end
 end
 
