@@ -405,6 +405,7 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
 
     local numTabs = #category.tabs
     local tabWidth = width / numTabs
+    Menu.DrawRect(x, startY, width, tabHeight, 0, 0, 0, 255)
 
     for i, tab in ipairs(category.tabs) do
         local tabX = x + (i - 1) * tabWidth
@@ -438,8 +439,6 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
                 Menu.DrawRoundedRect(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
                     Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255, tabRadius)
             end
-        else
-            Menu.DrawRoundedRect(tabRectX, tabRectY, tabRectWidth, tabRectHeight, 0, 0, 0, 255, tabRadius)
         end
 
         local textSize = 17
