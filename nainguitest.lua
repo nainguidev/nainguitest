@@ -315,7 +315,7 @@ function Menu.DrawScrollbar(x, startY, visibleHeight, selectedIndex, totalItems,
     Menu.scrollbarY = Menu.scrollbarY + (thumbY - Menu.scrollbarY) * smoothSpeed
     Menu.scrollbarHeight = Menu.scrollbarHeight + (thumbHeight - Menu.scrollbarHeight) * smoothSpeed
 
-    local thumbPadding = 2
+    local thumbPadding = 1
     local trackWidth = math.min(10 * scale, scrollbarWidth)
     local trackX = scrollbarX + (scrollbarWidth - trackWidth) / 2
     local bgR = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) and (Menu.Colors.SelectedBg.r / 255.0) or 1.0
@@ -328,8 +328,8 @@ function Menu.DrawScrollbar(x, startY, visibleHeight, selectedIndex, totalItems,
         Menu.DrawRoundedRect(trackX, scrollbarY, trackWidth, scrollbarHeight, 6, 6, 6, 242, trackWidth / 2)
     end
     
-    if Menu.GradientType == 1 then
-        Menu.DrawVerticalGradientRoundedRect(scrollbarX + thumbPadding, Menu.scrollbarY + thumbPadding,
+    if Menu.GradientType == 1 or Menu.GradientType == 2 then
+        Menu.DrawHorizontalGradientRoundedRect(scrollbarX + thumbPadding, Menu.scrollbarY + thumbPadding,
             scrollbarWidth - (thumbPadding * 2), Menu.scrollbarHeight - (thumbPadding * 2),
             bgR * 255, bgG * 255, bgB * 255, 255,
             (scrollbarWidth - (thumbPadding * 2)) / 2)
@@ -644,11 +644,7 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
             end
         end
 
-        if Menu.GradientType == 1 then
-            Menu.DrawDiagonalGradientRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
-                Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
-                math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
-        elseif Menu.GradientType ~= 2 then
+        if Menu.GradientType ~= 2 then
             Menu.DrawRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
                 Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
                 math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
@@ -1329,11 +1325,7 @@ function Menu.DrawCategories()
                     end
                 end
 
-                if Menu.GradientType == 1 then
-                    Menu.DrawDiagonalGradientRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
-                        Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
-                        math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
-                elseif Menu.GradientType ~= 2 then
+                if Menu.GradientType ~= 2 then
                     Menu.DrawRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
                         Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
                         math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
@@ -1446,6 +1438,33 @@ function Menu.DrawDiagonalGradientRoundedRect(x, y, width, height, r, g, b, a, r
 
             Menu.DrawRect(cellX, rowY, cellWidth + 0.5, rowHeight + 0.5,
                 r * brightness, g * brightness, b * brightness, a)
+        end
+    end
+end
+
+function Menu.DrawHorizontalGradientRoundedRect(x, y, width, height, r, g, b, a, radius)
+    if width <= 0 or height <= 0 then return end
+
+    radius = math.min(radius or 0, width / 2, height / 2)
+    local columns = math.max(1, math.ceil(width))
+    local columnWidth = width / columns
+
+    for column = 0, columns - 1 do
+        local columnX = x + column * columnWidth
+        local centerX = columnX + columnWidth / 2
+        local progress = columns > 1 and column / (columns - 1) or 0
+        local easedProgress = progress * progress * (3 - 2 * progress)
+        local edgeDistance = math.min(centerX - x, x + width - centerX)
+        local cornerDepth = math.max(0, radius - edgeDistance)
+        local inset = cornerDepth > 0 and (radius - math.sqrt(math.max(0, radius * radius - cornerDepth * cornerDepth))) or 0
+        local columnHeight = height - (inset * 2)
+        local darken = easedProgress * 0.75
+
+        if columnHeight > 0 then
+            Menu.DrawRect(columnX, y + inset, columnWidth + 0.5, columnHeight,
+                math.max(0, r - (255 * darken)),
+                math.max(0, g - (255 * darken)),
+                math.max(0, b - (255 * darken)), a)
         end
     end
 end
