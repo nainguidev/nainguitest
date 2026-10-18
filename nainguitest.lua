@@ -329,7 +329,7 @@ function Menu.DrawScrollbar(x, startY, visibleHeight, selectedIndex, totalItems,
     end
     
     if Menu.GradientType == 1 or Menu.GradientType == 2 then
-        Menu.DrawHorizontalGradientRoundedRect(scrollbarX + thumbPadding, Menu.scrollbarY + thumbPadding,
+        Menu.DrawVerticalGradientRoundedRect(scrollbarX + thumbPadding, Menu.scrollbarY + thumbPadding,
             scrollbarWidth - (thumbPadding * 2), Menu.scrollbarHeight - (thumbPadding * 2),
             bgR * 255, bgG * 255, bgB * 255, 255,
             (scrollbarWidth - (thumbPadding * 2)) / 2)
@@ -580,11 +580,11 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
                         and 4 * stepGradientFactor * stepGradientFactor * stepGradientFactor
                         or 1 - math.pow(-2 * stepGradientFactor + 2, 3) / 2
                     local darkenFactor = easedFactor * easedFactor
-                    local stepDarken = darkenFactor * 0.75
+                    local shadeFactor = 1.0 - (darkenFactor * 0.45)
 
-                    local stepR = math.max(0, baseR - stepDarken)
-                    local stepG = math.max(0, baseG - stepDarken)
-                    local stepB = math.max(0, baseB - stepDarken)
+                    local stepR = baseR * shadeFactor
+                    local stepG = baseG * shadeFactor
+                    local stepB = baseB * shadeFactor
                     
                     -- Ajout d'un léger effet de brillance au début
                     local brightness = 1.0
@@ -595,10 +595,7 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
                     stepG = math.min(1.0, stepG * brightness)
                     stepB = math.min(1.0, stepB * brightness)
                     
-                    local alpha = 0.95
-                    if step > gradientSteps - 20 then
-                        alpha = 0.95 * (1.0 - ((step - (gradientSteps - 20)) / 20))
-                    end
+                    local alpha = 1.0
 
                     if Susano and Susano.DrawRectFilled then
                         Susano.DrawRectFilled(stepX, roundedY, actualStepWidth, roundedHeight, stepR, stepG, stepB, alpha, 0.0)
@@ -1261,11 +1258,11 @@ function Menu.DrawCategories()
                                 and 4 * stepGradientFactor * stepGradientFactor * stepGradientFactor
                                 or 1 - math.pow(-2 * stepGradientFactor + 2, 3) / 2
                             local darkenFactor = easedFactor * easedFactor
-                            local stepDarken = darkenFactor * 0.75
+                            local shadeFactor = 1.0 - (darkenFactor * 0.45)
 
-                            local stepR = math.max(0, baseR - stepDarken)
-                            local stepG = math.max(0, baseG - stepDarken)
-                            local stepB = math.max(0, baseB - stepDarken)
+                            local stepR = baseR * shadeFactor
+                            local stepG = baseG * shadeFactor
+                            local stepB = baseB * shadeFactor
                             
                             -- Ajout d'un léger effet de brillance au début
                             local brightness = 1.0
@@ -1276,10 +1273,7 @@ function Menu.DrawCategories()
                             stepG = math.min(1.0, stepG * brightness)
                             stepB = math.min(1.0, stepB * brightness)
                             
-                            local alpha = 0.95
-                            if step > gradientSteps - 20 then
-                                alpha = 0.95 * (1.0 - ((step - (gradientSteps - 20)) / 20))
-                            end
+                            local alpha = 1.0
 
                             if Susano and Susano.DrawRectFilled then
                                 Susano.DrawRectFilled(stepX, roundedY, actualStepWidth, roundedHeight, stepR, stepG, stepB, alpha, 0.0)
@@ -1397,7 +1391,7 @@ function Menu.DrawVerticalGradientRoundedRect(x, y, width, height, r, g, b, a, r
         local rowY = y + row * rowHeight
         local centerY = rowY + rowHeight / 2
         local progress = steps > 1 and row / (steps - 1) or 0
-        local brightness = 1 - progress
+        local brightness = progress
         local edgeDistance = math.min(centerY - y, y + height - centerY)
         local cornerDepth = math.max(0, radius - edgeDistance)
         local inset = cornerDepth > 0 and (radius - math.sqrt(math.max(0, radius * radius - cornerDepth * cornerDepth))) or 0
