@@ -179,7 +179,7 @@ Menu.Position = {
     mainMenuSpacing = 5,
     footerRadius = 7,
     itemRadius = 6,
-    scrollbarWidth = 12,
+    scrollbarWidth = 14,
     scrollbarPadding = 3,
     headerRadius = 8
 }
@@ -316,7 +316,7 @@ function Menu.DrawScrollbar(x, startY, visibleHeight, selectedIndex, totalItems,
     Menu.scrollbarHeight = Menu.scrollbarHeight + (thumbHeight - Menu.scrollbarHeight) * smoothSpeed
 
     local thumbPadding = 1
-    local trackWidth = math.min(10 * scale, scrollbarWidth)
+    local trackWidth = math.min(12 * scale, scrollbarWidth)
     local trackX = scrollbarX + (scrollbarWidth - trackWidth) / 2
     local bgR = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) and (Menu.Colors.SelectedBg.r / 255.0) or 1.0
     local bgG = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) and (Menu.Colors.SelectedBg.g / 255.0) or 0.0
@@ -1344,11 +1344,9 @@ function Menu.DrawCategories()
             local textY = itemY + itemHeight / 2 - 8
             Menu.DrawText(textX, textY, category.name, 17, Menu.Colors.TextWhite.r / 255.0, Menu.Colors.TextWhite.g / 255.0, Menu.Colors.TextWhite.b / 255.0, 1.0)
 
-            local iconSize = 11 * scale
-            local iconX = x + width - (19 * scale)
-            local iconY = itemY + (itemHeight - iconSize) / 2
-            Menu.DrawExternalLinkIcon(iconX, iconY, iconSize,
-                Menu.Colors.TextWhite.r, Menu.Colors.TextWhite.g, Menu.Colors.TextWhite.b, 255)
+            local chevronX = x + width - 22
+            Menu.DrawText(chevronX, textY, ">", 17,
+                Menu.Colors.TextWhite.r / 255.0, Menu.Colors.TextWhite.g / 255.0, Menu.Colors.TextWhite.b / 255.0, 1.0)
         end
     end
 
@@ -1397,35 +1395,6 @@ function Menu.DrawRoundedRect(x, y, width, height, r, g, b, a, radius)
     end
 end
 
-function Menu.DrawExternalLinkIcon(x, y, size, r, g, b, a)
-    local scale = Menu.Scale or 1.0
-    local thickness = math.max(1, math.floor(scale + 0.5))
-    local frameTop = y + size * 0.28
-    local frameRight = x + size * 0.76
-    local frameBottom = y + size - thickness
-
-    Menu.DrawRect(x, frameTop, size * 0.48, thickness, r, g, b, a)
-    Menu.DrawRect(x, frameTop, thickness, frameBottom - frameTop + thickness, r, g, b, a)
-    Menu.DrawRect(x, frameBottom, frameRight - x, thickness, r, g, b, a)
-    Menu.DrawRect(frameRight - thickness, y + size * 0.58, thickness, frameBottom - (y + size * 0.58) + thickness, r, g, b, a)
-
-    local arrowStartX = x + size * 0.36
-    local arrowStartY = y + size * 0.72
-    local arrowEndX = x + size * 0.9
-    local arrowEndY = y + size * 0.12
-    local lineSteps = math.ceil(math.max(arrowEndX - arrowStartX, arrowStartY - arrowEndY))
-
-    for step = 0, lineSteps do
-        local progress = step / lineSteps
-        local pixelX = arrowStartX + (arrowEndX - arrowStartX) * progress
-        local pixelY = arrowStartY + (arrowEndY - arrowStartY) * progress
-        Menu.DrawRect(pixelX, pixelY, thickness, thickness, r, g, b, a)
-    end
-
-    Menu.DrawRect(x + size * 0.58, y + size * 0.12, size * 0.32, thickness, r, g, b, a)
-    Menu.DrawRect(arrowEndX - thickness, y + size * 0.12, thickness, size * 0.34, r, g, b, a)
-end
-
 function Menu.DrawVerticalGradientRoundedRect(x, y, width, height, r, g, b, a, radius)
     if width <= 0 or height <= 0 then return end
 
@@ -1437,7 +1406,7 @@ function Menu.DrawVerticalGradientRoundedRect(x, y, width, height, r, g, b, a, r
         local rowY = y + row * rowHeight
         local centerY = rowY + rowHeight / 2
         local progress = steps > 1 and row / (steps - 1) or 0
-        local brightness = progress
+        local brightness = 1 - progress
         local edgeDistance = math.min(centerY - y, y + height - centerY)
         local cornerDepth = math.max(0, radius - edgeDistance)
         local inset = cornerDepth > 0 and (radius - math.sqrt(math.max(0, radius * radius - cornerDepth * cornerDepth))) or 0
