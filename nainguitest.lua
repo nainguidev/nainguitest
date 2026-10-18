@@ -1344,8 +1344,11 @@ function Menu.DrawCategories()
             local textY = itemY + itemHeight / 2 - 8
             Menu.DrawText(textX, textY, category.name, 17, Menu.Colors.TextWhite.r / 255.0, Menu.Colors.TextWhite.g / 255.0, Menu.Colors.TextWhite.b / 255.0, 1.0)
 
-            local chevronX = x + width - 22
-            Menu.DrawText(chevronX, textY, ">", 17, Menu.Colors.TextWhite.r / 255.0, Menu.Colors.TextWhite.g / 255.0, Menu.Colors.TextWhite.b / 255.0, 1.0)
+            local iconSize = 11 * scale
+            local iconX = x + width - (19 * scale)
+            local iconY = itemY + (itemHeight - iconSize) / 2
+            Menu.DrawExternalLinkIcon(iconX, iconY, iconSize,
+                Menu.Colors.TextWhite.r, Menu.Colors.TextWhite.g, Menu.Colors.TextWhite.b, 255)
         end
     end
 
@@ -1392,6 +1395,28 @@ function Menu.DrawRoundedRect(x, y, width, height, r, g, b, a, radius)
         Menu.DrawRect(x + radius - slice_width, bottom_y, slice_width, 1, r, g, b, a)
         Menu.DrawRect(x + width - radius, bottom_y, slice_width, 1, r, g, b, a)
     end
+end
+
+function Menu.DrawExternalLinkIcon(x, y, size, r, g, b, a)
+    local scale = Menu.Scale or 1.0
+    local thickness = math.max(1, scale)
+    local arrowStart = size * 0.38
+    local arrowEnd = size - thickness
+
+    Menu.DrawRect(x, y, size * 0.58, thickness, r, g, b, a)
+    Menu.DrawRect(x, y, thickness, size, r, g, b, a)
+    Menu.DrawRect(x, y + size - thickness, size, thickness, r, g, b, a)
+    Menu.DrawRect(x + size - thickness, y + size * 0.58, thickness, size * 0.42, r, g, b, a)
+
+    for step = 0, 5 do
+        local progress = step / 5
+        local pixelX = x + arrowStart + (arrowEnd - arrowStart) * progress
+        local pixelY = y + size * 0.62 - (size * 0.52 * progress)
+        Menu.DrawRect(pixelX, pixelY, thickness, thickness, r, g, b, a)
+    end
+
+    Menu.DrawRect(x + size * 0.62, y, size * 0.38, thickness, r, g, b, a)
+    Menu.DrawRect(x + size - thickness, y, thickness, size * 0.38, r, g, b, a)
 end
 
 function Menu.DrawVerticalGradientRoundedRect(x, y, width, height, r, g, b, a, radius)
