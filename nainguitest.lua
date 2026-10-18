@@ -600,11 +600,11 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
                         and 4 * stepGradientFactor * stepGradientFactor * stepGradientFactor
                         or 1 - math.pow(-2 * stepGradientFactor + 2, 3) / 2
                     local darkenFactor = easedFactor * easedFactor
-                    local stepDarken = darkenFactor * 0.75
+                    local shadeFactor = 1.0 - (darkenFactor * 0.75)
 
-                    local stepR = math.max(0, baseR - stepDarken)
-                    local stepG = math.max(0, baseG - stepDarken)
-                    local stepB = math.max(0, baseB - stepDarken)
+                    local stepR = baseR * shadeFactor
+                    local stepG = baseG * shadeFactor
+                    local stepB = baseB * shadeFactor
                     
                     -- Ajout d'un léger effet de brillance au début
                     local brightness = 1.0
@@ -1086,7 +1086,7 @@ function Menu.DrawCategories()
         Menu.CategoryScrollOffset = math.max(0, Menu.CurrentCategory - 2)
     end
 
-    local itemY = startY - scale
+    local itemY = startY - (2 * scale)
     
     -- Dégradé pour la barre Main Menu (même style que les tabs)
     local baseR = (Menu.Colors.HeaderPink and Menu.Colors.HeaderPink.r) and (Menu.Colors.HeaderPink.r / 255.0) or 0.58
@@ -1292,11 +1292,11 @@ function Menu.DrawCategories()
                                 and 4 * stepGradientFactor * stepGradientFactor * stepGradientFactor
                                 or 1 - math.pow(-2 * stepGradientFactor + 2, 3) / 2
                             local darkenFactor = easedFactor * easedFactor
-                            local stepDarken = darkenFactor * 0.75
+                            local shadeFactor = 1.0 - (darkenFactor * 0.75)
 
-                            local stepR = math.max(0, baseR - stepDarken)
-                            local stepG = math.max(0, baseG - stepDarken)
-                            local stepB = math.max(0, baseB - stepDarken)
+                            local stepR = baseR * shadeFactor
+                            local stepG = baseG * shadeFactor
+                            local stepB = baseB * shadeFactor
                             
                             -- Ajout d'un léger effet de brillance au début
                             local brightness = 1.0
