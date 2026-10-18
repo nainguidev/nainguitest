@@ -156,8 +156,8 @@ function Menu.ApplyTheme(themeName)
         Menu.Banner.imageUrl = "https://i.imgur.com/3lnhdm9.png"
         Menu.CurrentTheme = "pink"
     else
-        Menu.Colors.HeaderPink = { r = 148, g = 0, b = 211 }
-        Menu.Colors.SelectedBg = { r = 148, g = 0, b = 211 }
+        Menu.Colors.HeaderPink = { r = 112, g = 0, b = 230 }
+        Menu.Colors.SelectedBg = { r = 112, g = 0, b = 230 }
         Menu.Banner.imageUrl = "https://i.imgur.com/3lnhdm9.png"
         Menu.CurrentTheme = "Purple"
     end
@@ -420,13 +420,9 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
                     Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255, tabRadius)
             end
         elseif Susano and Susano.DrawRectFilled then
-            Susano.DrawRectFilled(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
-                (Menu.Colors.SelectedBg.r / 255.0) * 0.22,
-                (Menu.Colors.SelectedBg.g / 255.0) * 0.22,
-                (Menu.Colors.SelectedBg.b / 255.0) * 0.22, 1.0, tabRadius)
+            Susano.DrawRectFilled(tabRectX, tabRectY, tabRectWidth, tabRectHeight, 0.14, 0.14, 0.15, 0.96, tabRadius)
         else
-            Menu.DrawRoundedRect(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
-                Menu.Colors.SelectedBg.r * 0.22, Menu.Colors.SelectedBg.g * 0.22, Menu.Colors.SelectedBg.b * 0.22, 255, tabRadius)
+            Menu.DrawRoundedRect(tabRectX, tabRectY, tabRectWidth, tabRectHeight, 36, 36, 38, 245, tabRadius)
         end
 
         local textSize = 17
