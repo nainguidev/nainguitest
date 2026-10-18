@@ -1108,7 +1108,7 @@ function Menu.DrawCategories()
         local stepGradientFactor = step / (gradientSteps - 1)
         -- Courbe d'easing améliorée pour un gradient plus fluide
         local easedFactor = stepGradientFactor * stepGradientFactor * (3.0 - 2.0 * stepGradientFactor)
-        local alpha = 0.5 + (easedFactor * 0.5)
+        local alpha = 1.0
         
         -- Effet de brillance au début
         local brightness = 1.0
