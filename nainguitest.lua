@@ -668,9 +668,9 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
         local toggleRadius = toggleHeight / 2
 
         if item.value then
-            local tR = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) or 255) / 255.0 * 0.55
-            local tG = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) or 0) / 255.0 * 0.55
-            local tB = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.b) or 255) / 255.0 * 0.55
+            local tR = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) or 255) / 255.0 * 0.72
+            local tG = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) or 0) / 255.0 * 0.72
+            local tB = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.b) or 255) / 255.0 * 0.72
 
             if Susano and Susano.DrawRectFilled then
                 Susano.DrawRectFilled(toggleX, toggleY, toggleWidth, toggleHeight,
@@ -684,11 +684,11 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
         else
             if Susano and Susano.DrawRectFilled then
                 Susano.DrawRectFilled(toggleX, toggleY, toggleWidth, toggleHeight,
-                    0.2, 0.2, 0.2, 0.95,
+                    0.24, 0.24, 0.25, 1.0,
                     toggleRadius)
             else
                 Menu.DrawRoundedRect(toggleX, toggleY, toggleWidth, toggleHeight,
-                    51, 51, 51, 242,
+                    61, 61, 64, 255,
                     toggleRadius)
             end
         end
@@ -702,16 +702,7 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
             circleX = toggleX + 2
         end
 
-        local circleR, circleG, circleB
-        if item.value then
-            circleR = 1.0
-            circleG = 1.0
-            circleB = 1.0
-        else
-            circleR = Menu.CurrentTheme == "Gray" and 1.0 or 0.0
-            circleG = Menu.CurrentTheme == "Gray" and 1.0 or 0.0
-            circleB = Menu.CurrentTheme == "Gray" and 1.0 or 0.0
-        end
+        local circleR, circleG, circleB = 1.0, 1.0, 1.0
 
         if Susano and Susano.DrawRectFilled then
             Susano.DrawRectFilled(circleX, circleY, circleSize, circleSize,
@@ -795,9 +786,9 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
         local toggleRadius = toggleHeight / 2
 
         if item.value then
-            local tR = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) or 255) / 255.0 * 0.55
-            local tG = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) or 0) / 255.0 * 0.55
-            local tB = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.b) or 255) / 255.0 * 0.55
+            local tR = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) or 255) / 255.0 * 0.72
+            local tG = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) or 0) / 255.0 * 0.72
+            local tB = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.b) or 255) / 255.0 * 0.72
 
             if Susano and Susano.DrawRectFilled then
                 Susano.DrawRectFilled(toggleX, toggleY, toggleWidth, toggleHeight, tR, tG, tB, 0.95, toggleRadius)
@@ -806,9 +797,9 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
             end
         else
             if Susano and Susano.DrawRectFilled then
-                Susano.DrawRectFilled(toggleX, toggleY, toggleWidth, toggleHeight, 0.2, 0.2, 0.2, 0.95, toggleRadius)
+                Susano.DrawRectFilled(toggleX, toggleY, toggleWidth, toggleHeight, 0.24, 0.24, 0.25, 1.0, toggleRadius)
             else
-                Menu.DrawRoundedRect(toggleX, toggleY, toggleWidth, toggleHeight, 51, 51, 51, 242, toggleRadius)
+                Menu.DrawRoundedRect(toggleX, toggleY, toggleWidth, toggleHeight, 61, 61, 64, 255, toggleRadius)
             end
         end
 
@@ -821,16 +812,7 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
             circleX = toggleX + 2
         end
 
-        local circleR, circleG, circleB
-        if item.value then
-            circleR = 1.0
-            circleG = 1.0
-            circleB = 1.0
-        else
-            circleR = Menu.CurrentTheme == "Gray" and 1.0 or 0.0
-            circleG = Menu.CurrentTheme == "Gray" and 1.0 or 0.0
-            circleB = Menu.CurrentTheme == "Gray" and 1.0 or 0.0
-        end
+        local circleR, circleG, circleB = 1.0, 1.0, 1.0
 
         if Susano and Susano.DrawRectFilled then
             Susano.DrawRectFilled(circleX, circleY, circleSize, circleSize, circleR, circleG, circleB, 1.0, circleSize / 2)
