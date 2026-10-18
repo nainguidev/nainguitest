@@ -567,6 +567,13 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
                 local actualStepWidth = stepWidth
                 
                 if actualStepWidth > 0 then
+                    local cornerRadius = math.min(6 * scale, drawWidth / 2, selectorHeight / 2)
+                    local centerX = stepX + actualStepWidth / 2
+                    local edgeDistance = math.min(centerX - selectorX, selectorX + drawWidth - centerX)
+                    local cornerDepth = math.max(0, cornerRadius - edgeDistance)
+                    local verticalInset = cornerDepth > 0 and (cornerRadius - math.sqrt(math.max(0, cornerRadius * cornerRadius - cornerDepth * cornerDepth))) or 0
+                    local roundedY = selectorY + verticalInset
+                    local roundedHeight = selectorHeight - (verticalInset * 2)
                     local stepGradientFactor = step / (gradientSteps - 1)
                     -- Utilisation d'une courbe d'easing plus douce (ease-in-out cubic)
                     local easedFactor = stepGradientFactor < 0.5 
@@ -594,9 +601,9 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
                     end
 
                     if Susano and Susano.DrawRectFilled then
-                        Susano.DrawRectFilled(stepX, selectorY, actualStepWidth, selectorHeight, stepR, stepG, stepB, alpha, 0.0)
+                        Susano.DrawRectFilled(stepX, roundedY, actualStepWidth, roundedHeight, stepR, stepG, stepB, alpha, 0.0)
                     else
-                        Menu.DrawRect(stepX, selectorY, actualStepWidth, selectorHeight, stepR * 255, stepG * 255, stepB * 255, math.floor(alpha * 255))
+                        Menu.DrawRect(stepX, roundedY, actualStepWidth, roundedHeight, stepR * 255, stepG * 255, stepB * 255, math.floor(alpha * 255))
                     end
                 end
             end
@@ -638,10 +645,10 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
         end
 
         if Menu.GradientType == 1 then
-            Menu.DrawVerticalGradientRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
+            Menu.DrawDiagonalGradientRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
                 Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
                 math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
-        else
+        elseif Menu.GradientType ~= 2 then
             Menu.DrawRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
                 Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
                 math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
@@ -1245,6 +1252,13 @@ function Menu.DrawCategories()
                         local actualStepWidth = stepWidth
                         
                         if actualStepWidth > 0 then
+                            local cornerRadius = math.min(6 * scale, drawWidth / 2, selectorHeight / 2)
+                            local centerX = stepX + actualStepWidth / 2
+                            local edgeDistance = math.min(centerX - selectorX, selectorX + drawWidth - centerX)
+                            local cornerDepth = math.max(0, cornerRadius - edgeDistance)
+                            local verticalInset = cornerDepth > 0 and (cornerRadius - math.sqrt(math.max(0, cornerRadius * cornerRadius - cornerDepth * cornerDepth))) or 0
+                            local roundedY = selectorY + verticalInset
+                            local roundedHeight = selectorHeight - (verticalInset * 2)
                             local stepGradientFactor = step / (gradientSteps - 1)
                             -- Utilisation d'une courbe d'easing plus douce (ease-in-out cubic)
                             local easedFactor = stepGradientFactor < 0.5 
@@ -1272,9 +1286,9 @@ function Menu.DrawCategories()
                             end
 
                             if Susano and Susano.DrawRectFilled then
-                                Susano.DrawRectFilled(stepX, selectorY, actualStepWidth, selectorHeight, stepR, stepG, stepB, alpha, 0.0)
+                                Susano.DrawRectFilled(stepX, roundedY, actualStepWidth, roundedHeight, stepR, stepG, stepB, alpha, 0.0)
                             else
-                                Menu.DrawRect(stepX, selectorY, actualStepWidth, selectorHeight, stepR * 255, stepG * 255, stepB * 255, math.floor(alpha * 255))
+                                Menu.DrawRect(stepX, roundedY, actualStepWidth, roundedHeight, stepR * 255, stepG * 255, stepB * 255, math.floor(alpha * 255))
                             end
                         end
                     end
@@ -1316,10 +1330,10 @@ function Menu.DrawCategories()
                 end
 
                 if Menu.GradientType == 1 then
-                    Menu.DrawVerticalGradientRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
+                    Menu.DrawDiagonalGradientRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
                         Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
                         math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
-                else
+                elseif Menu.GradientType ~= 2 then
                     Menu.DrawRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
                         Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
                         math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
@@ -1399,6 +1413,38 @@ function Menu.DrawVerticalGradientRoundedRect(x, y, width, height, r, g, b, a, r
 
         if rowWidth > 0 then
             Menu.DrawRect(x + inset, rowY, rowWidth, rowHeight + 0.5,
+                r * brightness, g * brightness, b * brightness, a)
+        end
+    end
+end
+
+function Menu.DrawDiagonalGradientRoundedRect(x, y, width, height, r, g, b, a, radius)
+    if width <= 0 or height <= 0 then return end
+
+    radius = math.min(radius or 0, width / 2, height / 2)
+    local columns = 16
+    local rows = math.max(1, math.min(12, math.ceil(height / 3)))
+    local rowHeight = height / rows
+
+    for row = 0, rows - 1 do
+        local rowY = y + row * rowHeight
+        local centerY = rowY + rowHeight / 2
+        local verticalProgress = (centerY - y) / height
+        local edgeDistance = math.min(centerY - y, y + height - centerY)
+        local cornerDepth = math.max(0, radius - edgeDistance)
+        local inset = cornerDepth > 0 and (radius - math.sqrt(math.max(0, radius * radius - cornerDepth * cornerDepth))) or 0
+        local drawX = x + inset
+        local drawWidth = width - (inset * 2)
+        local cellWidth = drawWidth / columns
+
+        for column = 0, columns - 1 do
+            local cellX = drawX + column * cellWidth
+            local cellCenterX = cellX + cellWidth / 2
+            local horizontalProgress = (cellCenterX - x) / width
+            local progress = math.min(1, math.max(0, (1 - horizontalProgress + verticalProgress) / 2))
+            local brightness = 1 - progress
+
+            Menu.DrawRect(cellX, rowY, cellWidth + 0.5, rowHeight + 0.5,
                 r * brightness, g * brightness, b * brightness, a)
         end
     end
