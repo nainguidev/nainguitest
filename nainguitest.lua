@@ -405,7 +405,11 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
 
     local numTabs = #category.tabs
     local tabWidth = width / numTabs
-    Menu.DrawRect(x, startY, width, tabHeight, 0, 0, 0, 255)
+    if Susano and Susano.DrawRectFilled then
+        Susano.DrawRectFilled(x, startY, width, tabHeight, 0.0, 0.0, 0.0, 1.0, 0.0)
+    else
+        Menu.DrawRect(x, startY, width, tabHeight, 0, 0, 0, 255)
+    end
 
     for i, tab in ipairs(category.tabs) do
         local tabX = x + (i - 1) * tabWidth
