@@ -436,9 +436,6 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
 
             tabRectX = math.floor(Menu.TabSelectorX + 0.5)
             tabRectWidth = math.floor(Menu.TabSelectorWidth + 0.5)
-            Menu.DrawThemeGlow(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
-                Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b,
-                scale, tabRadius, 0.12, 0.3)
             if Susano and Susano.DrawRectFilled then
                 Susano.DrawRectFilled(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
                     Menu.Colors.SelectedBg.r / 255.0, Menu.Colors.SelectedBg.g / 255.0, Menu.Colors.SelectedBg.b / 255.0, 1.0, tabRadius)
@@ -562,9 +559,6 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
         local darkenAmount = 0.4
 
         local selectorX = x
-        Menu.DrawThemeGlow(selectorX, drawY, width - 1, itemHeight,
-            Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, scale,
-            math.min(6 * scale, itemHeight / 2), 0.12, 0.3)
         
         if Menu.GradientType == 2 then
             local gradientSteps = 120
@@ -1389,21 +1383,6 @@ function Menu.DrawRoundedRect(x, y, width, height, r, g, b, a, radius)
     end
 end
 
-function Menu.DrawThemeGlow(x, y, width, height, r, g, b, scale, radius, intensity, spreadScale)
-    scale = scale or 1.0
-    radius = radius or 0
-    intensity = intensity or 1.0
-    spreadScale = spreadScale or 1.0
-
-    for layer = 6, 1, -1 do
-        local spread = layer * 2 * scale * spreadScale
-        local glowRadius = math.min(radius + spread, (width + spread * 2) / 2, (height + spread * 2) / 2)
-        local alpha = ((7 - layer) * 3 * intensity) / 255.0
-        Menu.DrawRoundedRect(x - spread, y - spread, width + spread * 2, height + spread * 2,
-            r, g, b, alpha, glowRadius)
-    end
-end
-
 function Menu.DrawVerticalGradientRoundedRect(x, y, width, height, r, g, b, a, radius)
     if width <= 0 or height <= 0 then return end
 
@@ -1519,13 +1498,8 @@ function Menu.DrawLoadingBar(alpha)
 
     local fillWidth = barWidth * (progress / 100)
     if fillWidth > 0 then
-        Menu.DrawThemeGlow(barX, barY, fillWidth, barHeight,
-            theme.r, theme.g, theme.b, scale, 3 * scale, 0.12, 0.5)
         Menu.DrawRoundedRect(barX, barY, fillWidth, barHeight,
             accentR * 255, accentG * 255, accentB * 255, 255 * alpha, 3 * scale)
-        local glowWidth = 4 * scale
-        Menu.DrawRoundedRect(barX + fillWidth - glowWidth / 2, barY - (2 * scale), glowWidth, barHeight + (4 * scale),
-            255, 255, 255, 55 * alpha, 2 * scale)
     end
 
     local statusText = "INITIALIZING ASSETS"
