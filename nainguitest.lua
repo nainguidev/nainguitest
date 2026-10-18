@@ -316,16 +316,16 @@ function Menu.DrawScrollbar(x, startY, visibleHeight, selectedIndex, totalItems,
     Menu.scrollbarHeight = Menu.scrollbarHeight + (thumbHeight - Menu.scrollbarHeight) * smoothSpeed
 
     local thumbPadding = 2
-    local trackWidth = math.min(4 * scale, scrollbarWidth)
+    local trackWidth = math.min(10 * scale, scrollbarWidth)
     local trackX = scrollbarX + (scrollbarWidth - trackWidth) / 2
     local bgR = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) and (Menu.Colors.SelectedBg.r / 255.0) or 1.0
     local bgG = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) and (Menu.Colors.SelectedBg.g / 255.0) or 0.0
     local bgB = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.b) and (Menu.Colors.SelectedBg.b / 255.0) or 1.0
 
     if Susano and Susano.DrawRectFilled then
-        Susano.DrawRectFilled(trackX, scrollbarY, trackWidth, scrollbarHeight, 0.12, 0.12, 0.12, 0.85, trackWidth / 2)
+        Susano.DrawRectFilled(trackX, scrollbarY, trackWidth, scrollbarHeight, 0.025, 0.025, 0.025, 0.95, trackWidth / 2)
     else
-        Menu.DrawRoundedRect(trackX, scrollbarY, trackWidth, scrollbarHeight, 31, 31, 31, 217, trackWidth / 2)
+        Menu.DrawRoundedRect(trackX, scrollbarY, trackWidth, scrollbarHeight, 6, 6, 6, 242, trackWidth / 2)
     end
     
     -- Thumb avec effet de glow et meilleur contraste
