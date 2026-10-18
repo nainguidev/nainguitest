@@ -2157,21 +2157,24 @@ function Menu.SetFreecam(enabled)
 end
 
 function Menu.EnsureFreecamMenuItem()
+    if type(Menu.Categories) ~= "table" then return end
     local playerCategory
     for _, category in ipairs(Menu.Categories or {}) do
-        if string.lower(category.name or "") == "player" then
+        if type(category) == "table" and type(category.name) == "string" and string.lower(category.name) == "player" then
             playerCategory = category
             break
         end
     end
-    if not playerCategory or not playerCategory.tabs then return end
+    if not playerCategory or type(playerCategory.tabs) ~= "table" then return end
 
     local targetTab
     for _, tab in ipairs(playerCategory.tabs) do
-        local name = string.lower(tab.name or "")
-        if name == "movement" or name == "general" then
-            targetTab = tab
-            break
+        if type(tab) == "table" then
+            local name = type(tab.name) == "string" and string.lower(tab.name) or ""
+            if name == "movement" or name == "general" then
+                targetTab = tab
+                break
+            end
         end
     end
     targetTab = targetTab or playerCategory.tabs[1]
@@ -2181,8 +2184,10 @@ function Menu.EnsureFreecamMenuItem()
     local freecamItem
     local speedItem
     for _, item in ipairs(targetTab.items) do
-        if item.name == "Freecam Camera" then freecamItem = item end
-        if item.name == "Freecam Speed" then speedItem = item end
+        if type(item) == "table" then
+            if item.name == "Freecam Camera" then freecamItem = item end
+            if item.name == "Freecam Speed" then speedItem = item end
+        end
     end
 
     if not freecamItem then
@@ -2315,7 +2320,7 @@ function Menu.Render()
     if Menu.TopLevelTabs and not Menu.Categories then
         Menu.UpdateCategoriesFromTopTab()
     end
-    Menu.EnsureFreecamMenuItem()
+    pcall(Menu.EnsureFreecamMenuItem)
 
     if not (Susano and Susano.BeginFrame) then
         return
