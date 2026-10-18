@@ -436,6 +436,8 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
 
             tabRectX = math.floor(Menu.TabSelectorX + 0.5)
             tabRectWidth = math.floor(Menu.TabSelectorWidth + 0.5)
+            Menu.DrawThemeGlow(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
+                Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, scale, tabRadius)
             if Susano and Susano.DrawRectFilled then
                 Susano.DrawRectFilled(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
                     Menu.Colors.SelectedBg.r / 255.0, Menu.Colors.SelectedBg.g / 255.0, Menu.Colors.SelectedBg.b / 255.0, 1.0, tabRadius)
@@ -559,6 +561,9 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
         local darkenAmount = 0.4
 
         local selectorX = x
+        Menu.DrawThemeGlow(selectorX, drawY, width - 1, itemHeight,
+            Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, scale,
+            math.min(6 * scale, itemHeight / 2))
         
         if Menu.GradientType == 2 then
             local gradientSteps = 120
@@ -1383,6 +1388,19 @@ function Menu.DrawRoundedRect(x, y, width, height, r, g, b, a, radius)
     end
 end
 
+function Menu.DrawThemeGlow(x, y, width, height, r, g, b, scale, radius)
+    scale = scale or 1.0
+    radius = radius or 0
+
+    for layer = 3, 1, -1 do
+        local spread = layer * 2 * scale
+        local glowRadius = math.min(radius + spread, (width + spread * 2) / 2, (height + spread * 2) / 2)
+        local alpha = (4 - layer) * 7
+        Menu.DrawRoundedRect(x - spread, y - spread, width + spread * 2, height + spread * 2,
+            r, g, b, alpha, glowRadius)
+    end
+end
+
 function Menu.DrawVerticalGradientRoundedRect(x, y, width, height, r, g, b, a, radius)
     if width <= 0 or height <= 0 then return end
 
@@ -1482,7 +1500,7 @@ function Menu.DrawLoadingBar(alpha)
     local theme = Menu.Colors.HeaderPink or Menu.Colors.SelectedBg or { r = 148, g = 0, b = 211 }
     local accentR, accentG, accentB = theme.r / 255.0, theme.g / 255.0, theme.b / 255.0
 
-    Menu.DrawRect(0, 0, screenWidth, screenHeight, 0, 0, 0, 115 * alpha)
+    Menu.DrawRect(0, 0, screenWidth, screenHeight, 0, 0, 0, 70 * alpha)
 
     if Menu.loadingTexture and Susano and Susano.DrawImage then
         local imageSize = 220 * scale
@@ -1498,6 +1516,8 @@ function Menu.DrawLoadingBar(alpha)
 
     local fillWidth = barWidth * (progress / 100)
     if fillWidth > 0 then
+        Menu.DrawThemeGlow(barX, barY, fillWidth, barHeight,
+            theme.r, theme.g, theme.b, scale, 3 * scale)
         Menu.DrawRoundedRect(barX, barY, fillWidth, barHeight,
             accentR * 255, accentG * 255, accentB * 255, 255 * alpha, 3 * scale)
         local glowWidth = 4 * scale
@@ -2903,6 +2923,11 @@ CreateThread(function()
     Menu.LoadLoadingTexture()
 
     while Menu.IsLoading do
+        if DisableAllControlActions then
+            DisableAllControlActions(0)
+            DisableAllControlActions(1)
+        end
+
         local currentTime = GetGameTimer() or Menu.LoadingStartTime
         local elapsedTime = currentTime - Menu.LoadingStartTime
 
