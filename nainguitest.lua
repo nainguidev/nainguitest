@@ -438,8 +438,6 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
                 Menu.DrawRoundedRect(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
                     Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255, tabRadius)
             end
-        elseif Susano and Susano.DrawRectFilled then
-            Susano.DrawRectFilled(tabRectX, tabRectY, tabRectWidth, tabRectHeight, 0.0, 0.0, 0.0, 1.0, tabRadius)
         else
             Menu.DrawRoundedRect(tabRectX, tabRectY, tabRectWidth, tabRectHeight, 0, 0, 0, 255, tabRadius)
         end
