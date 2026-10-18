@@ -438,7 +438,7 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
                     actualStepHeight = maxY - stepY
                 end
                 if actualStepHeight > 0 and stepY < maxY then
-                    local cornerRadius = math.min(4 * scale, selectorWidth / 2, tabHeight / 2)
+                    local cornerRadius = math.min(8 * scale, selectorWidth / 2, tabHeight / 2)
                     local rowCenterY = stepY + actualStepHeight / 2
                     local edgeDistance = math.min(rowCenterY - startY, startY + tabHeight - rowCenterY)
                     local cornerDepth = math.max(0, cornerRadius - edgeDistance)
