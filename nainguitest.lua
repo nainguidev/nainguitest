@@ -439,9 +439,9 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
                     Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255, tabRadius)
             end
         elseif Susano and Susano.DrawRectFilled then
-            Susano.DrawRectFilled(tabRectX, tabRectY, tabRectWidth, tabRectHeight, 0.14, 0.14, 0.15, 0.96, tabRadius)
+            Susano.DrawRectFilled(tabRectX, tabRectY, tabRectWidth, tabRectHeight, 0.0, 0.0, 0.0, 1.0, tabRadius)
         else
-            Menu.DrawRoundedRect(tabRectX, tabRectY, tabRectWidth, tabRectHeight, 36, 36, 38, 245, tabRadius)
+            Menu.DrawRoundedRect(tabRectX, tabRectY, tabRectWidth, tabRectHeight, 0, 0, 0, 255, tabRadius)
         end
 
         local textSize = 17
