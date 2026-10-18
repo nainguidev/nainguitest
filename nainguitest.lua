@@ -580,11 +580,11 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
                         and 4 * stepGradientFactor * stepGradientFactor * stepGradientFactor
                         or 1 - math.pow(-2 * stepGradientFactor + 2, 3) / 2
                     local darkenFactor = easedFactor * easedFactor
-                    local shadeFactor = 1.0 - (darkenFactor * 0.45)
+                    local stepDarken = darkenFactor * 0.75
 
-                    local stepR = baseR * shadeFactor
-                    local stepG = baseG * shadeFactor
-                    local stepB = baseB * shadeFactor
+                    local stepR = math.max(0, baseR - stepDarken)
+                    local stepG = math.max(0, baseG - stepDarken)
+                    local stepB = math.max(0, baseB - stepDarken)
                     
                     -- Ajout d'un léger effet de brillance au début
                     local brightness = 1.0
@@ -595,7 +595,10 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
                     stepG = math.min(1.0, stepG * brightness)
                     stepB = math.min(1.0, stepB * brightness)
                     
-                    local alpha = 1.0
+                    local alpha = 0.95
+                    if step > gradientSteps - 20 then
+                        alpha = 0.95 * (1.0 - ((step - (gradientSteps - 20)) / 20))
+                    end
 
                     if Susano and Susano.DrawRectFilled then
                         Susano.DrawRectFilled(stepX, roundedY, actualStepWidth, roundedHeight, stepR, stepG, stepB, alpha, 0.0)
@@ -1049,7 +1052,7 @@ function Menu.DrawCategories()
     local x = scaledPos.x
     local bannerHeight = Menu.Banner.enabled and (Menu.Banner.height * scale) or scaledPos.headerHeight
     local startY = scaledPos.y + bannerHeight
-    local width = scaledPos.width
+    local width = scaledPos.width - 1
     local itemHeight = scaledPos.itemHeight
     local mainMenuHeight = scaledPos.mainMenuHeight
     local mainMenuSpacing = scaledPos.mainMenuSpacing
@@ -1095,11 +1098,19 @@ function Menu.DrawCategories()
         local stepR = math.min(1.0, baseR * brightness)
         local stepG = math.min(1.0, baseG * brightness)
         local stepB = math.min(1.0, baseB * brightness)
+
+        local cornerRadius = math.min(scaledPos.headerRadius, width / 2, mainMenuHeight / 2)
+        local rowCenterY = stepY + actualStepHeight / 2
+        local edgeDistance = math.min(rowCenterY - gradStartY, gradStartY + mainMenuHeight - rowCenterY)
+        local cornerDepth = math.max(0, cornerRadius - edgeDistance)
+        local inset = cornerDepth > 0 and (cornerRadius - math.sqrt(math.max(0, cornerRadius * cornerRadius - cornerDepth * cornerDepth))) or 0
+        local drawX = x + inset
+        local drawWidth = width - (inset * 2)
         
         if Susano and Susano.DrawRectFilled then
-            Susano.DrawRectFilled(x, stepY, width, actualStepHeight, stepR, stepG, stepB, alpha, 0)
+            Susano.DrawRectFilled(drawX, stepY, drawWidth, actualStepHeight, stepR, stepG, stepB, alpha, 0)
         else
-             Menu.DrawRect(x, stepY, width, actualStepHeight, math.floor(stepR*255), math.floor(stepG*255), math.floor(stepB*255), math.floor(alpha*255))
+             Menu.DrawRect(drawX, stepY, drawWidth, actualStepHeight, math.floor(stepR*255), math.floor(stepG*255), math.floor(stepB*255), math.floor(alpha*255))
         end
     end
     
@@ -1258,11 +1269,11 @@ function Menu.DrawCategories()
                                 and 4 * stepGradientFactor * stepGradientFactor * stepGradientFactor
                                 or 1 - math.pow(-2 * stepGradientFactor + 2, 3) / 2
                             local darkenFactor = easedFactor * easedFactor
-                            local shadeFactor = 1.0 - (darkenFactor * 0.45)
+                            local stepDarken = darkenFactor * 0.75
 
-                            local stepR = baseR * shadeFactor
-                            local stepG = baseG * shadeFactor
-                            local stepB = baseB * shadeFactor
+                            local stepR = math.max(0, baseR - stepDarken)
+                            local stepG = math.max(0, baseG - stepDarken)
+                            local stepB = math.max(0, baseB - stepDarken)
                             
                             -- Ajout d'un léger effet de brillance au début
                             local brightness = 1.0
@@ -1273,7 +1284,10 @@ function Menu.DrawCategories()
                             stepG = math.min(1.0, stepG * brightness)
                             stepB = math.min(1.0, stepB * brightness)
                             
-                            local alpha = 1.0
+                            local alpha = 0.95
+                            if step > gradientSteps - 20 then
+                                alpha = 0.95 * (1.0 - ((step - (gradientSteps - 20)) / 20))
+                            end
 
                             if Susano and Susano.DrawRectFilled then
                                 Susano.DrawRectFilled(stepX, roundedY, actualStepWidth, roundedHeight, stepR, stepG, stepB, alpha, 0.0)
