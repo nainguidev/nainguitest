@@ -1096,6 +1096,9 @@ function Menu.DrawCategories()
     local gradientSteps = 40
     local stepHeight = mainMenuHeight / gradientSteps
     local gradStartY = itemY
+    Menu.DrawRoundedRect(x, itemY, width, mainMenuHeight,
+        Menu.Colors.BackgroundDark.r, Menu.Colors.BackgroundDark.g, Menu.Colors.BackgroundDark.b, 255,
+        math.min(scaledPos.headerRadius, width / 2, mainMenuHeight / 2))
     
     for step = 0, gradientSteps - 1 do
         local stepY = gradStartY + (step * stepHeight)
