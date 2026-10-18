@@ -1099,10 +1099,10 @@ function Menu.DrawCategories()
         local stepG = math.min(1.0, baseG * brightness)
         local stepB = math.min(1.0, baseB * brightness)
 
-        local cornerRadius = 0
+        local cornerRadius = math.min(scaledPos.headerRadius, width / 2, mainMenuHeight / 2)
         local rowCenterY = stepY + actualStepHeight / 2
-        local edgeDistance = math.min(rowCenterY - gradStartY, gradStartY + mainMenuHeight - rowCenterY)
-        local cornerDepth = math.max(0, cornerRadius - edgeDistance)
+        local distanceFromBottom = gradStartY + mainMenuHeight - rowCenterY
+        local cornerDepth = math.max(0, cornerRadius - distanceFromBottom)
         local inset = cornerDepth > 0 and (cornerRadius - math.sqrt(math.max(0, cornerRadius * cornerRadius - cornerDepth * cornerDepth))) or 0
         local drawX = x + inset
         local drawWidth = width - (inset * 2)
