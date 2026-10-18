@@ -1424,7 +1424,7 @@ function Menu.DrawThemeBlur(x, y, width, height, r, g, b, scale, radius)
     for layer = 2, 1, -1 do
         local spread = layer * scale
         local blurRadius = math.min(radius + spread, (width + spread * 2) / 2, (height + spread * 2) / 2)
-        local alpha = layer == 2 and 0.012 or 0.018
+        local alpha = layer == 2 and 0.016 or 0.024
         Menu.DrawRoundedRect(x - spread, y - spread, width + spread * 2, height + spread * 2,
             r, g, b, alpha, blurRadius)
     end
