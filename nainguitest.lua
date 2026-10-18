@@ -438,6 +438,13 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
                     actualStepHeight = maxY - stepY
                 end
                 if actualStepHeight > 0 and stepY < maxY then
+                    local cornerRadius = math.min(4 * scale, selectorWidth / 2, tabHeight / 2)
+                    local rowCenterY = stepY + actualStepHeight / 2
+                    local edgeDistance = math.min(rowCenterY - startY, startY + tabHeight - rowCenterY)
+                    local cornerDepth = math.max(0, cornerRadius - edgeDistance)
+                    local inset = cornerDepth > 0 and (cornerRadius - math.sqrt(math.max(0, cornerRadius * cornerRadius - cornerDepth * cornerDepth))) or 0
+                    local roundedX = selectorX + inset
+                    local roundedWidth = selectorWidth - (inset * 2)
                     local stepGradientFactor = step / (gradientSteps - 1)
                     local stepDarken = (1 - stepGradientFactor) * darkenAmount
 
@@ -446,14 +453,15 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
                     local stepB = math.max(0, baseB - stepDarken)
 
                     if Susano and Susano.DrawRectFilled then
-                        Susano.DrawRectFilled(selectorX, stepY, selectorWidth, actualStepHeight, stepR, stepG, stepB, 0.9, 0.0)
+                        Susano.DrawRectFilled(roundedX, stepY, roundedWidth, actualStepHeight, stepR, stepG, stepB, 0.9, 0.0)
                     else
-                        Menu.DrawRect(selectorX, stepY, selectorWidth, actualStepHeight, stepR * 255, stepG * 255, stepB * 255, 220)
+                        Menu.DrawRect(roundedX, stepY, roundedWidth, actualStepHeight, stepR * 255, stepG * 255, stepB * 255, 220)
                     end
+
+                    Menu.DrawRect(roundedX, stepY, math.min(3 * scale, roundedWidth), actualStepHeight,
+                        Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255)
                 end
             end
-
-            Menu.DrawRect(selectorX, startY, (3 * scale), tabHeight, Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255)
         end
 
         Menu.DrawRect(tabX, startY, currentTabWidth, tabHeight, Menu.Colors.BackgroundDark.r, Menu.Colors.BackgroundDark.g, Menu.Colors.BackgroundDark.b, isSelected and 0 or 50)
