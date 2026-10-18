@@ -177,11 +177,11 @@ Menu.Position = {
     footerHeight = 26,
     footerSpacing = 5,
     mainMenuSpacing = 5,
-    footerRadius = 4,
-    itemRadius = 4,
+    footerRadius = 7,
+    itemRadius = 6,
     scrollbarWidth = 12,
     scrollbarPadding = 3,
-    headerRadius = 6
+    headerRadius = 8
 }
 Menu.Scale = 1.0
 
@@ -256,16 +256,16 @@ function Menu.DrawHeader()
     if Menu.Banner.enabled then
         if Menu.bannerTexture and Menu.bannerTexture > 0 and Susano and Susano.DrawImage then
             -- Dessiner la bannière sans coins arrondis
-            Susano.DrawImage(Menu.bannerTexture, x, y, width, bannerHeight, 1, 1, 1, 1, 0)
+            Susano.DrawImage(Menu.bannerTexture, x, y, width, bannerHeight, 1, 1, 1, 1, radius)
         else
-            Menu.DrawRect(x, y, width, height, Menu.Colors.HeaderPink.r, Menu.Colors.HeaderPink.g, Menu.Colors.HeaderPink.b, 255)
+            Menu.DrawRoundedRect(x, y, width, height, Menu.Colors.HeaderPink.r, Menu.Colors.HeaderPink.g, Menu.Colors.HeaderPink.b, 255, radius)
 
             local logoX = x + width / 2 - 12
             local logoY = y + height / 2 - 20
             Menu.DrawText(logoX, logoY, "P", 44, 1.0, 1.0, 1.0, 1.0)
         end
     else
-        Menu.DrawRect(x, y, width, height, Menu.Colors.HeaderPink.r, Menu.Colors.HeaderPink.g, Menu.Colors.HeaderPink.b, 255)
+        Menu.DrawRoundedRect(x, y, width, height, Menu.Colors.HeaderPink.r, Menu.Colors.HeaderPink.g, Menu.Colors.HeaderPink.b, 255, radius)
 
         local logoX = x + width / 2 - 12
         local logoY = y + height / 2 - 20
@@ -539,7 +539,9 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
         return
     end
 
-    Menu.DrawRect(x, itemY, width, itemHeight, Menu.Colors.BackgroundDark.r, Menu.Colors.BackgroundDark.g, Menu.Colors.BackgroundDark.b, 50)
+    Menu.DrawRoundedRect(x + (4 * scale), itemY + (2 * scale), width - (8 * scale), itemHeight - (4 * scale),
+        Menu.Colors.BackgroundDark.r, Menu.Colors.BackgroundDark.g, Menu.Colors.BackgroundDark.b, 70,
+        math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
 
     if isSelected then
         if Menu.SelectorY == 0 then
@@ -643,7 +645,9 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
             end
         end
 
-        Menu.DrawRect(selectorX, drawY, 3, itemHeight, Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255)
+        Menu.DrawRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
+            Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
+            math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
     end
 
     local textX = x + (16 * scale)
@@ -1207,7 +1211,9 @@ function Menu.DrawCategories()
             local isSelected = (categoryIndex == Menu.CurrentCategory)
 
             local itemY = startY + mainMenuHeight + mainMenuSpacing + (displayIndex - 1) * itemHeight
-            Menu.DrawRect(x, itemY, width, itemHeight, Menu.Colors.BackgroundDark.r, Menu.Colors.BackgroundDark.g, Menu.Colors.BackgroundDark.b, 50)
+            Menu.DrawRoundedRect(x + (4 * scale), itemY + (2 * scale), width - (8 * scale), itemHeight - (4 * scale),
+                Menu.Colors.BackgroundDark.r, Menu.Colors.BackgroundDark.g, Menu.Colors.BackgroundDark.b, 70,
+                math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
 
             if isSelected then
                 if Menu.CategorySelectorY == 0 then
@@ -1311,7 +1317,9 @@ function Menu.DrawCategories()
                     end
                 end
 
-                Menu.DrawRect(selectorX, drawY, 3, itemHeight, Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255)
+                Menu.DrawRoundedRect(x + (3 * scale), drawY + (2 * scale), width - (6 * scale), itemHeight - (4 * scale),
+                    Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255,
+                    math.min(6 * scale, (itemHeight - (4 * scale)) / 2))
             end
 
             local textX = x + 16
