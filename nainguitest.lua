@@ -1388,14 +1388,15 @@ function Menu.DrawRoundedRect(x, y, width, height, r, g, b, a, radius)
     end
 end
 
-function Menu.DrawThemeGlow(x, y, width, height, r, g, b, scale, radius)
+function Menu.DrawThemeGlow(x, y, width, height, r, g, b, scale, radius, intensity)
     scale = scale or 1.0
     radius = radius or 0
+    intensity = intensity or 1.0
 
     for layer = 6, 1, -1 do
-        local spread = layer * 4 * scale
+        local spread = layer * 2 * scale
         local glowRadius = math.min(radius + spread, (width + spread * 2) / 2, (height + spread * 2) / 2)
-        local alpha = (7 - layer) * 5
+        local alpha = (7 - layer) * 3 * intensity
         Menu.DrawRoundedRect(x - spread, y - spread, width + spread * 2, height + spread * 2,
             r, g, b, alpha, glowRadius)
     end
@@ -1517,12 +1518,12 @@ function Menu.DrawLoadingBar(alpha)
     local fillWidth = barWidth * (progress / 100)
     if fillWidth > 0 then
         Menu.DrawThemeGlow(barX, barY, fillWidth, barHeight,
-            theme.r, theme.g, theme.b, scale, 3 * scale)
+            theme.r, theme.g, theme.b, scale, 3 * scale, 0.5)
         Menu.DrawRoundedRect(barX, barY, fillWidth, barHeight,
             accentR * 255, accentG * 255, accentB * 255, 255 * alpha, 3 * scale)
         local glowWidth = 4 * scale
         Menu.DrawRoundedRect(barX + fillWidth - glowWidth / 2, barY - (2 * scale), glowWidth, barHeight + (4 * scale),
-            255, 255, 255, 205 * alpha, 2 * scale)
+            255, 255, 255, 140 * alpha, 2 * scale)
     end
 
     local statusText = "INITIALIZING ASSETS"
