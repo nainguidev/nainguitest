@@ -257,15 +257,35 @@ function Menu.DrawHeader()
         if Menu.bannerTexture and Menu.bannerTexture > 0 and Susano and Susano.DrawImage then
             -- Dessiner la bannière sans coins arrondis
             Susano.DrawImage(Menu.bannerTexture, x, y, width, bannerHeight, 1, 1, 1, 1, radius)
+
+            for i = 0, radius - 1 do
+                local sliceWidth = math.ceil(math.sqrt(radius * radius - i * i))
+                local maskWidth = radius - sliceWidth
+                local maskY = y + bannerHeight - radius + i
+
+                if maskWidth > 0 then
+                    if Susano.DrawRectFilled then
+                        Susano.DrawRectFilled(x, maskY, maskWidth, 1,
+                            Menu.Colors.BackgroundDark.r / 255.0, Menu.Colors.BackgroundDark.g / 255.0, Menu.Colors.BackgroundDark.b / 255.0, 1.0, 0.0)
+                        Susano.DrawRectFilled(x + width - maskWidth, maskY, maskWidth, 1,
+                            Menu.Colors.BackgroundDark.r / 255.0, Menu.Colors.BackgroundDark.g / 255.0, Menu.Colors.BackgroundDark.b / 255.0, 1.0, 0.0)
+                    else
+                        Menu.DrawRect(x, maskY, maskWidth, 1,
+                            Menu.Colors.BackgroundDark.r, Menu.Colors.BackgroundDark.g, Menu.Colors.BackgroundDark.b, 255)
+                        Menu.DrawRect(x + width - maskWidth, maskY, maskWidth, 1,
+                            Menu.Colors.BackgroundDark.r, Menu.Colors.BackgroundDark.g, Menu.Colors.BackgroundDark.b, 255)
+                    end
+                end
+            end
         else
-            Menu.DrawRoundedRect(x, y, width, height, Menu.Colors.HeaderPink.r, Menu.Colors.HeaderPink.g, Menu.Colors.HeaderPink.b, 255, radius)
+            Menu.DrawTopRoundedRect(x, y, width, height, Menu.Colors.HeaderPink.r, Menu.Colors.HeaderPink.g, Menu.Colors.HeaderPink.b, 255, radius)
 
             local logoX = x + width / 2 - 12
             local logoY = y + height / 2 - 20
             Menu.DrawText(logoX, logoY, "P", 44, 1.0, 1.0, 1.0, 1.0)
         end
     else
-        Menu.DrawRoundedRect(x, y, width, height, Menu.Colors.HeaderPink.r, Menu.Colors.HeaderPink.g, Menu.Colors.HeaderPink.b, 255, radius)
+        Menu.DrawTopRoundedRect(x, y, width, height, Menu.Colors.HeaderPink.r, Menu.Colors.HeaderPink.g, Menu.Colors.HeaderPink.b, 255, radius)
 
         local logoX = x + width / 2 - 12
         local logoY = y + height / 2 - 20
