@@ -1399,24 +1399,31 @@ end
 
 function Menu.DrawExternalLinkIcon(x, y, size, r, g, b, a)
     local scale = Menu.Scale or 1.0
-    local thickness = math.max(1, scale)
-    local arrowStart = size * 0.38
-    local arrowEnd = size - thickness
+    local thickness = math.max(1, math.floor(scale + 0.5))
+    local frameTop = y + size * 0.28
+    local frameRight = x + size * 0.76
+    local frameBottom = y + size - thickness
 
-    Menu.DrawRect(x, y, size * 0.58, thickness, r, g, b, a)
-    Menu.DrawRect(x, y, thickness, size, r, g, b, a)
-    Menu.DrawRect(x, y + size - thickness, size, thickness, r, g, b, a)
-    Menu.DrawRect(x + size - thickness, y + size * 0.58, thickness, size * 0.42, r, g, b, a)
+    Menu.DrawRect(x, frameTop, size * 0.48, thickness, r, g, b, a)
+    Menu.DrawRect(x, frameTop, thickness, frameBottom - frameTop + thickness, r, g, b, a)
+    Menu.DrawRect(x, frameBottom, frameRight - x, thickness, r, g, b, a)
+    Menu.DrawRect(frameRight - thickness, y + size * 0.58, thickness, frameBottom - (y + size * 0.58) + thickness, r, g, b, a)
 
-    for step = 0, 5 do
-        local progress = step / 5
-        local pixelX = x + arrowStart + (arrowEnd - arrowStart) * progress
-        local pixelY = y + size * 0.62 - (size * 0.52 * progress)
+    local arrowStartX = x + size * 0.36
+    local arrowStartY = y + size * 0.72
+    local arrowEndX = x + size * 0.9
+    local arrowEndY = y + size * 0.12
+    local lineSteps = math.ceil(math.max(arrowEndX - arrowStartX, arrowStartY - arrowEndY))
+
+    for step = 0, lineSteps do
+        local progress = step / lineSteps
+        local pixelX = arrowStartX + (arrowEndX - arrowStartX) * progress
+        local pixelY = arrowStartY + (arrowEndY - arrowStartY) * progress
         Menu.DrawRect(pixelX, pixelY, thickness, thickness, r, g, b, a)
     end
 
-    Menu.DrawRect(x + size * 0.62, y, size * 0.38, thickness, r, g, b, a)
-    Menu.DrawRect(x + size - thickness, y, thickness, size * 0.38, r, g, b, a)
+    Menu.DrawRect(x + size * 0.58, y + size * 0.12, size * 0.32, thickness, r, g, b, a)
+    Menu.DrawRect(arrowEndX - thickness, y + size * 0.12, thickness, size * 0.34, r, g, b, a)
 end
 
 function Menu.DrawVerticalGradientRoundedRect(x, y, width, height, r, g, b, a, radius)
