@@ -668,9 +668,9 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
         local toggleRadius = toggleHeight / 2
 
         if item.value then
-            local tR = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) and (Menu.Colors.SelectedBg.r / 255.0) or 1.0
-            local tG = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) and (Menu.Colors.SelectedBg.g / 255.0) or 0.0
-            local tB = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.b) and (Menu.Colors.SelectedBg.b / 255.0) or 1.0
+            local tR = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) or 255) / 255.0 * 0.55
+            local tG = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) or 0) / 255.0 * 0.55
+            local tB = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.b) or 255) / 255.0 * 0.55
 
             if Susano and Susano.DrawRectFilled then
                 Susano.DrawRectFilled(toggleX, toggleY, toggleWidth, toggleHeight,
@@ -702,16 +702,15 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
             circleX = toggleX + 2
         end
 
-        local isGrayTheme = (Menu.CurrentTheme == "Gray")
         local circleR, circleG, circleB
-        if isGrayTheme then
+        if item.value then
             circleR = 1.0
             circleG = 1.0
             circleB = 1.0
         else
-            circleR = 0.0
-            circleG = 0.0
-            circleB = 0.0
+            circleR = Menu.CurrentTheme == "Gray" and 1.0 or 0.0
+            circleG = Menu.CurrentTheme == "Gray" and 1.0 or 0.0
+            circleB = Menu.CurrentTheme == "Gray" and 1.0 or 0.0
         end
 
         if Susano and Susano.DrawRectFilled then
@@ -796,9 +795,9 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
         local toggleRadius = toggleHeight / 2
 
         if item.value then
-            local tR = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) and (Menu.Colors.SelectedBg.r / 255.0) or 1.0
-            local tG = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) and (Menu.Colors.SelectedBg.g / 255.0) or 0.0
-            local tB = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.b) and (Menu.Colors.SelectedBg.b / 255.0) or 1.0
+            local tR = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) or 255) / 255.0 * 0.55
+            local tG = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) or 0) / 255.0 * 0.55
+            local tB = ((Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.b) or 255) / 255.0 * 0.55
 
             if Susano and Susano.DrawRectFilled then
                 Susano.DrawRectFilled(toggleX, toggleY, toggleWidth, toggleHeight, tR, tG, tB, 0.95, toggleRadius)
@@ -822,16 +821,15 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
             circleX = toggleX + 2
         end
 
-        local isGrayTheme = (Menu.CurrentTheme == "Gray")
         local circleR, circleG, circleB
-        if isGrayTheme then
+        if item.value then
             circleR = 1.0
             circleG = 1.0
             circleB = 1.0
         else
-            circleR = 0.0
-            circleG = 0.0
-            circleB = 0.0
+            circleR = Menu.CurrentTheme == "Gray" and 1.0 or 0.0
+            circleG = Menu.CurrentTheme == "Gray" and 1.0 or 0.0
+            circleB = Menu.CurrentTheme == "Gray" and 1.0 or 0.0
         end
 
         if Susano and Susano.DrawRectFilled then
@@ -3092,6 +3090,5 @@ if Menu.Banner.enabled and Menu.Banner.imageUrl then
 end
 
 return Menu
-
 
 
