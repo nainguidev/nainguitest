@@ -240,57 +240,7 @@ function Menu.DrawText(x, y, text, size_px, r, g, b, a)
     if b > 1.0 then b = b / 255.0 end
     if a > 1.0 then a = a / 255.0 end
 
-    if type(SetTextFont) == "function"
-        and type(SetTextScale) == "function"
-        and type(BeginTextCommandDisplayText) == "function"
-        and type(AddTextComponentSubstringPlayerName) == "function"
-        and type(EndTextCommandDisplayText) == "function" then
-        local screenWidth, screenHeight = 1920, 1080
-        if type(GetActiveScreenResolution) == "function" then
-            screenWidth, screenHeight = GetActiveScreenResolution()
-        elseif Susano and Susano.GetScreenWidth and Susano.GetScreenHeight then
-            screenWidth = Susano.GetScreenWidth()
-            screenHeight = Susano.GetScreenHeight()
-        end
-
-        SetTextFont(0)
-        SetTextProportional(1)
-        SetTextScale(0.0, size_px / 50.0)
-        SetTextColour(math.floor(r * 255), math.floor(g * 255), math.floor(b * 255), math.floor(a * 255))
-        SetTextCentre(false)
-        BeginTextCommandDisplayText("STRING")
-        AddTextComponentSubstringPlayerName(tostring(text))
-        EndTextCommandDisplayText(x / screenWidth, y / screenHeight)
-    elseif Susano and Susano.DrawText then
-        Susano.DrawText(x, y, text, size_px, r, g, b, a)
-    end
-end
-
-function Menu.GetTextWidth(text, size_px)
-    if type(SetTextFont) == "function"
-        and type(SetTextScale) == "function"
-        and type(BeginTextCommandGetWidth) == "function"
-        and type(AddTextComponentSubstringPlayerName) == "function"
-        and type(EndTextCommandGetWidth) == "function" then
-        local screenWidth = 1920
-        if type(GetActiveScreenResolution) == "function" then
-            screenWidth = select(1, GetActiveScreenResolution())
-        elseif Susano and Susano.GetScreenWidth then
-            screenWidth = Susano.GetScreenWidth()
-        end
-
-        SetTextFont(0)
-        SetTextProportional(1)
-        SetTextScale(0.0, (size_px or 16) / 50.0)
-        BeginTextCommandGetWidth("STRING")
-        AddTextComponentSubstringPlayerName(tostring(text))
-        return EndTextCommandGetWidth(true) * screenWidth
-    end
-
-    if Susano and Susano.GetTextWidth then
-        return Susano.GetTextWidth(text, size_px or 16)
-    end
-    return string.len(tostring(text)) * (size_px or 16) * 0.55
+    Susano.DrawText(x, y, text, size_px, r, g, b, a)
 end
 
 function Menu.DrawHeader()
@@ -479,8 +429,8 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
         local scaledTextSize = textSize * scale
         local textY = startY + tabHeight / 2 - (scaledTextSize / 2) + (1 * scale)
         local textWidth = 0
-        if Menu.GetTextWidth then
-            textWidth = Menu.GetTextWidth(tab.name, scaledTextSize)
+        if Susano and Susano.GetTextWidth then
+            textWidth = Susano.GetTextWidth(tab.name, scaledTextSize)
         else
             textWidth = string.len(tab.name) * 9 * scale
         end
@@ -523,8 +473,8 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
             local textSize = 14 * scale
 
             local textWidth = 0
-            if Menu.GetTextWidth then
-                textWidth = Menu.GetTextWidth(item.separatorText, textSize)
+            if Susano and Susano.GetTextWidth then
+                textWidth = Susano.GetTextWidth(item.separatorText, textSize)
             else
                 textWidth = string.len(item.separatorText) * 8 * scale
             end
@@ -879,8 +829,8 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
 
             local fullText = "< " .. selectedOption .. " >"
             local selectorWidth = 0
-            if Menu.GetTextWidth then
-                selectorWidth = Menu.GetTextWidth(fullText, selectorSize)
+            if Susano and Susano.GetTextWidth then
+                selectorWidth = Susano.GetTextWidth(fullText, selectorSize)
             else
                 selectorWidth = string.len(fullText) * 9 * scale
             end
@@ -891,16 +841,16 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
                 Menu.Colors.TextWhite.r / 255.0 * 0.8, Menu.Colors.TextWhite.g / 255.0 * 0.8, Menu.Colors.TextWhite.b / 255.0 * 0.8, 0.8)
 
             local leftArrowWidth = 0
-            if Menu.GetTextWidth then
-                leftArrowWidth = Menu.GetTextWidth("< ", selectorSize)
+            if Susano and Susano.GetTextWidth then
+                leftArrowWidth = Susano.GetTextWidth("< ", selectorSize)
             else
                 leftArrowWidth = 18 * scale
             end
             Menu.DrawText(selectorX + leftArrowWidth, textY, selectedOption, 16, 1.0, 1.0, 1.0, 1.0)
 
             local optionWidth = 0
-            if Menu.GetTextWidth then
-                optionWidth = Menu.GetTextWidth(selectedOption, selectorSize)
+            if Susano and Susano.GetTextWidth then
+                optionWidth = Susano.GetTextWidth(selectedOption, selectorSize)
             else
                 optionWidth = string.len(selectedOption) * 9 * scale
             end
@@ -983,8 +933,8 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
             local displayValue = selectedIndex
             local selectorText = "- " .. tostring(displayValue) .. " -"
             local selectorWidth = 0
-            if Menu.GetTextWidth then
-                selectorWidth = Menu.GetTextWidth(selectorText, selectorSize)
+            if Susano and Susano.GetTextWidth then
+                selectorWidth = Susano.GetTextWidth(selectorText, selectorSize)
             else
                 selectorWidth = string.len(selectorText) * 9 * scale
             end
@@ -993,8 +943,8 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
         else
             local fullText = "< " .. selectedOption .. " >"
             local selectorWidth = 0
-            if Menu.GetTextWidth then
-                selectorWidth = Menu.GetTextWidth(fullText, selectorSize)
+            if Susano and Susano.GetTextWidth then
+                selectorWidth = Susano.GetTextWidth(fullText, selectorSize)
             else
                 selectorWidth = string.len(fullText) * 9 * scale
             end
@@ -1005,8 +955,8 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
                 Menu.Colors.TextWhite.r / 255.0 * 0.8, Menu.Colors.TextWhite.g / 255.0 * 0.8, Menu.Colors.TextWhite.b / 255.0 * 0.8, 0.8)
 
             local leftArrowWidth = 0
-            if Menu.GetTextWidth then
-                leftArrowWidth = Menu.GetTextWidth("< ", selectorSize)
+            if Susano and Susano.GetTextWidth then
+                leftArrowWidth = Susano.GetTextWidth("< ", selectorSize)
             else
                 leftArrowWidth = 18 * scale
             end
@@ -1014,8 +964,8 @@ function Menu.DrawItem(x, itemY, width, itemHeight, item, isSelected)
                 1.0, 1.0, 1.0, 1.0)
 
             local optionWidth = 0
-            if Menu.GetTextWidth then
-                optionWidth = Menu.GetTextWidth(selectedOption, selectorSize)
+            if Susano and Susano.GetTextWidth then
+                optionWidth = Susano.GetTextWidth(selectedOption, selectorSize)
             else
                 optionWidth = string.len(selectedOption) * 9 * scale
             end
@@ -1226,8 +1176,8 @@ function Menu.DrawCategories()
             local text = tab.name
             local textSize = 16
             local textWidth = 0
-            if Menu.GetTextWidth then
-                textWidth = Menu.GetTextWidth(text, textSize)
+            if Susano and Susano.GetTextWidth then
+                textWidth = Susano.GetTextWidth(text, textSize)
             else
                 textWidth = string.len(text) * 9
             end
@@ -1549,8 +1499,8 @@ function Menu.DrawLoadingBar(alpha)
     if loadingText ~= "" then
         local textSize = 18
         local textWidth = 0
-        if Menu.GetTextWidth then
-            textWidth = Menu.GetTextWidth(loadingText, textSize)
+        if Susano and Susano.GetTextWidth then
+            textWidth = Susano.GetTextWidth(loadingText, textSize)
         else
             textWidth = string.len(loadingText) * 10
         end
@@ -1608,8 +1558,8 @@ function Menu.DrawLoadingBar(alpha)
     local percentText = string.format("%.0f%%", Menu.LoadingProgress)
     local percentTextSize = 16
     local percentTextWidth = 0
-    if Menu.GetTextWidth then
-        percentTextWidth = Menu.GetTextWidth(percentText, percentTextSize)
+    if Susano and Susano.GetTextWidth then
+        percentTextWidth = Susano.GetTextWidth(percentText, percentTextSize)
     else
         percentTextWidth = string.len(percentText) * 9
     end
@@ -1671,8 +1621,8 @@ function Menu.DrawFooter()
     local currentX = x + footerPadding
 
     local textWidth = 0
-    if Menu.GetTextWidth then
-        textWidth = Menu.GetTextWidth(footerText, scaledFooterSize)
+    if Susano and Susano.GetTextWidth then
+        textWidth = Susano.GetTextWidth(footerText, scaledFooterSize)
     else
         textWidth = string.len(footerText) * 8 * scale
     end
@@ -1706,8 +1656,8 @@ function Menu.DrawFooter()
     local posText = string.format("%d/%d", displayIndex, totalItems)
 
     local posWidth = 0
-    if Menu.GetTextWidth then
-        posWidth = Menu.GetTextWidth(posText, scaledFooterSize)
+    if Susano and Susano.GetTextWidth then
+        posWidth = Susano.GetTextWidth(posText, scaledFooterSize)
     else
         posWidth = string.len(posText) * 8 * scale
     end
@@ -1768,7 +1718,7 @@ function Menu.DrawKeySelector(alpha)
     local barY = startY + headerHeight
     local barLabel = "Choose a key"
     local barLabelSize = 12
-    local barLabelW = Menu.GetTextWidth(barLabel, barLabelSize)
+    local barLabelW = Susano and Susano.GetTextWidth and Susano.GetTextWidth(barLabel, barLabelSize) or (string.len(barLabel) * 7)
     local barLabelX = startX + (width / 2) - (barLabelW / 2)
     local barLabelY = barY - barLabelSize - 4
     Menu.DrawText(barLabelX, barLabelY, barLabel, barLabelSize, 0.9, 0.9, 0.9, 1.0 * alpha)
@@ -1799,7 +1749,7 @@ function Menu.DrawKeySelector(alpha)
     end
 
     local keySize = 18
-    local keyW = Menu.GetTextWidth(keyName, keySize)
+    local keyW = Susano and Susano.GetTextWidth and Susano.GetTextWidth(keyName, keySize) or (string.len(keyName) * 9)
     Menu.DrawText(math.floor(boxX + (boxSize / 2) - (keyW / 2)), math.floor(boxY + (boxSize / 2) - (keySize / 2)), keyName, keySize, 1.0, 1.0, 1.0, 1.0 * alpha)
 end
 
@@ -1850,8 +1800,8 @@ function Menu.DrawKeybindsInterface(alpha)
         local status = bind.isActive and "on" or "off"
         local text = bind.name .. " (" .. bind.keyName .. ") [" .. status .. "]"
         local textWidth = 0
-        if Menu.GetTextWidth then
-            textWidth = Menu.GetTextWidth(text, textSize)
+        if Susano and Susano.GetTextWidth then
+            textWidth = Susano.GetTextWidth(text, textSize)
         else
             textWidth = string.len(text) * 8
         end
@@ -3071,8 +3021,8 @@ function Menu.DrawInputWindow()
     local titleText = Menu.InputTitle or "Input"
     local titleSize = 20
     local titleWidth = 0
-    if Menu.GetTextWidth then
-        titleWidth = Menu.GetTextWidth(titleText, titleSize)
+    if Susano and Susano.GetTextWidth then
+        titleWidth = Susano.GetTextWidth(titleText, titleSize)
     else
         titleWidth = string.len(titleText) * 10
     end
