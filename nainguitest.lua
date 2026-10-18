@@ -390,31 +390,39 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
 
     for i, tab in ipairs(category.tabs) do
         local tabX = currentX
-        local currentTabWidth
-        if i == numTabs then
-            currentTabWidth = (x + width) - currentX
-        else
-            currentTabWidth = tabWidth + (0.5 * scale)
-        end
+        local currentTabWidth = i == numTabs and ((x + width) - currentX) or tabWidth
 
         local isSelected = (i == Menu.CurrentTab)
+        local tabInset = scale
+        local tabRectX = math.floor(tabX + tabInset)
+        local tabRectY = math.floor(startY + tabInset)
+        local tabRectRight = math.floor(tabX + currentTabWidth - tabInset)
+        local tabRectBottom = math.floor(startY + tabHeight - tabInset)
+        local tabRectWidth = math.max(0, tabRectRight - tabRectX)
+        local tabRectHeight = math.max(0, tabRectBottom - tabRectY)
+        local tabRadius = math.min(5 * scale, tabRectWidth / 2, tabRectHeight / 2)
+
+        if Susano and Susano.DrawRectFilled then
+            Susano.DrawRectFilled(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
+                0.0, 0.0, 0.0, isSelected and 0.0 or (50 / 255.0), tabRadius)
+        else
+            Menu.DrawRoundedRect(tabRectX, tabRectY, tabRectWidth, tabRectHeight,
+                0, 0, 0, isSelected and 0 or 50, tabRadius)
+        end
 
         if isSelected then
-            local targetWidth = currentTabWidth
-            if i == numTabs then
-                targetWidth = math.min(currentTabWidth, (x + width) - tabX - (1 * scale))
-            end
+            local targetWidth = tabRectWidth
 
             if Menu.TabSelectorX == 0 then
-                Menu.TabSelectorX = tabX
+                Menu.TabSelectorX = tabRectX
                 Menu.TabSelectorWidth = targetWidth
             end
 
             local smoothSpeed = Menu.SmoothFactor
-            Menu.TabSelectorX = Menu.TabSelectorX + (tabX - Menu.TabSelectorX) * smoothSpeed
+            Menu.TabSelectorX = Menu.TabSelectorX + (tabRectX - Menu.TabSelectorX) * smoothSpeed
             Menu.TabSelectorWidth = Menu.TabSelectorWidth + (targetWidth - Menu.TabSelectorWidth) * smoothSpeed
 
-            if math.abs(Menu.TabSelectorX - tabX) < (0.5 * scale) then Menu.TabSelectorX = tabX end
+            if math.abs(Menu.TabSelectorX - tabRectX) < (0.5 * scale) then Menu.TabSelectorX = tabRectX end
             if math.abs(Menu.TabSelectorWidth - targetWidth) < (0.5 * scale) then Menu.TabSelectorWidth = targetWidth end
 
             local drawX = Menu.TabSelectorX
@@ -425,26 +433,26 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
             local baseB = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.b) and (Menu.Colors.SelectedBg.b / 255.0) or 1.0
             local darkenAmount = 0.4
 
-            local gradientSteps = 20
-            local stepHeight = tabHeight / gradientSteps
+            local gradientSteps = math.max(1, math.floor(tabRectHeight))
+            local stepHeight = tabRectHeight / gradientSteps
             local selectorWidth = drawWidth
             local selectorX = drawX
 
             for step = 0, gradientSteps - 1 do
-                local stepY = startY + (step * stepHeight)
-                local actualStepHeight = stepHeight
-                local maxY = startY + tabHeight
-                if stepY + actualStepHeight > maxY then
-                    actualStepHeight = maxY - stepY
-                end
+                local stepY = math.floor(tabRectY + (step * stepHeight))
+                local stepBottom = math.floor(tabRectY + ((step + 1) * stepHeight))
+                local actualStepHeight = math.max(1, stepBottom - stepY)
+                local maxY = tabRectY + tabRectHeight
+                if stepY + actualStepHeight > maxY then actualStepHeight = maxY - stepY end
                 if actualStepHeight > 0 and stepY < maxY then
                     local cornerRadius = math.min(8 * scale, selectorWidth / 2, tabHeight / 2)
                     local rowCenterY = stepY + actualStepHeight / 2
                     local edgeDistance = math.min(rowCenterY - startY, startY + tabHeight - rowCenterY)
                     local cornerDepth = math.max(0, cornerRadius - edgeDistance)
                     local inset = cornerDepth > 0 and (cornerRadius - math.sqrt(math.max(0, cornerRadius * cornerRadius - cornerDepth * cornerDepth))) or 0
-                    local roundedX = selectorX + inset
-                    local roundedWidth = selectorWidth - (inset * 2)
+                    local roundedX = math.floor(selectorX + inset)
+                    local roundedRight = math.ceil(selectorX + selectorWidth - inset)
+                    local roundedWidth = math.max(0, roundedRight - roundedX)
                     local stepGradientFactor = step / (gradientSteps - 1)
                     local stepDarken = (1 - stepGradientFactor) * darkenAmount
 
@@ -463,8 +471,6 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
                 end
             end
         end
-
-        Menu.DrawRect(tabX, startY, currentTabWidth, tabHeight, Menu.Colors.BackgroundDark.r, Menu.Colors.BackgroundDark.g, Menu.Colors.BackgroundDark.b, isSelected and 0 or 50)
 
         local textSize = 17
         local scaledTextSize = textSize * scale
