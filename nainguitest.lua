@@ -179,7 +179,7 @@ Menu.Position = {
     mainMenuSpacing = 5,
     footerRadius = 7,
     itemRadius = 6,
-    scrollbarWidth = 12,
+    scrollbarWidth = 16,
     scrollbarPadding = 3,
     headerRadius = 8
 }
@@ -316,7 +316,7 @@ function Menu.DrawScrollbar(x, startY, visibleHeight, selectedIndex, totalItems,
     Menu.scrollbarHeight = Menu.scrollbarHeight + (thumbHeight - Menu.scrollbarHeight) * smoothSpeed
 
     local thumbPadding = 2
-    local trackWidth = math.min(10 * scale, scrollbarWidth)
+    local trackWidth = math.min(14 * scale, scrollbarWidth)
     local trackX = scrollbarX + (scrollbarWidth - trackWidth) / 2
     local bgR = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) and (Menu.Colors.SelectedBg.r / 255.0) or 1.0
     local bgG = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) and (Menu.Colors.SelectedBg.g / 255.0) or 0.0
@@ -1515,7 +1515,7 @@ function Menu.DrawFooter()
     local scaledFooterSize = footerSize * scale
     local footerTextY = footerY + (footerHeight / 2) - (scaledFooterSize / 2) + (1 * scale)
 
-    local footerText = "discord.gg/naingui "
+    local footerText = "UHQ Menu V.1.0.0"
     local currentX = x + footerPadding
 
     local textWidth = 0
