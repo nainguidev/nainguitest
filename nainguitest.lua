@@ -298,31 +298,11 @@ function Menu.DrawScrollbar(x, startY, visibleHeight, selectedIndex, totalItems,
         adjustedIndex = selectedIndex - 1
     end
 
-    -- Le thumb garde toujours la taille des options visibles et se déplace seulement
-    local thumbHeight = scrollbarHeight  -- Toujours la hauteur des options visibles
-    local thumbY
-    
-    if totalItems <= Menu.ItemsPerPage then
-        -- Tous les éléments sont visibles : le thumb reste en haut
-        thumbY = scrollbarY
-    else
-        -- Calcul de la position du thumb basée sur le scroll offset
-        local scrollOffset = 0
-        if not isMainMenu and Menu.ItemScrollOffset then
-            scrollOffset = Menu.ItemScrollOffset
-        elseif isMainMenu and Menu.CategoryScrollOffset then
-            scrollOffset = Menu.CategoryScrollOffset
-        end
-        
-        local totalScrollable = totalItems - Menu.ItemsPerPage
-        local scrollProgress = scrollOffset / math.max(1, totalScrollable)
-        scrollProgress = math.min(1.0, math.max(0.0, scrollProgress))
-        
-        -- Le thumb se déplace mais garde sa taille fixe
-        local maxThumbY = scrollbarY + scrollbarHeight - thumbHeight
-        thumbY = scrollbarY + scrollProgress * (scrollbarHeight - thumbHeight)
-        thumbY = math.max(scrollbarY, math.min(maxThumbY, thumbY))
-    end
+    local scale = Menu.Scale or 1.0
+    local thumbHeight = math.min(20 * scale, scrollbarHeight)
+    local selectionProgress = (adjustedIndex - 1) / math.max(1, totalItems - 1)
+    selectionProgress = math.min(1.0, math.max(0.0, selectionProgress))
+    local thumbY = scrollbarY + selectionProgress * (scrollbarHeight - thumbHeight)
 
     if not Menu.scrollbarY then
         Menu.scrollbarY = thumbY
@@ -336,9 +316,17 @@ function Menu.DrawScrollbar(x, startY, visibleHeight, selectedIndex, totalItems,
     Menu.scrollbarHeight = Menu.scrollbarHeight + (thumbHeight - Menu.scrollbarHeight) * smoothSpeed
 
     local thumbPadding = 2
+    local trackWidth = math.min(4 * scale, scrollbarWidth)
+    local trackX = scrollbarX + (scrollbarWidth - trackWidth) / 2
     local bgR = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) and (Menu.Colors.SelectedBg.r / 255.0) or 1.0
     local bgG = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) and (Menu.Colors.SelectedBg.g / 255.0) or 0.0
     local bgB = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.b) and (Menu.Colors.SelectedBg.b / 255.0) or 1.0
+
+    if Susano and Susano.DrawRectFilled then
+        Susano.DrawRectFilled(trackX, scrollbarY, trackWidth, scrollbarHeight, 0.12, 0.12, 0.12, 0.85, trackWidth / 2)
+    else
+        Menu.DrawRoundedRect(trackX, scrollbarY, trackWidth, scrollbarHeight, 31, 31, 31, 217, trackWidth / 2)
+    end
     
     -- Thumb avec effet de glow et meilleur contraste
     if Susano and Susano.DrawRectFilled then
@@ -1040,7 +1028,7 @@ function Menu.DrawCategories()
 
             local visibleHeight = actualVisibleCount * itemHeight
             if nonSeparatorCount > 0 then
-                Menu.DrawScrollbar(x, itemY, visibleHeight, Menu.CurrentItem, nonSeparatorCount, false, width)
+                Menu.DrawScrollbar(x, itemY, visibleHeight, Menu.CurrentItem, totalItems, false, width)
             end
         end
         return
@@ -1097,19 +1085,11 @@ function Menu.DrawCategories()
         local stepR = math.min(1.0, baseR * brightness)
         local stepG = math.min(1.0, baseG * brightness)
         local stepB = math.min(1.0, baseB * brightness)
-
-        local cornerRadius = math.min(8 * scale, width / 2, mainMenuHeight / 2)
-        local rowCenterY = stepY + actualStepHeight / 2
-        local edgeDistance = math.min(rowCenterY - gradStartY, gradStartY + mainMenuHeight - rowCenterY)
-        local cornerDepth = math.max(0, cornerRadius - edgeDistance)
-        local inset = cornerDepth > 0 and (cornerRadius - math.sqrt(cornerRadius * cornerRadius - cornerDepth * cornerDepth)) or 0
-        local drawX = x + inset
-        local drawWidth = width - (inset * 2)
         
         if Susano and Susano.DrawRectFilled then
-            Susano.DrawRectFilled(drawX, stepY, drawWidth, actualStepHeight, stepR, stepG, stepB, alpha, 0)
+            Susano.DrawRectFilled(x, stepY, width, actualStepHeight, stepR, stepG, stepB, alpha, 0)
         else
-             Menu.DrawRect(drawX, stepY, drawWidth, actualStepHeight, math.floor(stepR*255), math.floor(stepG*255), math.floor(stepB*255), math.floor(alpha*255))
+             Menu.DrawRect(x, stepY, width, actualStepHeight, math.floor(stepR*255), math.floor(stepG*255), math.floor(stepB*255), math.floor(alpha*255))
         end
     end
     
@@ -1362,7 +1342,6 @@ end
 
 function Menu.DrawRoundedRect(x, y, width, height, r, g, b, a, radius)
     radius = radius or 0
-    radius = math.min(radius, width / 2, height / 2)
     if radius <= 0 then
         Menu.DrawRect(x, y, width, height, r, g, b, a)
         return
@@ -1377,11 +1356,11 @@ function Menu.DrawRoundedRect(x, y, width, height, r, g, b, a, radius)
         
         local top_y = y + radius - 1 - i
         Menu.DrawRect(x + radius - slice_width, top_y, slice_width, 1, r, g, b, a)
-        Menu.DrawRect(x + width - slice_width, top_y, slice_width, 1, r, g, b, a)
+        Menu.DrawRect(x + width - radius, top_y, slice_width, 1, r, g, b, a)
         
         local bottom_y = y + height - radius + i
         Menu.DrawRect(x + radius - slice_width, bottom_y, slice_width, 1, r, g, b, a)
-        Menu.DrawRect(x + width - slice_width, bottom_y, slice_width, 1, r, g, b, a)
+        Menu.DrawRect(x + width - radius, bottom_y, slice_width, 1, r, g, b, a)
     end
 end
 
@@ -1859,30 +1838,6 @@ function Menu.DrawBackground()
     local width = scaledPos.width - 1
     
     local segments, fullHeight = Menu.GetLayoutSegments()
-    local footerSegment = segments[#segments]
-    local outerHeight = footerSegment and (footerSegment.y + footerSegment.h - y) or fullHeight
-    local outerAlpha = 1.0
-
-    for _, category in ipairs(Menu.Categories or {}) do
-        if category.name == "Settings" then
-            for _, tab in ipairs(category.tabs or {}) do
-                if tab.name == "General" then
-                    for _, item in ipairs(tab.items or {}) do
-                        if item.name == "Black Background" and item.value == false then
-                            outerAlpha = 0.2
-                        end
-                    end
-                end
-            end
-        end
-    end
-
-    local outerRadius = math.min(scaledPos.headerRadius, width / 2, outerHeight / 2)
-    if Susano and Susano.DrawRectFilled then
-        Susano.DrawRectFilled(x, y, width, outerHeight, 0.0, 0.0, 0.0, outerAlpha, outerRadius)
-    else
-        Menu.DrawRoundedRect(x, y, width, outerHeight, 0, 0, 0, math.floor(255 * outerAlpha), outerRadius)
-    end
 
     local r = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.r) or 148
     local g = (Menu.Colors.SelectedBg and Menu.Colors.SelectedBg.g) or 0
@@ -2028,19 +1983,10 @@ function Menu.DrawBackground()
                     end
                 end
 
-                local panelHeight = itemsEndY - menuBarY
-                local rowCenterY = currentY + drawH / 2
-                local cornerRadius = math.min(8 * scale, width / 2, panelHeight / 2)
-                local edgeDistance = math.min(rowCenterY - menuBarY, itemsEndY - rowCenterY)
-                local cornerDepth = math.max(0, cornerRadius - edgeDistance)
-                local inset = cornerDepth > 0 and (cornerRadius - math.sqrt(cornerRadius * cornerRadius - cornerDepth * cornerDepth)) or 0
-                local drawX = x + inset
-                local drawWidth = width - (inset * 2)
-
                 if Susano and Susano.DrawRectFilled then
-                    Susano.DrawRectFilled(drawX, currentY, drawWidth, drawH, 0.0, 0.0, 0.0, backgroundAlpha, 0)
+                    Susano.DrawRectFilled(x, currentY, width, drawH, 0.0, 0.0, 0.0, backgroundAlpha, 0)
                 else
-                    Menu.DrawRect(drawX, currentY, drawWidth, drawH, 0, 0, 0, math.floor(backgroundAlpha * 255))
+                    Menu.DrawRect(x, currentY, width, drawH, 0, 0, 0, math.floor(backgroundAlpha * 255))
                 end
             end
         end
