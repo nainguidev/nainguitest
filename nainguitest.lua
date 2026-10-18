@@ -299,7 +299,7 @@ function Menu.DrawScrollbar(x, startY, visibleHeight, selectedIndex, totalItems,
     end
 
     local scale = Menu.Scale or 1.0
-    local thumbHeight = math.min(30 * scale, scrollbarHeight)
+    local thumbHeight = math.min(40 * scale, scrollbarHeight)
     local selectionProgress = (adjustedIndex - 1) / math.max(1, totalItems - 1)
     selectionProgress = math.min(1.0, math.max(0.0, selectionProgress))
     local thumbY = scrollbarY + selectionProgress * (scrollbarHeight - thumbHeight)
@@ -1099,7 +1099,7 @@ function Menu.DrawCategories()
         local stepG = math.min(1.0, baseG * brightness)
         local stepB = math.min(1.0, baseB * brightness)
 
-        local cornerRadius = math.min(scaledPos.headerRadius, width / 2, mainMenuHeight / 2)
+        local cornerRadius = 0
         local rowCenterY = stepY + actualStepHeight / 2
         local edgeDistance = math.min(rowCenterY - gradStartY, gradStartY + mainMenuHeight - rowCenterY)
         local cornerDepth = math.max(0, cornerRadius - edgeDistance)
