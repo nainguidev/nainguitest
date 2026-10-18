@@ -395,7 +395,7 @@ function Menu.DrawTabs(category, x, startY, width, tabHeight)
         local tabRectY = math.floor(startY + scale + 0.5)
         local tabRectWidth = math.max(0, math.floor(currentTabWidth - (2 * scale) + 0.5))
         local tabRectHeight = math.max(0, math.floor(tabHeight - (2 * scale) + 0.5))
-        local tabRadius = math.min(1 * scale, tabRectWidth / 2, tabRectHeight / 2)
+        local tabRadius = math.min(3 * scale, tabRectWidth / 2, tabRectHeight / 2)
 
         if isSelected then
             if Menu.TabSelectorX == 0 then
